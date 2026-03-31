@@ -1,0 +1,143 @@
+---
+title: Getting Started with SproutOS
+description: Quickly set up your account, access the dashboard, and create your first website project in under 5 minutes.
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following:
+
+<Callout kind="info">
+
+- A modern web browser such as Chrome, Firefox, or Safari
+- An email address for account registration
+- Optional: Google account for social login
+
+</Callout>
+
+SproutOS runs entirely in your browser, so no downloads or installations are required.
+
+## Sign Up and Log In
+
+Follow these steps to create your account and access the dashboard.
+
+<Steps>
+  <Step title="Visit the Dashboard" icon="globe">
+    Open your browser and navigate to `https://dashboard.sproutos.ai`.
+  </Step>
+  <Step title="Create Account" icon="user-plus">
+    Click **Sign Up** and choose your preferred method.
+  </Step>
+  <Step title="Verify Email" icon="mail">
+    Check your inbox for a verification link and click it to activate your account.
+  </Step>
+  <Step title="Log In" icon="log-in">
+    Return to the dashboard and enter your credentials.
+  </Step>
+</Steps>
+
+<Tabs>
+  <Tab title="Email / Password" icon="mail">
+    Enter your email and create a strong password. SproutOS enforces minimum security standards.
+  </Tab>
+  <Tab title="Google OAuth" icon="apple">
+    Click **Continue with Google** and authorize the app. This enables seamless single sign-on.
+  </Tab>
+</Tabs>
+
+## Dashboard Overview
+
+Once logged in, you land on the main dashboard. It provides a centralized view of your projects, AI tools, and automation workflows.
+
+<Columns cols={3}>
+  <Card title="Projects" icon="folder" href="/projects">
+    Manage all your website projects in one place.
+  </Card>
+  <Card title="AI Planner" icon="zap" href="/ai-planner">
+    Generate plans and sitemaps with AI assistance.
+  </Card>
+  <Card title="Automations" icon="settings" href="/automations">
+    Set up workflows for building and deployment.
+  </Card>
+</Columns>
+
+## Create Your First Project
+
+Now, launch your initial website project using SproutOS AI capabilities.
+
+<Steps>
+  <Step title="New Project" icon="plus">
+    Click **New Project** in the top-right corner.
+  </Step>
+  <Step title="Enter Details" icon="edit-3">
+    Provide a project name like `My Agency Site` and select your target framework.
+  </Step>
+  <Step title="AI Planning" icon="brain">
+    Describe your site: ``Build a modern agency portfolio with services, testimonials, and contact form.``
+  </Step>
+  <Step title="Generate & Review" icon="check-circle">
+    Click **Generate Plan** and review the AI output before proceeding.
+  </Step>
+</Steps>
+
+<CodeGroup tabs="React,Next.js,Vue">
+  ```javascript
+  // Example AI-generated React structure
+  const App = () => {
+    return (
+      <div>
+        <Header />
+        <Services />
+        <Testimonials />
+        <Contact />
+      </div>
+    );
+  };
+  ```
+  ```javascript
+  // Next.js page structure
+  export default function Home() {
+    return (
+      <main>
+        <Hero />
+        <Features />
+        <CTA />
+      </main>
+    );
+  }
+  ```
+  ```javascript
+  // Vue component setup
+  <template>
+    <header />
+    <section class="services" />
+    <testimonials />
+    <contact-form />
+  </template>
+  ```
+</CodeGroup>
+
+## Next Steps
+
+<Expandable title="Troubleshooting Common Issues" default-open="false">
+
+If you encounter login issues, clear your browser cache or try incognito mode. For project generation errors, ensure your description is under 500 characters.
+
+</Expandable>
+
+Explore these resources to dive deeper:
+
+<Columns cols={2}>
+  <Card title="Authentication" icon="shield" href="/authentication" horizontal>
+    Advanced security and API keys.
+  </Card>
+  <Card title="Configuration" icon="settings" href="/configuration" horizontal>
+    Customize AI behaviors and integrations.
+  </Card>
+</Columns>
+
+<Callout kind="success" kind="tip">
+
+Congratulations! You've set up SproutOS and created your first project. Start scaling your agency workflows today.
+
+</Callout>

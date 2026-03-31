@@ -1,0 +1,105 @@
+---
+title: Changelog
+description: Stay updated with the latest releases, bug fixes, and new features introduced in SproutOS.
+---
+
+## Recent Releases
+
+Track all SproutOS updates here. You receive automatic notifications in your dashboard when new versions deploy. Review changes before upgrading to ensure compatibility with your workflows.
+
+<Update label="2024-10-15" description="v1.2.0" tags={["feature", "improvement"]}>
+
+## New Features
+
+- Added AI-powered website blueprint generator for instant project planning.
+- Introduced automation workflows with drag-and-drop node editor.
+- New agency dashboard analytics for tracking client project scalability.
+
+## Improvements
+
+- Enhanced AI model accuracy by 25% for content generation tasks.
+- Optimized build times for static site exports.
+
+## Bug Fixes
+
+- Fixed intermittent failures in webhook integrations.
+- Resolved UI glitches in the scale monitoring panel.
+
+</Update>
+
+<Update label="2024-09-20" description="v1.1.0" tags={["feature", "bugfix"]}>
+
+## New Features
+
+- Integrated real-time collaboration for team website planning sessions.
+- Added custom AI prompt templates for agency-specific branding.
+
+## Bug Fixes
+
+- Patched security vulnerability in API token handling.
+- Corrected scaling algorithm errors during high-traffic simulations.
+
+</Update>
+
+<Update label="2024-08-10" description="v1.0.0" tags={["feature", "breaking"]}>
+
+## New Features
+
+- Core AI OS launch with plan, build, automate, and scale modules.
+- Full website generation from natural language descriptions.
+
+## Breaking Changes
+
+- Updated configuration schema—migrate your `sproutos.config.json` files.
+
+</Update>
+
+## Upgrade Instructions
+
+Follow these steps to update SproutOS safely.
+
+<Steps>
+  <Step title="Backup Your Data" icon="database">
+    Export your projects and configurations.
+
+    <Callout kind="tip">
+      Use the dashboard export feature for complete backups.
+    </Callout>
+  </Step>
+  <Step title="Update Core" icon="download">
+    Run the update command for your platform.
+
+    <CodeGroup tabs="npm,yarn">
+````bash
+npm update @sproutos/core@latest
+````
+````bash
+yarn upgrade @sproutos/core@latest
+````
+    </CodeGroup>
+  </Step>
+  <Step title="Restart Services" icon="refresh-cw">
+    Restart your SproutOS instance and verify workflows.
+  </Step>
+</Steps>
+
+## Upcoming Roadmap
+
+Explore what's next for SproutOS.
+
+<Columns cols={2}>
+  <Card title="AI Enhancements" icon="zap" href="/docs/ai-features">
+    Advanced multi-modal AI for design and code generation.
+  </Card>
+  <Card title="Enterprise Scaling" icon="trending-up" href="/docs/enterprise">
+    Unlimited client workspaces and advanced permissions.
+  </Card>
+</Columns>
+
+<Expandable title="Detailed Roadmap" default-open="false">
+  Q4 2024: Native mobile app support and deeper CMS integrations.
+</Expandable>
+
+<Callout kind="info">
+  Found a bug? Report it on GitHub with your version and reproduction steps. Check [SproutOS GitHub](https://github.com/posimyth/sproutos) for issues.
+</Callout>
