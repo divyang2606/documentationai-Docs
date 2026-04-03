@@ -47,6 +47,27 @@
             ]
           },
           {
+            "group": "The Workflow",
+            "icon": "arrow-right",
+            "pages": [
+              {
+                "title": "Guided Brief",
+                "path": "guided-brief",
+                "icon": "clipboard"
+              },
+              {
+                "title": "Sitemap Editor",
+                "path": "sitemap-editor",
+                "icon": "map"
+              },
+              {
+                "title": "Design Editor",
+                "path": "design-editor",
+                "icon": "palette"
+              }
+            ]
+          },
+          {
             "group": "Core Concepts",
             "icon": "layers",
             "pages": [
