@@ -16,11 +16,14 @@
       "border": "#E5E5E5"
     }
   },
+  "logo-dark": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775116109028-4pz5af98rtc-white-Logo.png?q=85&fm=auto&auto=compress%2Cformat",
+  "logo-light": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775120056307-1cxpmrsrhr9-SproutOs-dark-logo.png?q=85&fm=auto&auto=compress%2Cformat",
+  "favicon": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775120231155-blwk4wr1hgk-SproutOS-Icon.png?q=85&fm=auto&auto=compress%2Cformat",
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
-        "icon": "book",
+        "tab": "Generate Sites",
+        "icon": "wand",
         "groups": [
           {
             "group": "Getting Started",
@@ -62,12 +65,36 @@
         ]
       },
       {
-        "tab": "API Reference",
-        "icon": "code",
+        "tab": "Manage Sites",
+        "icon": "settings",
         "groups": [
           {
-            "group": "Endpoints",
-            "openapi": "api-reference/openapi.yaml"
+            "group": "Overview",
+            "icon": "layout",
+            "pages": [
+              {
+                "title": "Manage Sites",
+                "path": "manage-sites",
+                "icon": "home"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "WordPress Plugin",
+        "icon": "plug",
+        "groups": [
+          {
+            "group": "Overview",
+            "icon": "layout",
+            "pages": [
+              {
+                "title": "WordPress Plugin",
+                "path": "wordpress-plugin",
+                "icon": "home"
+              }
+            ]
           }
         ]
       },
@@ -127,8 +154,5 @@
         ]
       }
     ]
-  },
-  "logo-dark": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775116109028-4pz5af98rtc-white-Logo.png?q=85&fm=auto&auto=compress%2Cformat",
-  "logo-light": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775120056307-1cxpmrsrhr9-SproutOs-dark-logo.png?q=85&fm=auto&auto=compress%2Cformat",
-  "favicon": "https://blob-cdn.documentation.ai/org-631be872-18d4-4adb-9443-cc16a0d6b8aa/doc-0ef24a17-abe4-4492-a600-867502a0482d/1775120231155-blwk4wr1hgk-SproutOS-Icon.png?q=85&fm=auto&auto=compress%2Cformat"
+  }
 }
