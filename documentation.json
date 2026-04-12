@@ -114,6 +114,11 @@
                 "title": "WordPress Plugin",
                 "path": "wordpress-plugin",
                 "icon": "home"
+              },
+              {
+                "title": "How AI Connects to WordPress",
+                "path": "wordpress-plugin/what-is-mcp",
+                "icon": "zap"
               }
             ]
           },
