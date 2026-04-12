@@ -1,19 +1,19 @@
 ---
-title: 'How AI Connects to WordPress — What Is MCP?'
+title: 'Connect WordPress with AI: What Is MCP?'
 description: >-
   Learn what MCP (Model Context Protocol) is and why it is the best way to
   connect AI tools like Claude, ChatGPT, and Cursor to your WordPress site
   for building, editing, and managing content.
 ---
 
-MCP (Model Context Protocol) is an open standard that lets AI tools talk directly to your WordPress site. Instead of copying code from a chatbot and pasting it into your editor, MCP lets the AI read your files, edit your theme, create pages, and run code on your site — all from inside the AI chat window. You stay in control the whole time.
+MCP (Model Context Protocol) is an open standard that lets AI tools talk directly to your WordPress site. Instead of copying code from a chatbot and pasting it into your editor, MCP lets the AI read your files, edit your theme, create pages, and run code on your site, all from inside the AI chat window. You stay in control the whole time.
 
 ## The Old Way: Copy and Paste
 
 Without MCP, working with AI on a WordPress site looks like this:
 
 1. You open ChatGPT, Claude, or another AI tool
-2. You describe what you want — "add a contact form to my homepage"
+2. You describe what you want, like "add a contact form to my homepage"
 3. The AI generates code and shows it to you
 4. You copy the code
 5. You switch to your WordPress editor or file manager
@@ -28,7 +28,7 @@ This loop is slow. The AI cannot see your site. It does not know what theme you 
 With MCP, the AI connects directly to your WordPress site. The workflow becomes:
 
 1. You open your AI tool (Claude Desktop, Claude Code, Cursor, or any MCP-compatible client)
-2. You describe what you want — "add a contact form to my homepage"
+2. You describe what you want, like "add a contact form to my homepage"
 3. The AI reads your theme files, checks your page structure, writes the code, and applies it to your site
 4. You review the changes
 
@@ -38,7 +38,7 @@ No copying. No pasting. No switching between windows. The AI sees your actual si
 
 Think of MCP as a translator between your AI tool and your WordPress site.
 
-- Your AI tool speaks "MCP" — a standard language for requesting actions
+- Your AI tool speaks "MCP", a standard language for requesting actions
 - Your WordPress site (with SproutOS installed) understands MCP and exposes a set of **tools** the AI can use
 - The AI calls these tools to read files, write code, create pages, and more
 
@@ -70,22 +70,22 @@ MCP gives the AI full visibility into your site while keeping safety controls in
 
 MCP is an open standard. Any AI client that supports it can connect to your WordPress site through SproutOS. Currently supported clients include:
 
-- **Claude Desktop** — Anthropic's desktop AI app
-- **Claude Code** — Anthropic's CLI tool for developers
-- **Cursor** — AI-powered code editor
-- **Windsurf** — AI coding assistant
-- **Any future MCP-compatible client** — The protocol is open, so new tools can adopt it
+- **Claude Desktop** by Anthropic (desktop AI app)
+- **Claude Code** by Anthropic (CLI tool for developers)
+- **Cursor** (AI-powered code editor)
+- **Windsurf** (AI coding assistant)
+- **Any future MCP-compatible client**, since the protocol is open and new tools can adopt it
 
 ## Is It Safe?
 
-MCP itself is just a communication protocol — like HTTP for websites. The safety comes from what SproutOS does on top of it:
+MCP itself is just a communication protocol, similar to HTTP for websites. The safety comes from what SproutOS does on top of it:
 
-- **Authentication required** — The AI must log in with a WordPress application password over HTTPS
-- **Admin-only access** — Only users with Administrator role can use the tools
-- **Sandbox for PHP** — AI-written PHP code goes into a separate folder, not into your core files
-- **Protected files** — Critical files like `wp-config.php` and `.htaccess` cannot be touched
-- **Activity log** — Every action the AI takes is recorded with timestamps and details
-- **Safe Mode** — One toggle to restrict everything to read-only
+- **Authentication required.** The AI must log in with a WordPress application password over HTTPS
+- **Admin-only access.** Only users with Administrator role can use the tools
+- **Sandbox for PHP.** AI-written PHP code goes into a separate folder, not into your core files
+- **Protected files.** Critical files like `wp-config.php` and `.htaccess` cannot be touched
+- **Activity log.** Every action the AI takes is recorded with timestamps and details
+- **Safe Mode.** One toggle to restrict everything to read-only
 
 <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
   Full details on the sandbox, file restrictions, crash recovery, and recommended setup.
@@ -102,7 +102,7 @@ MCP itself is just a communication protocol — like HTTP for websites. The safe
 </Expandable>
 
 <Expandable title="Can MCP break my site?">
-  MCP is just the communication layer — it cannot break anything on its own. The risk comes from the actions the AI takes through the tools. SproutOS includes safety controls like sandboxing, protected paths, and safe mode to minimize risk. Always use a staging site and keep backups.
+  MCP is just the communication layer. It cannot break anything on its own. The risk comes from the actions the AI takes through the tools. SproutOS includes safety controls like sandboxing, protected paths, and safe mode to minimize risk. Always use a staging site and keep backups.
 </Expandable>
 
 <Expandable title="Is MCP the same as an API?">

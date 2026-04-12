@@ -1,5 +1,5 @@
 ---
-title: 'Abilities Reference — All SproutOS MCP Tools'
+title: 'Abilities Reference: All SproutOS MCP Tools'
 description: >-
   Complete reference for all SproutOS WordPress plugin abilities. Covers file
   operations, theme management, page creation, bridge tools, batch execution,
@@ -51,7 +51,7 @@ Writes content to a file. Supports UTF-8 and base64 encoding, overwrite and appe
 **Returns:** File path, bytes written, backup path (if created).
 
 <Callout kind="info">
-  PHP files are always written to the sandbox directory (`wp-content/sproutos-mcp-sandbox/`). PHP syntax is validated before saving — malformed code is rejected.
+  PHP files are always written to the sandbox directory (`wp-content/sproutos-mcp-sandbox/`). PHP syntax is validated before saving. Malformed code is rejected.
 </Callout>
 
 ---
@@ -79,7 +79,7 @@ Performs exact string replacement in an existing file. Supports replace-all, Nth
 
 ### sprout/delete-file
 
-Deletes a file or directory. Requires the `recursive` flag for non-empty directories. Supports dry-run. Idempotent — deleting a missing path succeeds with `deleted: false`.
+Deletes a file or directory. Requires the `recursive` flag for non-empty directories. Supports dry-run. Idempotent: deleting a missing path succeeds with `deleted: false`.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -140,7 +140,7 @@ Restores a previously disabled sandbox file by removing the `.disabled` extensio
 | `path` | string | Yes | Path to the disabled file in the sandbox |
 | `dry_run` | boolean | No | Preview without enabling |
 
-**Returns:** File path, enabled status. Idempotent — enabling an already-enabled file succeeds.
+**Returns:** File path, enabled status. Idempotent: enabling an already-enabled file succeeds.
 
 ---
 
@@ -153,7 +153,7 @@ Pauses a sandbox file by appending `.disabled` to its extension. The file remain
 | `path` | string | Yes | Path to the file in the sandbox |
 | `dry_run` | boolean | No | Preview without disabling |
 
-**Returns:** File path, disabled status. Idempotent — disabling an already-disabled file succeeds.
+**Returns:** File path, disabled status. Idempotent: disabling an already-disabled file succeeds.
 
 ---
 
@@ -336,7 +336,7 @@ Returns the current SproutOS module configuration, workspace status, and ability
 
 ### sprout/update-mcp-settings
 
-Updates module toggles and sandbox settings. Supports partial updates — only include the fields you want to change.
+Updates module toggles and sandbox settings. Supports partial updates. Only include the fields you want to change.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |

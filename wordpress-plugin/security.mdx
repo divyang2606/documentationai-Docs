@@ -1,5 +1,5 @@
 ---
-title: 'Security & Best Practices — SproutOS WordPress Plugin'
+title: 'Security & Best Practices: SproutOS WordPress Plugin'
 description: >-
   Understand the SproutOS security model including authentication, sandbox
   isolation, filesystem restrictions, crash recovery, and recommended setup for
@@ -19,9 +19,9 @@ SproutOS uses five layers of protection. Each layer has specific capabilities an
 | Layer | What It Does | What It Does Not Do |
 | --- | --- | --- |
 | **Authentication** | Requires WordPress application passwords over HTTPS. No anonymous access | Does not encrypt data at rest or control what happens after authentication |
-| **Permissions** | Requires `manage_options` capability (Administrator role). Non-admins cannot access any tools | Does not provide per-tool role granularity — it is all-or-nothing at the admin level |
+| **Permissions** | Requires `manage_options` capability (Administrator role). Non-admins cannot access any tools | Does not provide per-tool role granularity. It is all-or-nothing at the admin level |
 | **Sandbox** | PHP writes go to `wp-content/sproutos-mcp-sandbox/`. Non-PHP files can be written elsewhere | Does not prevent reading files outside the sandbox |
-| **Filesystem Restrictions** | Core directories (`wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`) are protected from deletion. Sensitive files (`wp-config.php`, `.htaccess`, `.env`) are blocked | Does not prevent all destructive operations — files outside protected paths can still be deleted |
+| **Filesystem Restrictions** | Core directories (`wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`) are protected from deletion. Sensitive files (`wp-config.php`, `.htaccess`, `.env`) are blocked | Does not prevent all destructive operations. Files outside protected paths can still be deleted |
 | **Crash Recovery** | Detects fatal errors caused by sandbox files and enables safe mode | Does not protect against logic errors, data corruption, or database-level issues |
 
 ## Authentication
@@ -29,7 +29,7 @@ SproutOS uses five layers of protection. Each layer has specific capabilities an
 SproutOS uses WordPress application passwords for authentication. This is the same system WordPress core provides for REST API access.
 
 - Every request must include a valid username and application password
-- HTTPS is required — WordPress rejects application password authentication over HTTP
+- HTTPS is required. WordPress rejects application password authentication over HTTP
 - Each AI client should use its own application password for auditability
 - Revoke a password from **SproutOS > Connect** to immediately cut off access
 
@@ -46,13 +46,13 @@ The sandbox is a dedicated directory at `wp-content/sproutos-mcp-sandbox/`. All 
 1. When the AI writes a PHP file, SproutOS saves it inside the sandbox directory
 2. The sandbox loader auto-includes these files on WordPress requests, so the code takes effect immediately
 3. You can enable or disable individual sandbox files using the `sprout/enable-file` and `sprout/disable-file` tools
-4. Disabled files get a `.disabled` extension — the file stays on disk but is not loaded
+4. Disabled files get a `.disabled` extension. The file stays on disk but is not loaded
 
 ### What the Sandbox Protects
 
 - Prevents AI-written PHP from overwriting core WordPress files, plugins, or themes directly
 - Keeps custom code isolated and easy to review, enable, or remove
-- PHP files are syntax-validated before saving — malformed code is rejected before it reaches the sandbox
+- PHP files are syntax-validated before saving. Malformed code is rejected before it reaches the sandbox
 
 ### What the Sandbox Does Not Protect
 
