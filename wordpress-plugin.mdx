@@ -22,9 +22,8 @@ The plugin is built on three open standards:
 | --- | --- |
 | **Model Context Protocol (MCP)** | An open protocol that lets AI clients call tools on external systems through a standardized interface |
 | **WordPress Abilities API** | A WordPress core API (6.5+) that lets plugins register callable abilities with input/output schemas |
-| **MCP Adapter** | An official WordPress plugin that bridges the Abilities API to the MCP protocol over HTTP |
 
-SproutOS registers its tools as WordPress abilities. The MCP Adapter exposes them over HTTP. Your AI client connects via MCP and calls them like any other tool.
+SproutOS registers its tools as WordPress abilities and exposes them over HTTP through the MCP protocol. Your AI client connects via MCP and calls them like any other tool.
 
 ## Abilities Overview
 
@@ -80,9 +79,6 @@ The plugin adds a **SproutOS** menu item in your WordPress admin with six tabs:
   It is not recommended. The plugin grants AI agents access to your filesystem and database. Use it on development or staging environments and keep backups at all times.
 </Expandable>
 
-<Expandable title="Does the plugin work without the MCP Adapter?">
-  No. The MCP Adapter plugin is required to expose WordPress abilities over HTTP to AI clients. Install both the SproutOS plugin and the MCP Adapter.
-</Expandable>
 
 <Expandable title="What PHP version do I need?">
   PHP 8.0 or higher. WordPress 6.5 or higher is also required for the Abilities API.

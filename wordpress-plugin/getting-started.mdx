@@ -23,19 +23,7 @@ Before you start, make sure your environment meets these requirements:
   Use a development or staging site only. Do not install this plugin on a live production site without understanding the security implications. Always keep backups.
 </Callout>
 
-## Step 1: Install the MCP Adapter Plugin
-
-The MCP Adapter is the official WordPress plugin that bridges the Abilities API to the MCP protocol. SproutOS requires it.
-
-1. Go to **Plugins > Add New** in your WordPress admin
-2. Search for **MCP Adapter**
-3. Click **Install Now**, then **Activate**
-
-<Callout kind="info">
-  The MCP Adapter exposes WordPress abilities over HTTP. Without it, AI clients cannot communicate with your site.
-</Callout>
-
-## Step 2: Install the SproutOS Plugin
+## Step 1: Install the SproutOS Plugin
 
 1. Download the SproutOS plugin from the [GitHub repository](https://github.com/posimyth/sprout-os)
 2. Go to **Plugins > Add New > Upload Plugin** in your WordPress admin
@@ -44,7 +32,7 @@ The MCP Adapter is the official WordPress plugin that bridges the Abilities API 
 
 After activation, a new **SproutOS** menu item appears in the WordPress admin sidebar.
 
-## Step 3: Generate an Application Password
+## Step 2: Generate an Application Password
 
 SproutOS uses WordPress application passwords for authentication. This is the same system WordPress core uses for REST API access.
 
@@ -58,7 +46,7 @@ SproutOS uses WordPress application passwords for authentication. This is the sa
 
 You can also create application passwords from **Users > Profile > Application Passwords** in the WordPress admin. The SproutOS Connect tab provides a shortcut.
 
-## Step 4: Configure Your AI Client
+## Step 3: Configure Your AI Client
 
 Connect your AI client to your WordPress site by adding the MCP server configuration. The exact setup depends on your client.
 
@@ -116,7 +104,7 @@ Connect your AI client to your WordPress site by adding the MCP server configura
   </Tab>
 </Tabs>
 
-## Step 5: Verify the Connection
+## Step 4: Verify the Connection
 
 After configuring your AI client, test the connection:
 
@@ -133,7 +121,7 @@ If the connection is working, the AI will use the `sprout/list-directory` tool a
   If the connection fails, check that your site uses HTTPS, your application password is correct, and Node.js 18+ is installed. See the [Troubleshooting guide](/wordpress-plugin/troubleshooting) for common issues.
 </Callout>
 
-## Step 6: Configure Abilities (Optional)
+## Step 5: Configure Abilities (Optional)
 
 By default, all SproutOS abilities are enabled. You can toggle individual tools from the admin dashboard.
 
