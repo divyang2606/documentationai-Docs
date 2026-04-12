@@ -1,6 +1,105 @@
 ---
-title: WordPress Plugin
-description: Coming soon — documentation for the SproutOS WordPress plugin.
+title: 'SproutOS WordPress Plugin — AI-Powered Site Management via MCP'
+description: >-
+  The SproutOS WordPress plugin connects AI agents to your WordPress site
+  through the Model Context Protocol (MCP). Manage files, themes, pages, and
+  code execution from any MCP-compatible AI client.
 ---
 
-This section is coming soon.
+The SproutOS WordPress plugin gives AI agents direct, programmatic control over your WordPress installation through the Model Context Protocol (MCP). Instead of copying code between an AI chat and your site manually, the plugin lets your AI client read files, write code, edit themes, create pages, and execute PHP — all within a sandboxed, permission-controlled environment. It runs on WordPress 6.5+ with PHP 8.0+.
+
+## What Problem Does It Solve
+
+Traditional AI-assisted WordPress development is a copy-paste workflow. You describe what you want in ChatGPT or Claude, copy the generated code, paste it into your editor, test it, then go back to the AI to report what happened. The AI has no direct access to your database, file system, theme files, or WordPress APIs.
+
+The SproutOS plugin eliminates this loop. It exposes your WordPress site as a set of structured tools that any MCP-compatible AI client can call directly. The AI reads your files, understands your site structure, makes changes, and verifies results — all in one conversation.
+
+## How It Works
+
+The plugin is built on three open standards:
+
+| Layer | What It Does |
+| --- | --- |
+| **Model Context Protocol (MCP)** | An open protocol that lets AI clients call tools on external systems through a standardized interface |
+| **WordPress Abilities API** | A WordPress core API (6.5+) that lets plugins register callable abilities with input/output schemas |
+| **MCP Adapter** | An official WordPress plugin that bridges the Abilities API to the MCP protocol over HTTP |
+
+SproutOS registers its tools as WordPress abilities. The MCP Adapter exposes them over HTTP. Your AI client connects via MCP and calls them like any other tool.
+
+## Abilities Overview
+
+SproutOS provides 20 tools organized into five modules:
+
+| Module | Abilities | What It Covers |
+| --- | --- | --- |
+| **Ops** | 8 tools | File read, write, edit, delete, directory listing, PHP execution, sandbox enable/disable |
+| **Theme** | 4 tools | List theme files, read theme file, update theme file, update stylesheet |
+| **WordPress** | 2 tools | Create page, update page |
+| **Bridge** | 3 tools | Discover available tools, dispatch any ability, inspect tool schemas |
+| **Filesystem** | 3 tools | Batch execute multiple operations, get/update MCP settings |
+
+<Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+  Full documentation of every tool with parameters, return values, and examples.
+</Card>
+
+## Who Is This For
+
+- **WordPress developers** building or maintaining sites who want AI assistance with direct site access
+- **Agencies** managing multiple WordPress sites and looking to automate repetitive tasks
+- **Theme developers** who want AI agents to read, modify, and test theme files directly
+- **Technical site administrators** comfortable with PHP, WordPress internals, and command-line tools
+
+<Callout kind="warning">
+  The SproutOS plugin is designed for development and staging environments only. Do not use it on production sites without understanding the security implications. Always keep backups.
+</Callout>
+
+## Admin Dashboard
+
+The plugin adds a **SproutOS** menu item in your WordPress admin with six tabs:
+
+| Tab | Purpose |
+| --- | --- |
+| **Connect** | Generate and manage application passwords for AI client authentication |
+| **AI Abilities** | Toggle individual tools on or off, enable safe mode |
+| **Sandbox** | Manage custom ability files in the sandbox directory |
+| **Activity** | View analytics — execution logs, session history, CSV export |
+| **Privacy** | Control data collection and IP anonymization settings |
+| **Settings** | Configure log retention, webhooks, and module toggles |
+
+## Frequently Asked Questions
+
+<Expandable title="What AI clients work with SproutOS?">
+  Any MCP-compatible client works. This includes Claude Desktop, Claude Code, Cursor, Windsurf, and any other tool that supports the Model Context Protocol.
+</Expandable>
+
+<Expandable title="Is this the same as Novamira?">
+  SproutOS and Novamira both use the MCP protocol and WordPress Abilities API. However, SproutOS has its own ability set, sandbox architecture, analytics dashboard, and bridge system for cross-plugin communication. They are separate plugins built by different teams.
+</Expandable>
+
+<Expandable title="Can I use this on a live production site?">
+  It is not recommended. The plugin grants AI agents access to your filesystem and database. Use it on development or staging environments and keep backups at all times.
+</Expandable>
+
+<Expandable title="Does the plugin work without the MCP Adapter?">
+  No. The MCP Adapter plugin is required to expose WordPress abilities over HTTP to AI clients. Install both the SproutOS plugin and the MCP Adapter.
+</Expandable>
+
+<Expandable title="What PHP version do I need?">
+  PHP 8.0 or higher. WordPress 6.5 or higher is also required for the Abilities API.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
+    Install the plugin, configure authentication, and connect your AI client.
+  </Card>
+
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Understand the sandbox, filesystem restrictions, and recommended setup.
+  </Card>
+
+  <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for all 20 tools across five modules.
+  </Card>
+</Columns>

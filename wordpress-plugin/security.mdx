@@ -1,0 +1,196 @@
+---
+title: 'Security & Best Practices — SproutOS WordPress Plugin'
+description: >-
+  Understand the SproutOS security model including authentication, sandbox
+  isolation, filesystem restrictions, crash recovery, and recommended setup for
+  safe AI-powered WordPress management.
+---
+
+The SproutOS plugin grants AI agents programmatic access to your WordPress site. This page explains what the security model does and does not guarantee, so you can make informed decisions about how and where to use it.
+
+<Callout kind="warning">
+  The SproutOS plugin is designed for development and staging environments only. Always keep backups.
+</Callout>
+
+## Security Model Overview
+
+SproutOS uses five layers of protection. Each layer has specific capabilities and specific limitations.
+
+| Layer | What It Does | What It Does Not Do |
+| --- | --- | --- |
+| **Authentication** | Requires WordPress application passwords over HTTPS. No anonymous access | Does not encrypt data at rest or control what happens after authentication |
+| **Permissions** | Requires `manage_options` capability (Administrator role). Non-admins cannot access any tools | Does not provide per-tool role granularity — it is all-or-nothing at the admin level |
+| **Sandbox** | PHP writes go to `wp-content/sproutos-mcp-sandbox/`. Non-PHP files can be written elsewhere | Does not prevent reading files outside the sandbox |
+| **Filesystem Restrictions** | Core directories (`wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`) are protected from deletion. Sensitive files (`wp-config.php`, `.htaccess`, `.env`) are blocked | Does not prevent all destructive operations — files outside protected paths can still be deleted |
+| **Crash Recovery** | Detects fatal errors caused by sandbox files and enables safe mode | Does not protect against logic errors, data corruption, or database-level issues |
+
+## Authentication
+
+SproutOS uses WordPress application passwords for authentication. This is the same system WordPress core provides for REST API access.
+
+- Every request must include a valid username and application password
+- HTTPS is required — WordPress rejects application password authentication over HTTP
+- Each AI client should use its own application password for auditability
+- Revoke a password from **SproutOS > Connect** to immediately cut off access
+
+<Callout kind="info">
+  Application passwords are separate from your WordPress login password. Revoking an application password does not affect your admin login.
+</Callout>
+
+## The Sandbox
+
+The sandbox is a dedicated directory at `wp-content/sproutos-mcp-sandbox/`. All PHP file writes are confined to this directory.
+
+### How It Works
+
+1. When the AI writes a PHP file, SproutOS saves it inside the sandbox directory
+2. The sandbox loader auto-includes these files on WordPress requests, so the code takes effect immediately
+3. You can enable or disable individual sandbox files using the `sprout/enable-file` and `sprout/disable-file` tools
+4. Disabled files get a `.disabled` extension — the file stays on disk but is not loaded
+
+### What the Sandbox Protects
+
+- Prevents AI-written PHP from overwriting core WordPress files, plugins, or themes directly
+- Keeps custom code isolated and easy to review, enable, or remove
+- PHP files are syntax-validated before saving — malformed code is rejected before it reaches the sandbox
+
+### What the Sandbox Does Not Protect
+
+- Non-PHP files (CSS, JS, JSON, HTML) can be written outside the sandbox
+- Reading files outside the sandbox is unrestricted
+- The sandbox does not prevent logic errors or harmful PHP code that passes syntax validation
+
+## Filesystem Restrictions
+
+SproutOS restricts file operations through path resolution, protected paths, and file type controls.
+
+### Protected Paths
+
+These paths cannot be deleted, even with the `recursive` flag:
+
+- `ABSPATH` (WordPress root)
+- `wp-admin/`
+- `wp-includes/`
+- `wp-content/plugins/`
+- `wp-content/themes/`
+- `wp-content/mu-plugins/`
+
+### Blocked Files
+
+These files cannot be read, written, or deleted:
+
+- `wp-config.php`
+- `.htaccess`
+- `.env`
+
+### Path Resolution
+
+All file paths go through `sprout_mcp_resolve_path()`, which:
+
+- Resolves relative paths against the WordPress root
+- Rejects symlinks to prevent directory traversal attacks
+- Validates that paths stay within allowed boundaries
+
+### File Type Controls
+
+- PHP files can only be written to the sandbox directory
+- Theme file operations use an extension whitelist (`sprout_mcp_is_supported_theme_extension()`)
+- Binary files are detected automatically and returned as base64
+
+## Crash Recovery
+
+If a sandbox file causes a fatal error, SproutOS detects it and activates safe mode.
+
+### How It Works
+
+1. On each request, WordPress loads sandbox files through the sandbox loader
+2. If a file causes a fatal PHP error, SproutOS catches it
+3. The problematic file is automatically disabled (`.disabled` extension)
+4. Safe mode activates, restricting tools to read-only operations until you review the issue
+
+### What to Do After a Crash
+
+1. Go to **SproutOS > Sandbox** in your WordPress admin
+2. Review the disabled file
+3. Fix the issue manually or ask your AI client to edit the file
+4. Re-enable the file using `sprout/enable-file` or the admin toggle
+
+## What SproutOS Can Do When Enabled
+
+When all abilities are enabled, an AI agent connected to SproutOS can:
+
+- **Execute PHP** with full access to the WordPress environment (`$wpdb`, `WP_Query`, all WordPress APIs)
+- **Read any allowed file** in your WordPress installation
+- **Write non-PHP files** anywhere within the WordPress directory
+- **Write PHP files** to the sandbox directory only
+- **Edit existing files** with exact string replacement
+- **Delete files and directories** outside protected paths
+- **Create and update WordPress pages** with sanitized HTML content
+- **Read and modify active theme files** (child and parent themes)
+- **Batch execute** up to 20 operations in a single request
+
+## Recommended Setup
+
+Follow these practices to minimize risk:
+
+### Use a Staging Site
+
+Never connect SproutOS to a production site. Use a local development environment (Local by Flywheel, DDEV, Laravel Valet) or a staging copy of your site.
+
+### Keep Backups
+
+Take a full backup before starting any AI-assisted session. Use a plugin like UpdraftPlus or your hosting provider's backup tool.
+
+### Use Separate Application Passwords
+
+Generate a unique application password for each AI client. This lets you revoke access for one client without affecting others, and makes the activity log easier to audit.
+
+### Toggle Abilities You Do Not Need
+
+If you only need the AI to read and modify theme files, disable the Ops module and WordPress module from **SproutOS > Settings**. Reduce the attack surface to only what you need.
+
+### Review the Activity Log
+
+Check **SproutOS > Activity** regularly. Every tool call is logged with the ability name, execution time, risk level, and session ID. Export logs as CSV for team review.
+
+### Enable Safe Mode for Read-Only Sessions
+
+If you want the AI to analyze your site without making changes, enable **Safe Mode** from **SproutOS > AI Abilities**. This restricts all tools to read-only operations.
+
+## Frequently Asked Questions
+
+<Expandable title="Can the AI access my database directly?">
+  Not directly through SQL. The `sprout/execute-php` tool runs PHP in the WordPress environment, which means the AI can use `$wpdb` and `WP_Query` to interact with the database through WordPress APIs. Direct SQL injection is not possible through the MCP interface.
+</Expandable>
+
+<Expandable title="Can I restrict the AI to specific directories?">
+  Not at the directory level. You can toggle entire ability modules on or off, and you can enable Safe Mode for read-only access. Filesystem restrictions protect core WordPress directories from deletion but do not provide custom path-based access control.
+</Expandable>
+
+<Expandable title="What happens if the AI writes bad PHP code?">
+  PHP files are syntax-validated before saving. If the code has a syntax error, the write is rejected. If the code has a logic error (valid PHP but does something harmful), the sandbox loader will include it. If it causes a fatal error, crash recovery disables the file automatically.
+</Expandable>
+
+<Expandable title="Is the activity log stored on my server?">
+  Yes. All analytics data is stored in a custom database table on your WordPress installation. You control retention from **SproutOS > Settings** and can export or delete logs at any time. IP anonymization is available from the Privacy tab.
+</Expandable>
+
+<Expandable title="Can I use SproutOS behind a firewall or VPN?">
+  Yes. The MCP transport runs from your local machine to your WordPress site. As long as your AI client can reach the site URL over HTTPS, SproutOS works behind any network configuration.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
+    Install the plugin and connect your first AI client.
+  </Card>
+
+  <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for every tool with parameters and examples.
+  </Card>
+
+  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
+    Fix common connection, permission, and sandbox issues.
+  </Card>
+</Columns>

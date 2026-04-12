@@ -116,6 +116,50 @@
                 "icon": "home"
               }
             ]
+          },
+          {
+            "group": "Setup",
+            "icon": "rocket",
+            "pages": [
+              {
+                "title": "Getting Started",
+                "path": "wordpress-plugin/getting-started",
+                "icon": "rocket"
+              }
+            ]
+          },
+          {
+            "group": "Security",
+            "icon": "shield",
+            "pages": [
+              {
+                "title": "Security & Best Practices",
+                "path": "wordpress-plugin/security",
+                "icon": "shield"
+              }
+            ]
+          },
+          {
+            "group": "Reference",
+            "icon": "list",
+            "pages": [
+              {
+                "title": "Abilities Reference",
+                "path": "wordpress-plugin/abilities",
+                "icon": "list"
+              }
+            ]
+          },
+          {
+            "group": "Support",
+            "icon": "alert-triangle",
+            "pages": [
+              {
+                "title": "Troubleshooting",
+                "path": "wordpress-plugin/troubleshooting",
+                "icon": "alert-triangle"
+              }
+            ]
           }
         ]
       },

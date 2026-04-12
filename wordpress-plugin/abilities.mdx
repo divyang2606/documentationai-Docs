@@ -1,0 +1,386 @@
+---
+title: 'Abilities Reference — All SproutOS MCP Tools'
+description: >-
+  Complete reference for all SproutOS WordPress plugin abilities. Covers file
+  operations, theme management, page creation, bridge tools, batch execution,
+  and module settings with parameters and usage details.
+---
+
+SproutOS exposes 20 tools to AI agents through the MCP protocol. Each tool is registered as a WordPress ability with a defined input schema, permission checks, and structured output. This page documents every ability organized by module.
+
+## Ops Module
+
+The Ops module provides core file system operations, PHP execution, and sandbox control. It contains 8 tools.
+
+### sprout/read-file
+
+Reads a file from the WordPress filesystem. Supports partial reads by byte range or line range. Binary files are automatically detected and returned as base64.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `offset` | integer | No | Byte offset to start reading from |
+| `limit` | integer | No | Maximum bytes to read (default: 1 MB) |
+| `start_line` | integer | No | First line to return |
+| `end_line` | integer | No | Last line to return |
+| `head` | integer | No | Return only the first N lines |
+| `tail` | integer | No | Return only the last N lines |
+
+**Returns:** File content, `line_count`, `size`, `mime_type`, `permissions`, `last_modified`.
+
+<Callout kind="note">
+  Sensitive files (`wp-config.php`, `.htaccess`, `.env`) are blocked. Symlinks are rejected to prevent directory traversal.
+</Callout>
+
+---
+
+### sprout/write-file
+
+Writes content to a file. Supports UTF-8 and base64 encoding, overwrite and append modes, automatic parent directory creation, optional backup, and dry-run preview.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `content` | string | Yes | Content to write |
+| `encoding` | string | No | `utf-8` (default) or `base64` |
+| `mode` | string | No | `overwrite` (default) or `append` |
+| `create_directories` | boolean | No | Auto-create parent directories (default: true) |
+| `backup` | boolean | No | Create a `.bak` backup before overwriting |
+| `dry_run` | boolean | No | Preview the operation without writing |
+
+**Returns:** File path, bytes written, backup path (if created).
+
+<Callout kind="info">
+  PHP files are always written to the sandbox directory (`wp-content/sproutos-mcp-sandbox/`). PHP syntax is validated before saving — malformed code is rejected.
+</Callout>
+
+---
+
+### sprout/edit-file
+
+Performs exact string replacement in an existing file. Supports replace-all, Nth occurrence targeting, and context lines for verification.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `old_string` | string | Yes | The exact string to find |
+| `new_string` | string | Yes | The replacement string |
+| `replace_all` | boolean | No | Replace all occurrences (default: false) |
+| `occurrence` | integer | No | Replace only the Nth occurrence |
+| `context_lines` | integer | No | Lines of context to return around the edit (0–20) |
+
+**Returns:** Updated content with context lines, match count, replacements made.
+
+<Callout kind="note">
+  If multiple matches exist and neither `replace_all` nor `occurrence` is set, the tool returns an error asking you to disambiguate. PHP files are syntax-validated after editing.
+</Callout>
+
+---
+
+### sprout/delete-file
+
+Deletes a file or directory. Requires the `recursive` flag for non-empty directories. Supports dry-run. Idempotent — deleting a missing path succeeds with `deleted: false`.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File or directory path relative to WordPress root |
+| `recursive` | boolean | No | Required for non-empty directories |
+| `dry_run` | boolean | No | Preview the operation without deleting |
+
+**Returns:** `deleted` (boolean), path, type (file or directory).
+
+<Callout kind="warning">
+  Protected paths (`wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`, `wp-content/mu-plugins`) cannot be deleted. PHP files outside the sandbox cannot be deleted.
+</Callout>
+
+---
+
+### sprout/list-directory
+
+Lists files and directories with glob filtering, recursive traversal, hidden file control, and sorting.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | No | Directory path (default: WordPress root) |
+| `pattern` | string | No | Glob pattern to filter results (e.g., `*.php`) |
+| `recursive` | boolean | No | Traverse subdirectories |
+| `max_depth` | integer | No | Maximum recursion depth, 1–10 (default: 3) |
+| `include_hidden` | boolean | No | Include hidden files (default: false) |
+| `sort_by` | string | No | Sort by `name`, `size`, or `modified` |
+| `limit` | integer | No | Maximum entries to return, 1–5000 (default: 500) |
+
+**Returns:** Array of entries with file metadata, plus summary stats (`total_files`, `total_dirs`, `total_size`).
+
+---
+
+### sprout/execute-php
+
+Executes PHP code inside the live WordPress environment with full access to all WordPress APIs (`$wpdb`, `WP_Query`, hooks, options, etc.).
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | Yes | PHP code to execute (without `<?php` tags) |
+| `timeout` | integer | No | Maximum execution time in seconds, 1–120 |
+| `capture_queries` | boolean | No | Include database queries in the response |
+
+**Returns:** `return_value`, `output`, `errors`, `execution_time_ms`, memory usage, query details (if captured).
+
+<Callout kind="warning">
+  This tool executes arbitrary PHP with full WordPress privileges. Use it only on development and staging sites. In the WordPress.org-safe build, this ability is disabled.
+</Callout>
+
+---
+
+### sprout/enable-file
+
+Restores a previously disabled sandbox file by removing the `.disabled` extension. The sandbox loader will include the file on subsequent requests.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | Path to the disabled file in the sandbox |
+| `dry_run` | boolean | No | Preview without enabling |
+
+**Returns:** File path, enabled status. Idempotent — enabling an already-enabled file succeeds.
+
+---
+
+### sprout/disable-file
+
+Pauses a sandbox file by appending `.disabled` to its extension. The file remains on disk but is not loaded by the sandbox loader. Non-destructive.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | Path to the file in the sandbox |
+| `dry_run` | boolean | No | Preview without disabling |
+
+**Returns:** File path, disabled status. Idempotent — disabling an already-disabled file succeeds.
+
+---
+
+## WordPress Module
+
+The WordPress module provides page creation and update tools. It contains 2 tools.
+
+### sprout/create-page
+
+Creates a new WordPress page with a title, optional HTML content, and status.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | string | Yes | Page title |
+| `content` | string | No | Page content (HTML allowed, sanitized via `wp_kses_post()`) |
+| `status` | string | No | `draft` (default) or `publish` |
+
+**Returns:** `page_id`, `edit_url`, `permalink`.
+
+<Callout kind="info">
+  HTML content is sanitized through `wp_kses_post()`, which allows safe HTML tags and strips dangerous markup like `<script>` and event handlers.
+</Callout>
+
+---
+
+### sprout/update-page
+
+Updates an existing WordPress page by ID. At least one optional field is required.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `page_id` | integer | Yes | The ID of the page to update |
+| `title` | string | No | New page title |
+| `content` | string | No | New page content (sanitized HTML) |
+| `status` | string | No | `draft`, `publish`, or `private` |
+
+**Returns:** `page_id`, `edit_url`, `permalink`, `updated_fields` array.
+
+---
+
+## Theme Module
+
+The Theme module provides read and write access to active theme files. It contains 4 tools.
+
+### sprout/list-theme-files
+
+Lists editable files from the active child or parent theme.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `theme_scope` | string | No | `child` (default) or `parent` |
+| `subdir` | string | No | Subdirectory within the theme to list |
+| `max_files` | integer | No | Maximum files to return (default: 200, max: 500) |
+
+**Returns:** Array of file paths with `theme_root`.
+
+---
+
+### sprout/read-theme-file
+
+Reads a file from the active theme. Only files with supported extensions can be read.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `theme_scope` | string | No | `child` (default) or `parent` |
+| `relative_path` | string | Yes | Path relative to the theme root (e.g., `style.css`) |
+
+**Returns:** File content, path, theme scope.
+
+---
+
+### sprout/update-theme-file
+
+Creates or updates a file in the active theme. Supports replace, append, and prepend modes.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `theme_scope` | string | No | `child` (default) or `parent` |
+| `relative_path` | string | Yes | Path relative to the theme root |
+| `content` | string | Yes | Content to write |
+| `mode` | string | No | `replace` (default), `append`, or `prepend` |
+| `create_if_missing` | boolean | No | Create the file if it does not exist (default: true) |
+| `validate_php` | boolean | No | Validate PHP syntax before saving (default: false) |
+
+**Returns:** File path, bytes written, mode used.
+
+<Callout kind="note">
+  Only files with supported extensions can be written. The extension whitelist prevents writing arbitrary file types into theme directories.
+</Callout>
+
+---
+
+### sprout/update-theme-stylesheet
+
+A convenience wrapper for modifying the active theme's `style.css` file. Defaults to append mode.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `css` | string | Yes | CSS content to add or replace |
+| `theme_scope` | string | No | `child` (default) or `parent` |
+| `mode` | string | No | `append` (default), `prepend`, or `replace` |
+
+**Returns:** Same as `sprout/update-theme-file`.
+
+---
+
+## Bridge Module
+
+The Bridge module lets AI agents discover, inspect, and dispatch any registered WordPress ability. It contains 3 tools.
+
+### sprout-bridge/discover-tools
+
+Returns a catalog of all publicly exposed WordPress abilities with metadata. Takes no input parameters.
+
+**Returns:** Array of abilities, each with: `name`, `label`, `description`, `category`, `readonly`, `destructive`, `idempotent`, `tags`.
+
+<Callout kind="info">
+  Only abilities marked as `public: true` appear in the discovery response. The bridge inspector itself is not discoverable through this tool.
+</Callout>
+
+---
+
+### sprout-bridge/dispatch-tool
+
+Executes any registered ability by name. This is a meta-tool that lets the AI call abilities dynamically.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `ability_name` | string | Yes | The registered name of the ability to call |
+| `parameters` | object | Yes | Input parameters for the ability |
+
+**Returns:** Standardized envelope with `ok`, `request_id`, `ability`, `duration_ms`, `result` or `error`, and telemetry data.
+
+<Callout kind="note">
+  The dispatch tool enforces all permission checks: the user must have the `read` capability, the ability must exist and be public, and per-ability `check_permissions()` is called before execution.
+</Callout>
+
+---
+
+### sprout-bridge/inspect-tool
+
+Returns the full specification of a single ability including input/output schemas and capability flags.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `ability_name` | string | Yes | The registered name of the ability to inspect |
+
+**Returns:** Ability name, label, description, input schema, output schema, `public`, `readonly`, `destructive`, `idempotent` flags.
+
+---
+
+## Filesystem Module
+
+The Filesystem module provides batch operations and module configuration. It contains 3 tools.
+
+### sprout/batch-execute
+
+Executes multiple abilities in a single request. Useful for performing several file operations without round-trip overhead.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `operations` | array | Yes | Array of operations (max 20), each with `ability_name` and optional `parameters` |
+| `stop_on_error` | boolean | No | Stop execution on the first error (default: false) |
+
+**Returns:** `success`, `total`, `succeeded`, `failed` counts, plus per-operation results with individual timing.
+
+<Callout kind="info">
+  Each operation in the batch goes through its own permission check. A failed permission check on one operation does not block the others unless `stop_on_error` is true.
+</Callout>
+
+---
+
+### sprout/get-mcp-settings
+
+Returns the current SproutOS module configuration, workspace status, and ability counts. Takes no input parameters.
+
+**Returns:** Module toggle states (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks), sandbox status, and per-module ability counts.
+
+---
+
+### sprout/update-mcp-settings
+
+Updates module toggles and sandbox settings. Supports partial updates — only include the fields you want to change.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `wordpress` | boolean | No | Enable or disable the WordPress module |
+| `elementor` | boolean | No | Enable or disable the Elementor module |
+| `the_plus_addons` | boolean | No | Enable or disable The Plus Addons module |
+| `nexter_extension` | boolean | No | Enable or disable the Nexter Extension module |
+| `nexter_blocks` | boolean | No | Enable or disable the Nexter Blocks module |
+| `sandbox_enabled` | boolean | No | Enable or disable the sandbox |
+
+**Returns:** Updated settings object.
+
+---
+
+## Frequently Asked Questions
+
+<Expandable title="How do I know which tools are available on my site?">
+  Use `sprout-bridge/discover-tools` to get a list of all enabled, publicly exposed abilities. This accounts for any modules you have toggled off.
+</Expandable>
+
+<Expandable title="Can I call tools that belong to other plugins through the bridge?">
+  Yes. The `sprout-bridge/dispatch-tool` can call any registered WordPress ability, not just SproutOS abilities. If another plugin registers abilities through the WordPress Abilities API, the bridge can discover and dispatch them.
+</Expandable>
+
+<Expandable title="What is the difference between sprout/write-file and sprout/edit-file?">
+  `sprout/write-file` creates or replaces an entire file. `sprout/edit-file` performs a targeted string replacement within an existing file, leaving the rest of the content unchanged.
+</Expandable>
+
+<Expandable title="Is there a rate limit on batch-execute?">
+  The batch is limited to 20 operations per request. There is no time-based rate limit, but each operation runs sequentially and has its own permission check.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
+    Install the plugin and connect your AI client.
+  </Card>
+
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Understand the sandbox, filesystem restrictions, and crash recovery.
+  </Card>
+
+  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
+    Fix connection issues, permission errors, and common problems.
+  </Card>
+</Columns>

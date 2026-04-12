@@ -1,0 +1,195 @@
+---
+title: 'Troubleshooting — SproutOS WordPress Plugin'
+description: >-
+  Fix common SproutOS plugin issues including connection failures, authentication
+  errors, permission problems, sandbox conflicts, and tool execution errors.
+---
+
+This page covers the most common issues you may encounter when using the SproutOS WordPress plugin and how to resolve them. If your issue is not listed here, check the activity log at **SproutOS > Activity** for detailed error messages.
+
+## Connection Issues
+
+### AI client cannot connect to the site
+
+**Symptoms:** The AI client shows "connection refused", "timeout", or "server not found" when trying to use SproutOS tools.
+
+**Fixes:**
+
+1. **Verify your site URL uses HTTPS.** WordPress application passwords require HTTPS. If your local site uses HTTP, set up a local SSL certificate using mkcert, Laravel Valet, or Local by Flywheel
+2. **Check that Node.js 18+ is installed** on the machine running the AI client. Run `node --version` in your terminal to verify
+3. **Confirm the MCP Adapter plugin is active.** Go to **Plugins** in your WordPress admin and check that MCP Adapter is activated
+4. **Confirm the SproutOS plugin is active.** Check that SproutOS also appears as activated in your plugins list
+5. **Test the site URL directly.** Open your site URL in a browser and confirm the WordPress site loads
+
+<Callout kind="tip">
+  If you are using a local development environment behind a firewall, make sure your AI client can reach the site URL. Some environments bind to `localhost` only and are not accessible from other processes.
+</Callout>
+
+### Connection works but no tools appear
+
+**Symptoms:** The AI client connects but does not list any SproutOS tools.
+
+**Fixes:**
+
+1. **Check that abilities are enabled.** Go to **SproutOS > AI Abilities** and confirm that tools are toggled on
+2. **Check that modules are enabled.** Go to **SproutOS > Settings** and confirm the modules you need (WordPress, Theme, Filesystem) are toggled on
+3. **Check Safe Mode.** If Safe Mode is enabled, only read-only tools are exposed. Disable Safe Mode if you need write access
+4. **Restart your AI client.** Some clients cache the tool list at startup. Restart the client to refresh
+
+---
+
+## Authentication Errors
+
+### "Application passwords are not available"
+
+**Cause:** WordPress application passwords are disabled or not supported.
+
+**Fixes:**
+
+1. **Ensure HTTPS is active.** WordPress disables application passwords over HTTP
+2. **Check for plugins that disable application passwords.** Some security plugins (Wordfence, iThemes Security) can disable this feature. Check their settings
+3. **Verify WordPress version.** Application passwords require WordPress 5.6+. SproutOS requires WordPress 6.5+
+
+### "401 Unauthorized" on every request
+
+**Cause:** Invalid username or application password.
+
+**Fixes:**
+
+1. **Re-check your username.** Use your WordPress login username, not your email address or display name
+2. **Regenerate the application password.** Go to **SproutOS > Connect**, revoke the old password, and generate a new one
+3. **Check for extra spaces.** Application passwords are displayed with spaces for readability, but some clients require them without spaces. Try both formats
+
+---
+
+## Permission Errors
+
+### "You do not have permission to perform this action"
+
+**Cause:** The authenticated user does not have the `manage_options` capability.
+
+**Fixes:**
+
+1. **Check your user role.** SproutOS requires an Administrator role. Go to **Users** in your WordPress admin and verify your role
+2. **Check for role management plugins.** Plugins like User Role Editor or Members can modify capabilities. Confirm that your role still has `manage_options`
+
+### A specific tool returns a permission error
+
+**Cause:** The tool may be disabled or the ability has its own permission check.
+
+**Fixes:**
+
+1. **Check the tool toggle.** Go to **SproutOS > AI Abilities** and confirm the specific tool is enabled
+2. **Check the module toggle.** Go to **SproutOS > Settings** and confirm the parent module is enabled
+3. **Check Safe Mode.** Write operations are blocked in Safe Mode
+
+---
+
+## Sandbox Issues
+
+### PHP file writes are rejected
+
+**Cause:** PHP files can only be written to the sandbox directory.
+
+**Fix:** This is by design. All PHP writes go to `wp-content/sproutos-mcp-sandbox/`. If you need to modify PHP files outside the sandbox (theme files, plugin files), use the Theme module tools (`sprout/update-theme-file`) or edit the files manually.
+
+### Sandbox file causes a fatal error
+
+**Symptoms:** Your site shows a white screen or PHP fatal error after a sandbox file is written.
+
+**Fixes:**
+
+1. **Check if crash recovery activated.** Go to **SproutOS > Sandbox** in your admin. The problematic file should be automatically disabled (`.disabled` extension)
+2. **If the admin is inaccessible**, rename or delete the file directly via FTP or your file manager at `wp-content/sproutos-mcp-sandbox/`
+3. **Review the file** before re-enabling it. Ask your AI client to read and fix the file using `sprout/read-file` and `sprout/edit-file`
+
+### Sandbox files are not taking effect
+
+**Cause:** The sandbox loader may not be including the files.
+
+**Fixes:**
+
+1. **Check that the file is not disabled.** Files with `.disabled` extensions are skipped
+2. **Check that the sandbox is enabled.** Go to **SproutOS > Settings** and confirm sandbox is toggled on
+3. **Clear any object cache.** If you use Redis, Memcached, or another object cache, flush it
+
+---
+
+## Tool Execution Errors
+
+### sprout/execute-php returns "disabled"
+
+**Cause:** PHP execution is disabled in the WordPress.org-safe build of SproutOS.
+
+**Fix:** The `sprout/execute-php` ability is intentionally disabled in builds distributed through WordPress.org. If you need PHP execution, use the version from the [GitHub repository](https://github.com/posimyth/sprout-os).
+
+### sprout/edit-file returns "multiple matches found"
+
+**Cause:** The `old_string` you provided appears more than once in the file.
+
+**Fix:** Either set `replace_all: true` to replace all occurrences, or use the `occurrence` parameter to target a specific match (e.g., `occurrence: 2` for the second match). You can also provide a longer, more unique `old_string` that only matches once.
+
+### sprout/delete-file returns "protected path"
+
+**Cause:** You are trying to delete a protected WordPress directory.
+
+**Fix:** The following paths cannot be deleted: `wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`, `wp-content/mu-plugins`, and the WordPress root. This is a safety feature that cannot be overridden.
+
+### Batch execute fails partway through
+
+**Cause:** One operation in the batch failed.
+
+**Fix:** Check the per-operation results in the response. By default, `stop_on_error` is false, so remaining operations still execute. Set `stop_on_error: true` if you want the batch to halt on the first failure.
+
+---
+
+## Activity and Logging
+
+### Activity log is empty
+
+**Cause:** Analytics may not be initialized.
+
+**Fixes:**
+
+1. **Deactivate and reactivate the plugin.** This re-creates the analytics database table
+2. **Check that the database table exists.** The table name is `{prefix}sprout_mcp_analytics`. You can verify using phpMyAdmin or WP-CLI: `wp db query "SHOW TABLES LIKE '%sprout_mcp_analytics%'"`
+
+### Activity log is too large
+
+**Fix:** Adjust the retention period from **SproutOS > Settings**. The daily cleanup cron job removes entries older than the configured retention period. You can also export logs as CSV and then clear the table.
+
+---
+
+## Frequently Asked Questions
+
+<Expandable title="How do I reset SproutOS to its default state?">
+  Deactivate the plugin, delete the `wp-content/sproutos-mcp-sandbox/` directory, and reactivate. This clears all sandbox files and re-creates the analytics table. Your application passwords remain intact.
+</Expandable>
+
+<Expandable title="Can I use SproutOS with multisite?">
+  SproutOS registers abilities at the site level. On a multisite installation, activate it on individual sites rather than network-activating. Each site has its own sandbox, settings, and activity log.
+</Expandable>
+
+<Expandable title="My hosting provider blocks eval(). Can I still use SproutOS?">
+  Yes, but the `sprout/execute-php` ability will not work. All other abilities (file operations, theme management, page creation, bridge tools) function normally without `eval()`.
+</Expandable>
+
+<Expandable title="How do I uninstall SproutOS completely?">
+  Deactivate and delete the plugin from **Plugins**. The uninstaller removes the sandbox directory, analytics table, and scheduled cron jobs. Application passwords you created remain in WordPress and should be revoked manually from **Users > Profile**.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
+    Install the plugin and connect your AI client.
+  </Card>
+
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Understand the sandbox, filesystem restrictions, and crash recovery.
+  </Card>
+
+  <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for every tool with parameters and examples.
+  </Card>
+</Columns>
