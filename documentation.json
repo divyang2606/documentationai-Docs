@@ -171,39 +171,6 @@
             "title": "Help Center",
             "path": "help-center",
             "icon": "home"
-          },
-          {
-            "group": "FAQs",
-            "icon": "help-circle",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "How Do AI Credits Work?",
-                "path": "help-center/faq/ai-credits"
-              }
-            ]
-          },
-          {
-            "group": "Troubleshooting",
-            "icon": "alert-triangle",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "Cannot Login to Dashboard",
-                "path": "help-center/troubleshooting/cannot-login-dashboard"
-              }
-            ]
-          },
-          {
-            "group": "Guides",
-            "icon": "book-open",
-            "expandable": false,
-            "pages": [
-              {
-                "title": "Launch Your First Project",
-                "path": "help-center/guides/launch-your-first-project"
-              }
-            ]
           }
         ]
       }
