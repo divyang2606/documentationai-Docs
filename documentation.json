@@ -38,11 +38,6 @@
                 "title": "Getting Started",
                 "path": "getting-started",
                 "icon": "rocket"
-              },
-              {
-                "title": "Quickstart",
-                "path": "quickstart",
-                "icon": "zap"
               }
             ]
           },
@@ -209,17 +204,6 @@
                 "path": "help-center/guides/launch-your-first-project"
               }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Changelog",
-        "icon": "clock",
-        "pages": [
-          {
-            "title": "Release History",
-            "path": "changelog",
-            "icon": "history"
           }
         ]
       }
