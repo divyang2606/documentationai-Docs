@@ -1,28 +1,69 @@
 ---
-title: Can't Login to Dashboard
-description: Resetting access in SproutOS.
+title: Can't Log In to the SproutOS Dashboard
+description: Fix login issues including incorrect credentials, locked accounts, Google sign-in problems, and email verification errors in SproutOS.
 ---
 
-## Symptoms
+If you cannot log in to the SproutOS Dashboard, the issue is usually an incorrect password, an unverified email, or a Google OAuth mismatch. This guide walks you through every common login problem and how to resolve it.
 
-- Login form returns "Invalid credentials"
-- Reset password not working
+## Common Symptoms
 
-## Causes
+- Login form shows "Invalid credentials"
+- Password reset email never arrives
+- Google sign-in button does nothing or returns an error
+- Dashboard redirects back to the login page after signing in
+- "Email not verified" message appears
 
-- Incorrect email or password
-- Account locked after failed logins
-
-## Solution
+## Fix: Incorrect Email or Password
 
 <Steps>
-  <Step title="Verify email/password">
-    Make sure your credentials are correct and retry.
+  <Step title="Double-check your email address" icon="mail">
+    Make sure you are using the exact email you registered with. SproutOS treats emails as case-sensitive during lookup.
   </Step>
-  <Step title="Reset password">
-    Use "Forgot Password" to get a reset link in your inbox.
+  <Step title="Reset your password" icon="key">
+    Click **Forgot Password** on the login page. Enter your email and check your inbox (and spam folder) for the reset link.
   </Step>
-  <Step title="Contact Support">
-    If still locked out, email support@posimyth.com for help.
+  <Step title="Set a new password and log in" icon="check">
+    Follow the link, create a new password, and try logging in again.
   </Step>
 </Steps>
+
+<Callout kind="warning">
+  If you signed up with Google, you do not have a password set. Use the **Sign in with Google** button instead.
+</Callout>
+
+## Fix: Google Sign-In Not Working
+
+- Make sure you are clicking **Sign in with Google**, not the email/password form.
+- Use the same Google account you originally signed up with.
+- Clear your browser cookies for the SproutOS domain and try again.
+- If you see a popup blocker warning, allow popups for the SproutOS Dashboard.
+
+## Fix: Email Not Verified
+
+SproutOS requires email verification before you can access your workspace. If you see a verification error:
+
+1. Check your inbox (and spam/junk folder) for the verification email
+2. Click the verification link in the email
+3. Return to the login page and sign in again
+
+<Callout kind="tip">
+  If the verification email expired, log in and SproutOS prompts you to resend a new one.
+</Callout>
+
+## Fix: Account Locked After Failed Attempts
+
+Multiple incorrect login attempts can temporarily lock your account. Wait 15 minutes, then try again with the correct credentials. If you are still locked out, reset your password.
+
+## Still Can't Log In?
+
+If none of the above solutions work, contact support at **support@posimyth.com** with:
+
+- The email address you registered with
+- Whether you signed up with email/password or Google
+- A screenshot of the error message you see
+
+## Related Docs
+
+- [Getting Started with SproutOS](/getting-started)
+- [How Do AI Credits Work?](/help-center/faq/ai-credits)
+- [Launch Your First Project](/help-center/guides/launch-your-first-project)
