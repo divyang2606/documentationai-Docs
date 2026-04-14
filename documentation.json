@@ -59,6 +59,11 @@
                 "title": "Design Editor",
                 "path": "design-editor",
                 "icon": "palette"
+              },
+              {
+                "title": "Export",
+                "path": "export",
+                "icon": "download"
               }
             ]
           }
