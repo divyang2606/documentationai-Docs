@@ -61,22 +61,6 @@
                 "icon": "palette"
               }
             ]
-          },
-          {
-            "group": "Core Concepts",
-            "icon": "layers",
-            "pages": [
-              {
-                "title": "Concepts",
-                "path": "concepts",
-                "icon": "file-text"
-              },
-              {
-                "title": "Features",
-                "path": "features",
-                "icon": "star"
-              }
-            ]
           }
         ]
       },
