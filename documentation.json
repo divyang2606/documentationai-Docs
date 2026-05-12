@@ -95,7 +95,7 @@
             "icon": "layout",
             "pages": [
               {
-                "title": "WordPress Plugin",
+                "title": "WordPress MCP Plugin",
                 "path": "wordpress-plugin",
                 "icon": "home"
               },
