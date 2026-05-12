@@ -1,170 +1,173 @@
 ---
-title: 'Getting Started: Install and Connect the SproutOS Plugin'
+title: 'Getting Started'
 description: >-
-  Install the SproutOS WordPress plugin, configure authentication with
-  application passwords, and connect your AI client via MCP in under 10 minutes.
+  Install the SproutOS WordPress plugin, generate an application password, and connect your AI client via MCP in minutes.
 ---
 
-The SproutOS WordPress plugin connects your site to AI agents through MCP. This guide walks you through installation, authentication setup, and connecting your first AI client. You need a WordPress 6.5+ site, PHP 8.0+, and an MCP-compatible AI client such as Claude Desktop or Cursor.
+The SproutOS plugin connects your WordPress site to AI agents through MCP (Model Context Protocol - the open standard that lets AI clients call tools on external systems). This guide walks you through installation and connecting your first AI client.
+
+{/* IMAGE: "Sprout MCP: ON" admin bar indicator */}
 
 ## Requirements
 
-Before you start, make sure your environment meets these requirements:
-
-| Requirement | Minimum Version |
+| Requirement | Value |
 | --- | --- |
-| **WordPress** | 6.5 or higher |
+| **WordPress** | 6.9 or higher |
 | **PHP** | 8.0 or higher |
-| **Node.js** | 18 or higher (for the MCP transport layer) |
-| **HTTPS** | Required for application password authentication |
+| **Node.js** | 18 or higher (on your local machine, not the server) |
+| **HTTPS** | Required for HTTP transport |
 | **AI Client** | Any MCP-compatible client (Claude Desktop, Claude Code, Cursor, Windsurf) |
 
-<Callout kind="warning">
-  Use a development or staging site only. Do not install this plugin on a live production site without understanding the security implications. Always keep backups.
-</Callout>
-
-## Step 1: Install the SproutOS Plugin
-
-1. Download the SproutOS plugin from the [GitHub repository](https://github.com/posimyth/sprout-os)
-2. Go to **Plugins > Add New > Upload Plugin** in your WordPress admin
-3. Upload the ZIP file and click **Install Now**
-4. Click **Activate**
-
-After activation, a new **SproutOS** menu item appears in the WordPress admin sidebar.
-
-## Step 2: Generate an Application Password
-
-SproutOS uses WordPress application passwords for authentication. This is the same system WordPress core uses for REST API access.
-
-1. Go to **SproutOS > Connect** in your WordPress admin
-2. Click **Generate New Password**
-3. Copy the generated password. You will not see it again
-
 <Callout kind="tip">
-  Store your application password in a secure location. If you lose it, you can revoke it and generate a new one from the same screen.
+  Start on a development or staging site while you learn the tools. Many agencies run SproutOS on live sites - the sandbox, Safe Mode, and Crash Guard are designed for that. When you're ready to go live, keep a backup in place.
 </Callout>
 
-You can also create application passwords from **Users > Profile > Application Passwords** in the WordPress admin. The SproutOS Connect tab provides a shortcut.
+## Installation
 
-## Step 3: Configure Your AI Client
+<Steps>
+  <Step title="Install the plugin">
+    Download the SproutOS plugin from [GitHub](https://github.com/posimyth/sprout-os). In your WordPress admin, go to **Plugins > Add New > Upload Plugin**, upload the ZIP, and activate it.
 
-Connect your AI client to your WordPress site by adding the MCP server configuration. The exact setup depends on your client.
+    A new **SproutOS** menu appears in your admin sidebar after activation.
+  </Step>
 
-<Tabs>
-  <Tab title="Claude Desktop">
-    Open your Claude Desktop configuration file:
+  <Step title="Confirm AI Abilities are active">
+    AI Abilities are enabled by default when the plugin activates. Check your WordPress admin bar - it should show **Sprout MCP: ON**.
 
-    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+    If it shows **Sprout MCP: OFF**, go to **SproutOS > AI Abilities** and toggle them on.
 
-    Add the following to the `mcpServers` section:
+    {/* IMAGE: "Sprout MCP: ON" in WordPress admin bar */}
+  </Step>
 
-    ```json
-    {
-      "mcpServers": {
-        "wordpress": {
-          "command": "npx",
-          "args": [
-            "-y",
-            "@anthropic-ai/wp-mcp-server@latest",
-            "--wp-url=https://your-site.com",
-            "--wp-username=your-username",
-            "--wp-password=your-application-password"
-          ]
+  <Step title="Generate an application password">
+    Go to **SproutOS > MCP Connect** and click **Generate New Password**. Copy the password immediately - you won't see it again.
+
+    This is separate from your WordPress login password. It's the token your AI client uses to authenticate with your site.
+
+    {/* IMAGE: MCP Connect tab showing password generation */}
+  </Step>
+
+  <Step title="Connect your AI client">
+    Add SproutOS as an MCP server in your AI client. Choose your transport based on how you're connecting:
+
+    <Callout kind="info">
+      **STDIO** is for local WordPress sites accessed via WP-CLI. **HTTP** is for remote or production sites accessed over the network.
+    </Callout>
+
+    <Tabs>
+      <Tab title="STDIO (local sites)">
+        Use STDIO when your WordPress site is running locally and you have WP-CLI installed. Add this to your AI client's MCP configuration:
+
+        ```json
+        {
+          "mcpServers": {
+            "wordpress": {
+              "command": "wp",
+              "args": [
+                "--path=/path/to/your/wordpress",
+                "mcp-adapter",
+                "serve",
+                "--server=mcp-adapter-default-server",
+                "--user=admin"
+              ]
+            }
+          }
         }
-      }
-    }
-    ```
+        ```
 
-    Replace `your-site.com`, `your-username`, and `your-application-password` with your actual values.
-  </Tab>
+        Replace `/path/to/your/wordpress` with the actual path to your WordPress installation.
+      </Tab>
 
-  <Tab title="Claude Code">
-    Run the following command in your terminal:
+      <Tab title="HTTP (remote sites)">
+        Use HTTP for remote or production sites. Your site must use HTTPS. Add this to your AI client's MCP configuration:
+
+        ```json
+        {
+          "mcpServers": {
+            "wordpress-remote": {
+              "command": "npx",
+              "args": ["-y", "@automattic/mcp-wordpress-remote@latest"],
+              "env": {
+                "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
+                "WP_API_USERNAME": "your-username",
+                "WP_API_PASSWORD": "your-application-password"
+              }
+            }
+          }
+        }
+        ```
+
+        Replace the values with your site URL, WordPress username, and the application password from the previous step.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Verify the connection">
+    Test the connection using WP-CLI:
 
     ```bash
-    claude mcp add wordpress \
-      -- npx -y @anthropic-ai/wp-mcp-server@latest \
-      --wp-url=https://your-site.com \
-      --wp-username=your-username \
-      --wp-password=your-application-password
+    echo '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | \
+      wp mcp-adapter serve --user=admin --server=mcp-adapter-default-server
     ```
 
-    Replace the placeholder values with your actual site URL, username, and application password.
-  </Tab>
+    Or list all registered MCP servers:
 
-  <Tab title="Cursor">
-    Open **Cursor Settings > MCP** and add a new server with these settings:
+    ```bash
+    wp mcp-adapter list
+    ```
 
-    - **Name**: `wordpress`
-    - **Command**: `npx`
-    - **Args**: `-y @anthropic-ai/wp-mcp-server@latest --wp-url=https://your-site.com --wp-username=your-username --wp-password=your-application-password`
+    You can also open your AI client and ask it to list your WordPress root directory files. If connected, the AI will use `sprout/list-directory` and return the listing.
 
-    Replace the placeholder values with your actual credentials.
-  </Tab>
-</Tabs>
+    If it doesn't connect, check the [Troubleshooting guide](/wordpress-plugin/troubleshooting) for common issues.
+  </Step>
 
-## Step 4: Verify the Connection
+  <Step title="Choose a Capability Profile">
+    A Capability Profile is a preset that controls how many of SproutOS's 175+ abilities are sent to your AI client at the start of each session. Fewer abilities upfront means fewer tokens used.
 
-After configuring your AI client, test the connection:
+    The default is **Minimal** - a good starting point for most workflows. You can change it anytime from **SproutOS > AI Abilities**.
 
-1. Open your AI client and start a new conversation
-2. Ask the AI to list your site files:
-
-```
-List the files in my WordPress root directory.
-```
-
-If the connection is working, the AI will use the `sprout/list-directory` tool and return a listing of your WordPress files.
-
-<Callout kind="note">
-  If the connection fails, check that your site uses HTTPS, your application password is correct, and Node.js 18+ is installed. See the [Troubleshooting guide](/wordpress-plugin/troubleshooting) for common issues.
-</Callout>
-
-## Step 5: Configure Abilities (Optional)
-
-By default, all SproutOS abilities are enabled. You can toggle individual tools from the admin dashboard.
-
-1. Go to **SproutOS > AI Abilities** in your WordPress admin
-2. Toggle individual abilities on or off
-3. Enable **Safe Mode** to restrict tools to read-only operations
-
-You can also toggle entire modules (WordPress, Theme, Filesystem) from **SproutOS > Settings**.
+    See [Capability Profiles](/wordpress-plugin/capability-profiles) for a full breakdown of all four options.
+  </Step>
+</Steps>
 
 ## Frequently Asked Questions
 
-<Expandable title="Do I need Node.js installed on my WordPress server?">
-  No. Node.js is needed on the machine running the AI client, not on the WordPress server. The MCP transport layer runs locally on your development machine.
+<Expandable title="Do I need Node.js on my WordPress server?">
+  No. Node.js runs on your local machine, not the server. The server only needs WordPress 6.9+ and PHP 8.0+.
 </Expandable>
 
 <Expandable title="Can I use multiple AI clients with the same site?">
-  Yes. Each client connects independently using its own application password. You can generate multiple application passwords from the Connect tab.
-</Expandable>
-
-<Expandable title="What happens if I deactivate the plugin?">
-  Deactivating SproutOS removes all scheduled cron jobs and disables the abilities. Your sandbox files and analytics data remain on disk. Reactivating restores the tools.
-</Expandable>
-
-<Expandable title="Can I use HTTP instead of HTTPS?">
-  No. WordPress application passwords require HTTPS. Use a local SSL certificate (mkcert, Laravel Valet, or Local by Flywheel) for development sites.
+  Yes. Each client connects independently using its own application password. Generate additional passwords from **SproutOS > MCP Connect**.
 </Expandable>
 
 <Expandable title="What user role do I need?">
-  You need the `manage_options` capability, which means an Administrator role. Non-admin users cannot access SproutOS tools.
+  Administrator. SproutOS requires the `manage_options` capability. Non-admin users cannot access any abilities.
+</Expandable>
+
+<Expandable title="What happens if I deactivate the plugin?">
+  Deactivating removes scheduled cron jobs and disables the abilities. Your sandbox files and analytics data stay on disk. Reactivating restores everything.
+</Expandable>
+
+<Expandable title="Can I use HTTP transport without HTTPS?">
+  No. WordPress application passwords require HTTPS. For local development, use a tool like mkcert, Laravel Valet, or Local by Flywheel to add SSL.
+</Expandable>
+
+<Expandable title="Do I need WP-CLI for HTTP transport?">
+  No. WP-CLI is only required for STDIO transport. HTTP transport uses the Automattic proxy package and connects over your site's REST API.
 </Expandable>
 
 ## Next Steps
 
 <Columns cols="3">
-  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
-    Understand the sandbox, filesystem restrictions, and crash recovery.
+  <Card title="Capability Profiles" href="/wordpress-plugin/capability-profiles" icon="sliders">
+    Control how many abilities load upfront and manage your token budget per session.
   </Card>
 
   <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
-    Full reference for all 20 tools with parameters and examples.
+    Full reference for all 175+ abilities across 10 categories.
   </Card>
 
-  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
-    Fix connection issues, permission errors, and common problems.
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Safe Mode, sandbox isolation, protected files, and audit logs.
   </Card>
 </Columns>
