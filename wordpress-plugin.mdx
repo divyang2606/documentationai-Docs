@@ -6,11 +6,11 @@ description: >-
   Cursor, Windsurf, and any MCP-compatible client. Free forever, GPL licensed.
 ---
 
-The SproutOS WordPress MCP Plugin turns your WordPress site into an AI-powered workspace. It connects AI agents — Claude, Cursor, Windsurf, and any MCP-compatible client — directly to your site using the Model Context Protocol (MCP). Your AI reads files, edits themes, creates pages, runs PHP, and manages your database — all from inside the chat window.
+The SproutOS WordPress MCP Plugin turns your WordPress site into an AI-powered workspace. It connects AI agents - Claude, Cursor, Windsurf, and any MCP-compatible client - directly to your site using the Model Context Protocol (MCP). Your AI reads files, edits themes, creates pages, runs PHP, and manages your database - all from inside the chat window.
 
 **175+ abilities. 10 categories. Free forever.**
 
-{/* IMAGE: Connection flow diagram — You → AI Client → SproutOS Plugin → Your WordPress */}
+{/* IMAGE: Connection flow diagram - You → AI Client → SproutOS Plugin → Your WordPress */}
 
 ---
 
@@ -19,16 +19,16 @@ The SproutOS WordPress MCP Plugin turns your WordPress site into an AI-powered w
 **Without SproutOS**, every AI workflow looks like this:
 
 1. Ask AI for help
-2. AI generates code — but it cannot see your site
+2. AI generates code - but it cannot see your site
 3. You copy the code
 4. You switch to WordPress and paste it in
-5. Something breaks — you go back to AI, explain the error, repeat
+5. Something breaks - you go back to AI, explain the error, repeat
 
 The AI is guessing every time. It does not know your theme, your plugins, or your database.
 
 **With SproutOS**, the loop disappears:
 
-1. Open your AI client — Claude Desktop, Cursor, or any MCP client
+1. Open your AI client - Claude Desktop, Cursor, or any MCP client
 2. Ask in plain language: *"change the hero heading color to blue"*
 3. AI reads your theme, makes the change, confirms it's done
 4. You review
@@ -39,7 +39,7 @@ No copying. No pasting. No switching windows.
 
 ## How It Works
 
-SproutOS uses two open standards: **Model Context Protocol (MCP)** — so any MCP-compatible AI client can connect — and the **WordPress Abilities API** (WP 6.9+) — which registers all 175+ tools with typed input/output schemas your AI understands.
+SproutOS uses two open standards: **Model Context Protocol (MCP)** - so any MCP-compatible AI client can connect - and the **WordPress Abilities API** (WP 6.9+) - which registers all 175+ tools with typed input/output schemas your AI understands.
 
 Your AI client connects to your site and calls abilities automatically based on what you ask. You never need to know tool names.
 
@@ -47,9 +47,9 @@ Your AI client connects to your site and calls abilities automatically based on 
 
 | Step | What Happens |
 | --- | --- |
-| **Discover** | AI reads what it needs — plugin source, theme structure, database tables — only the relevant parts, before writing a single line |
+| **Discover** | AI reads what it needs - plugin source, theme structure, database tables - only the relevant parts, before writing a single line |
 | **Prototype** | Tests against your actual running WordPress. Iterates, catches errors, adjusts. Works against your real stack, not outdated docs |
-| **Save** | Working code becomes a sandbox file — loaded on every request, crash-guarded, manageable from the admin dashboard |
+| **Save** | Working code becomes a sandbox file - loaded on every request, crash-guarded, manageable from the admin dashboard |
 | **Expand** | Bridge tools let your AI call any of the 175+ abilities on demand, regardless of your Capability Profile |
 
 **Two transport options:**
@@ -59,13 +59,13 @@ Your AI client connects to your site and calls abilities automatically based on 
 | **STDIO** | Local sites via WP-CLI | `wp mcp-adapter serve` command |
 | **HTTP** | Remote or production sites | `@automattic/mcp-wordpress-remote` package |
 
-<Card title="How It Works — Full Breakdown" href="/wordpress-plugin/how-it-works" icon="zap">
+<Card title="How It Works - Full Breakdown" href="/wordpress-plugin/how-it-works" icon="zap">
   Architecture, transport options, the bridge system, and how AI discovers tools.
 </Card>
 
 ---
 
-## 175+ Abilities — What Your AI Can Do
+## 175+ Abilities - What Your AI Can Do
 
 SproutOS registers abilities across 10 categories. Your AI picks the right ones automatically based on what you ask.
 
@@ -93,7 +93,7 @@ SproutOS registers abilities across 10 categories. Your AI picks the right ones 
   </Card>
 
   <Card title="The Plus Addons (TPAE)" icon="plus-circle">
-    40+ widget abilities — accordions, carousels, pricing tables, forms, dark mode, and more. Loads when TPAE is active.
+    40+ widget abilities - accordions, carousels, pricing tables, forms, dark mode, and more. Loads when TPAE is active.
   </Card>
 
   <Card title="Builder / Cross-Builder" icon="grid">
@@ -113,24 +113,24 @@ SproutOS registers abilities across 10 categories. Your AI picks the right ones 
   </Card>
 </Columns>
 
-<Card title="Abilities Reference — All 175+ Tools" href="/wordpress-plugin/abilities" icon="list">
+<Card title="Abilities Reference - All 175+ Tools" href="/wordpress-plugin/abilities" icon="list">
   Every tool documented with parameters, return values, and notes.
 </Card>
 
 ---
 
-## Capability Profiles — Control Your Token Budget
+## Capability Profiles - Control Your Token Budget
 
 Four profiles control how many abilities are sent to your AI client at the start of a session. Less upfront = fewer tokens consumed. Bridge tools are always available regardless of profile.
 
 | Profile | What's Included | Best For |
 | --- | --- | --- |
-| **Ultra-Minimal** | Bridge tools only — AI discovers everything on demand | Token-sensitive sessions |
-| **Minimal** *(default)* | ~6 KB / ~1,500 tokens upfront — core abilities included | Most everyday workflows |
+| **Ultra-Minimal** | Bridge tools only - AI discovers everything on demand | Token-sensitive sessions |
+| **Minimal** *(default)* | ~6 KB / ~1,500 tokens upfront - core abilities included | Most everyday workflows |
 | **Standard** | Larger upfront catalogue | Moderate-token sessions, builder work |
 | **Full** | Complete ability catalogue with all schemas | Maximum depth, complex multi-step tasks |
 
-<Card title="Capability Profiles — Full Guide" href="/wordpress-plugin/capability-profiles" icon="sliders">
+<Card title="Capability Profiles - Full Guide" href="/wordpress-plugin/capability-profiles" icon="sliders">
   When to use each profile, how bridge dispatch works, and how to switch profiles.
 </Card>
 
@@ -152,7 +152,7 @@ SproutOS is powerful by design and safe by default. Every safety layer is indepe
   </Card>
 
   <Card title="Safe Mode" icon="shield">
-    One toggle in AI Abilities tab — every ability becomes read-only instantly. AI can see everything but write nothing.
+    One toggle in AI Abilities tab - every ability becomes read-only instantly. AI can see everything but write nothing.
   </Card>
 
   <Card title="Sandbox Isolation" icon="box">
@@ -171,7 +171,7 @@ SproutOS is powerful by design and safe by default. Every safety layer is indepe
 **Additional controls:** Domain Lock, Rate Limiter (`rate_limit_ops_per_min`), Meta Snapshots, full Audit Log, Ability Manager (per-tool enable/disable), and configurable client-side approval before every call.
 
 <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
-  Full security model — authentication, sandbox, filesystem restrictions, crash recovery, and recommended setup.
+  Full security model - authentication, sandbox, filesystem restrictions, crash recovery, and recommended setup.
 </Card>
 
 ---
@@ -180,7 +180,7 @@ SproutOS is powerful by design and safe by default. Every safety layer is indepe
 
 The plugin adds a **SproutOS** menu in your WordPress admin with five tabs.
 
-{/* IMAGE: Admin dashboard screenshot — all 5 tabs visible */}
+{/* IMAGE: Admin dashboard screenshot - all 5 tabs visible */}
 
 | Tab | What It's For |
 | --- | --- |
@@ -190,7 +190,7 @@ The plugin adds a **SproutOS** menu in your WordPress admin with five tabs.
 | **Analytics** | Six stat cards, session-grouped activity feed, CSV export. Every tool call logged with risk level and execution time. |
 | **Settings** | Server instructions, analytics data collection, email notifications, webhook notifications, privacy controls. |
 
-The admin bar always shows **Sprout MCP: ON** or **Sprout MCP: OFF** — so you always know when AI abilities are active.
+The admin bar always shows **Sprout MCP: ON** or **Sprout MCP: OFF** - so you always know when AI abilities are active.
 
 ---
 
@@ -213,7 +213,7 @@ Ask in plain language. SproutOS handles the tool selection.
 **Security**
 > *"Scan our theme files for any hardcoded credentials"*
 
-<Card title="Use Cases — All Prompt Examples" href="/wordpress-plugin/use-cases" icon="message-square">
+<Card title="Use Cases - All Prompt Examples" href="/wordpress-plugin/use-cases" icon="message-square">
   20+ real-world prompt examples across site maintenance, performance, security, content, WooCommerce, and automation.
 </Card>
 
@@ -223,17 +223,17 @@ Ask in plain language. SproutOS handles the tool selection.
 
 Every tool call is logged automatically. No setup required.
 
-{/* IMAGE: Analytics dashboard — stat cards and activity feed */}
+{/* IMAGE: Analytics dashboard - stat cards and activity feed */}
 
 **Six stat cards:** Total Calls · Calls Today · Failed Calls · Unique Sessions · Unique Users · Most Used Ability
 
 **Activity feed:** Session-grouped entries with risk level (readonly / additive / destructive / unknown), execution time, and error badges.
 
-**Notifications:** Email alerts (per session or daily digest) and webhook notifications to Slack, Discord, or any custom endpoint — with HMAC signing.
+**Notifications:** Email alerts (per session or daily digest) and webhook notifications to Slack, Discord, or any custom endpoint - with HMAC signing.
 
 **Privacy controls:** IP anonymization, configurable data retention, full CSV export, and a live data summary showing exactly what gets collected and where it goes.
 
-<Card title="Analytics & Monitoring — Full Guide" href="/wordpress-plugin/analytics" icon="bar-chart-2">
+<Card title="Analytics & Monitoring - Full Guide" href="/wordpress-plugin/analytics" icon="bar-chart-2">
   Stat cards, activity feed, email and webhook notifications, data retention, and privacy controls.
 </Card>
 
@@ -243,11 +243,11 @@ Every tool call is logged automatically. No setup required.
 
 SproutOS works with any MCP-compatible client. Connect over STDIO for local development or HTTP for remote sites.
 
-- **Claude Desktop** — Anthropic desktop AI app
-- **Claude Code** — Anthropic CLI tool for developers
-- **Cursor** — AI-powered code editor
-- **Windsurf** — AI coding assistant
-- **Any MCP-compatible client** — the protocol is open; any tool that adopts it works automatically
+- **Claude Desktop** - Anthropic desktop AI app
+- **Claude Code** - Anthropic CLI tool for developers
+- **Cursor** - AI-powered code editor
+- **Windsurf** - AI coding assistant
+- **Any MCP-compatible client** - the protocol is open; any tool that adopts it works automatically
 
 ---
 
@@ -275,7 +275,7 @@ SproutOS works with any MCP-compatible client. Connect over STDIO for local deve
 ## Frequently Asked Questions
 
 <Expandable title="How is SproutOS different from Novamira?">
-  Both use MCP and the WordPress Abilities API. SproutOS has 175+ abilities across 10 categories — all free. Novamira has 8 free tools with Elementor and Bricks behind a paid Pro tier. SproutOS also includes Capability Profiles, a full Analytics dashboard, webhook notifications, one-click rollback, and an Audit Log — none of which Novamira offers. See the full comparison.
+  Both use MCP and the WordPress Abilities API. SproutOS has 175+ abilities across 10 categories - all free. Novamira has 8 free tools with Elementor and Bricks behind a paid Pro tier. SproutOS also includes Capability Profiles, a full Analytics dashboard, webhook notifications, one-click rollback, and an Audit Log - none of which Novamira offers. See the full comparison.
 </Expandable>
 
 <Expandable title="What AI clients work with SproutOS?">
@@ -283,7 +283,7 @@ SproutOS works with any MCP-compatible client. Connect over STDIO for local deve
 </Expandable>
 
 <Expandable title="Can I use this on a live production site?">
-  Yes — many agencies do. SproutOS's sandbox keeps all AI-written PHP isolated, Safe Mode lets the AI read but not touch anything, and Crash Guard automatically disables any file that causes an error. The recommended approach is to start on staging to get familiar with the workflows, then move to live once you're confident. Keep a backup before any major session.
+  Yes - many agencies do. SproutOS's sandbox keeps all AI-written PHP isolated, Safe Mode lets the AI read but not touch anything, and Crash Guard automatically disables any file that causes an error. The recommended approach is to start on staging to get familiar with the workflows, then move to live once you're confident. Keep a backup before any major session.
 </Expandable>
 
 <Expandable title="Does Node.js need to be installed on my WordPress server?">
@@ -295,7 +295,7 @@ SproutOS works with any MCP-compatible client. Connect over STDIO for local deve
 </Expandable>
 
 <Expandable title="What is a Capability Profile?">
-  A preset that controls how many of the 175+ abilities are sent to your AI client at the start of a session. Fewer abilities upfront means fewer tokens consumed. Bridge tools are always available in every profile — your AI can discover and call any ability on demand regardless of which profile you choose.
+  A preset that controls how many of the 175+ abilities are sent to your AI client at the start of a session. Fewer abilities upfront means fewer tokens consumed. Bridge tools are always available in every profile - your AI can discover and call any ability on demand regardless of which profile you choose.
 </Expandable>
 
 ---
@@ -316,6 +316,6 @@ SproutOS works with any MCP-compatible client. Connect over STDIO for local deve
   </Card>
 
   <Card title="Compare Options" href="/wordpress-plugin/compare" icon="columns">
-    SproutOS vs Novamira vs Respira vs WP-CLI — side by side.
+    SproutOS vs Novamira vs Respira vs WP-CLI - side by side.
   </Card>
 </Columns>
