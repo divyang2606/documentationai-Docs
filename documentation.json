@@ -119,6 +119,11 @@
                 "title": "Capability Profiles",
                 "path": "wordpress-plugin/capability-profiles",
                 "icon": "sliders"
+              },
+              {
+                "title": "The Sandbox",
+                "path": "wordpress-plugin/sandbox",
+                "icon": "box"
               }
             ]
           },
