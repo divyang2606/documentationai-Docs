@@ -103,6 +103,11 @@
                 "title": "Connect WordPress with AI",
                 "path": "wordpress-plugin/what-is-mcp",
                 "icon": "zap"
+              },
+              {
+                "title": "Use Cases",
+                "path": "wordpress-plugin/use-cases",
+                "icon": "lightbulb"
               }
             ]
           },
