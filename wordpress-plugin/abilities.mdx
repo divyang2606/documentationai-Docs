@@ -1,183 +1,81 @@
 ---
-title: 'Abilities Reference: All SproutOS MCP Tools'
+title: 'Abilities Reference'
 description: >-
-  Complete reference for all SproutOS WordPress plugin abilities. Covers file
-  operations, theme management, page creation, bridge tools, batch execution,
-  and module settings with parameters and usage details.
+  Complete reference for all 175+ SproutOS abilities across 10 categories. WordPress Core, File Operations, Theme Management, PHP Execution, Bridge Tools, Elementor, TPAE, Builder, WooCommerce, Bricks, WDesignKit, and Nexter.
 ---
 
-SproutOS exposes 20 tools to AI agents through the MCP protocol. Each tool is registered as a WordPress ability with a defined input schema, permission checks, and structured output. This page documents every ability organized by module.
+SproutOS registers 175+ abilities on your WordPress site across 10 categories. Your AI client picks the right one automatically based on what you ask. You never need to know ability names or call them directly.
 
-## Ops Module
+Abilities are organized into modular categories. Some categories only register when a specific plugin is active on your site - those are marked as plugin-presence gated below.
 
-The Ops module provides core file system operations, PHP execution, and sandbox control. It contains 8 tools.
-
-### sprout/read-file
-
-Reads a file from the WordPress filesystem. Supports partial reads by byte range or line range. Binary files are automatically detected and returned as base64.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | File path relative to WordPress root |
-| `offset` | integer | No | Byte offset to start reading from |
-| `limit` | integer | No | Maximum bytes to read (default: 1 MB) |
-| `start_line` | integer | No | First line to return |
-| `end_line` | integer | No | Last line to return |
-| `head` | integer | No | Return only the first N lines |
-| `tail` | integer | No | Return only the last N lines |
-
-**Returns:** File content, `line_count`, `size`, `mime_type`, `permissions`, `last_modified`.
-
-<Callout kind="note">
-  Sensitive files (`wp-config.php`, `.htaccess`, `.env`) are blocked. Symlinks are rejected to prevent directory traversal.
-</Callout>
-
----
-
-### sprout/write-file
-
-Writes content to a file. Supports UTF-8 and base64 encoding, overwrite and append modes, automatic parent directory creation, optional backup, and dry-run preview.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | File path relative to WordPress root |
-| `content` | string | Yes | Content to write |
-| `encoding` | string | No | `utf-8` (default) or `base64` |
-| `mode` | string | No | `overwrite` (default) or `append` |
-| `create_directories` | boolean | No | Auto-create parent directories (default: true) |
-| `backup` | boolean | No | Create a `.bak` backup before overwriting |
-| `dry_run` | boolean | No | Preview the operation without writing |
-
-**Returns:** File path, bytes written, backup path (if created).
+{/* IMAGE: Ability categories grid from the AI Abilities tab in admin */}
 
 <Callout kind="info">
-  PHP files are always written to the sandbox directory (`wp-content/sproutos-mcp-sandbox/`). PHP syntax is validated before saving. Malformed code is rejected.
+  Use `sprout-bridge/discover-tools` to see the exact list of abilities currently active on your site. This reflects your enabled modules and any per-ability toggles.
 </Callout>
 
 ---
 
-### sprout/edit-file
+## WordPress Core
 
-Performs exact string replacement in an existing file. Supports replace-all, Nth occurrence targeting, and context lines for verification.
+Posts, pages, users, media, menus, options, settings, custom post types, taxonomies, and comments. These abilities cover the full WordPress content and data layer.
 
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | File path relative to WordPress root |
-| `old_string` | string | Yes | The exact string to find |
-| `new_string` | string | Yes | The replacement string |
-| `replace_all` | boolean | No | Replace all occurrences (default: false) |
-| `occurrence` | integer | No | Replace only the Nth occurrence |
-| `context_lines` | integer | No | Lines of context to return around the edit (0–20) |
-
-**Returns:** Updated content with context lines, match count, replacements made.
-
-<Callout kind="note">
-  If multiple matches exist and neither `replace_all` nor `occurrence` is set, the tool returns an error asking you to disambiguate. PHP files are syntax-validated after editing.
-</Callout>
-
----
-
-### sprout/delete-file
-
-Deletes a file or directory. Requires the `recursive` flag for non-empty directories. Supports dry-run. Idempotent: deleting a missing path succeeds with `deleted: false`.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | File or directory path relative to WordPress root |
-| `recursive` | boolean | No | Required for non-empty directories |
-| `dry_run` | boolean | No | Preview the operation without deleting |
-
-**Returns:** `deleted` (boolean), path, type (file or directory).
-
-<Callout kind="warning">
-  Protected paths (`wp-admin`, `wp-includes`, `wp-content/plugins`, `wp-content/themes`, `wp-content/mu-plugins`) cannot be deleted. PHP files outside the sandbox cannot be deleted.
-</Callout>
-
----
-
-### sprout/list-directory
-
-Lists files and directories with glob filtering, recursive traversal, hidden file control, and sorting.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | No | Directory path (default: WordPress root) |
-| `pattern` | string | No | Glob pattern to filter results (e.g., `*.php`) |
-| `recursive` | boolean | No | Traverse subdirectories |
-| `max_depth` | integer | No | Maximum recursion depth, 1–10 (default: 3) |
-| `include_hidden` | boolean | No | Include hidden files (default: false) |
-| `sort_by` | string | No | Sort by `name`, `size`, or `modified` |
-| `limit` | integer | No | Maximum entries to return, 1–5000 (default: 500) |
-
-**Returns:** Array of entries with file metadata, plus summary stats (`total_files`, `total_dirs`, `total_size`).
-
----
-
-### sprout/execute-php
-
-Executes PHP code inside the live WordPress environment with full access to all WordPress APIs (`$wpdb`, `WP_Query`, hooks, options, etc.).
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `code` | string | Yes | PHP code to execute (without `<?php` tags) |
-| `timeout` | integer | No | Maximum execution time in seconds, 1–120 |
-| `capture_queries` | boolean | No | Include database queries in the response |
-
-**Returns:** `return_value`, `output`, `errors`, `execution_time_ms`, memory usage, query details (if captured).
-
-<Callout kind="warning">
-  This tool executes arbitrary PHP with full WordPress privileges. Use it only on development and staging sites. In the WordPress.org-safe build, this ability is disabled.
-</Callout>
-
----
-
-### sprout/enable-file
-
-Restores a previously disabled sandbox file by removing the `.disabled` extension. The sandbox loader will include the file on subsequent requests.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | Path to the disabled file in the sandbox |
-| `dry_run` | boolean | No | Preview without enabling |
-
-**Returns:** File path, enabled status. Idempotent: enabling an already-enabled file succeeds.
-
----
-
-### sprout/disable-file
-
-Pauses a sandbox file by appending `.disabled` to its extension. The file remains on disk but is not loaded by the sandbox loader. Non-destructive.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `path` | string | Yes | Path to the file in the sandbox |
-| `dry_run` | boolean | No | Preview without disabling |
-
-**Returns:** File path, disabled status. Idempotent: disabling an already-disabled file succeeds.
-
----
-
-## WordPress Module
-
-The WordPress module provides page creation and update tools. It contains 2 tools.
+| Ability | What It Does |
+| --- | --- |
+| `sprout/create-page` | Creates a new WordPress page with title, content, and status |
+| `sprout/update-page` | Updates an existing page by ID (title, content, status) |
+| `sprout/create-post` | Creates a new post with title, content, category, tags, and status |
+| `sprout/update-post` | Updates an existing post by ID |
+| `sprout/get-post` | Retrieves a single post or page by ID |
+| `sprout/list-posts` | Lists posts with filter support (status, author, date range, search) |
+| `sprout/delete-post` | Moves a post to trash or force-deletes it |
+| `sprout/list-pages` | Lists pages with optional parent/status filters |
+| `sprout/create-custom-post` | Creates a custom post type entry |
+| `sprout/update-custom-post` | Updates a custom post type entry by ID |
+| `sprout/list-custom-posts` | Lists entries for any registered CPT |
+| `sprout/delete-custom-post` | Deletes a custom post type entry |
+| `sprout/get-taxonomy` | Returns a taxonomy definition by name |
+| `sprout/list-taxonomies` | Lists all registered taxonomies |
+| `sprout/create-term` | Creates a term within a taxonomy |
+| `sprout/update-term` | Updates a term (name, slug, description) |
+| `sprout/get-term` | Returns a single term by ID or slug |
+| `sprout/list-terms` | Lists terms for a given taxonomy |
+| `sprout/delete-term` | Deletes a term from a taxonomy |
+| `sprout/list-media` | Lists media library items with filters |
+| `sprout/get-media` | Returns metadata for a single media item |
+| `sprout/update-media` | Updates media item alt text, title, or caption |
+| `sprout/delete-media` | Deletes a media item and its associated files |
+| `sprout/upload-media` | Uploads a new file to the media library |
+| `sprout/sideload-image` | Downloads a remote image and adds it to the media library |
+| `sprout/list-menus` | Lists all registered navigation menus |
+| `sprout/get-menu` | Returns a menu and its items by ID or slug |
+| `sprout/create-menu` | Creates a new navigation menu |
+| `sprout/update-menu` | Updates menu name or settings |
+| `sprout/delete-menu` | Deletes a navigation menu |
+| `sprout/list-menu-items` | Lists all items in a menu |
+| `sprout/get-menu-item` | Returns a single menu item |
+| `sprout/create-menu-item` | Adds a new item to a menu |
+| `sprout/update-menu-item` | Updates a menu item (label, URL, parent, order) |
+| `sprout/delete-menu-item` | Removes an item from a menu |
+| `sprout/list-menu-locations` | Lists all registered theme menu locations |
+| `sprout/assign-menu-location` | Assigns a menu to a theme location |
+| `sprout/create-comment` | Adds a comment to a post |
+| `sprout/update-comment` | Updates a comment's content or status |
+| `sprout/get-comment` | Returns a single comment by ID |
+| `sprout/list-comments` | Lists comments with filter support |
+| `sprout/delete-comment` | Deletes a comment |
 
 ### sprout/create-page
 
-Creates a new WordPress page with a title, optional HTML content, and status.
+Creates a new WordPress page with title, optional HTML content, and publish status.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `title` | string | Yes | Page title |
-| `content` | string | No | Page content (HTML allowed, sanitized via `wp_kses_post()`) |
+| `content` | string | No | Page content (HTML, sanitized via `wp_kses_post()`) |
 | `status` | string | No | `draft` (default) or `publish` |
 
 **Returns:** `page_id`, `edit_url`, `permalink`.
-
-<Callout kind="info">
-  HTML content is sanitized through `wp_kses_post()`, which allows safe HTML tags and strips dangerous markup like `<script>` and event handlers.
-</Callout>
-
----
 
 ### sprout/update-page
 
@@ -194,9 +92,98 @@ Updates an existing WordPress page by ID. At least one optional field is require
 
 ---
 
-## Theme Module
+## File Operations
 
-The Theme module provides read and write access to active theme files. It contains 4 tools.
+Read, write, edit, delete, and list files across the WordPress filesystem. All operations enforce the ABSPATH boundary and reject symlinks. Sensitive files are protected from all access.
+
+**Protected files:** `.env`, `wp-config.php`, `.htaccess`, `debug.log`, `.git/`, `.sql`
+
+**Protected directories (cannot delete):** `wp-admin/`, `wp-includes/`, `wp-content/plugins/`, `wp-content/themes/`
+
+### sprout/read-file
+
+Reads a file from the WordPress filesystem. Supports partial reads by byte range or line range. Binary files are returned as base64.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `offset` | integer | No | Byte offset to start reading from |
+| `limit` | integer | No | Maximum bytes to read (default: 1 MB) |
+| `start_line` | integer | No | First line to return |
+| `end_line` | integer | No | Last line to return |
+| `head` | integer | No | Return only the first N lines |
+| `tail` | integer | No | Return only the last N lines |
+
+**Returns:** File content, `line_count`, `size`, `mime_type`, `permissions`, `last_modified`.
+
+### sprout/write-file
+
+Writes content to a file. Supports overwrite and append modes, automatic directory creation, optional backup, and dry-run preview.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `content` | string | Yes | Content to write |
+| `encoding` | string | No | `utf-8` (default) or `base64` |
+| `mode` | string | No | `overwrite` (default) or `append` |
+| `create_directories` | boolean | No | Auto-create parent directories (default: true) |
+| `backup` | boolean | No | Create a `.bak` backup before overwriting |
+| `dry_run` | boolean | No | Preview without writing |
+
+**Returns:** File path, bytes written, backup path (if created).
+
+<Callout kind="info">
+  PHP files are always written to the sandbox directory (`wp-content/sproutos-mcp-sandbox/`). PHP syntax is validated before saving - malformed code is rejected before it reaches the sandbox.
+</Callout>
+
+### sprout/edit-file
+
+Performs exact string replacement in an existing file. Supports replace-all and Nth occurrence targeting.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File path relative to WordPress root |
+| `old_string` | string | Yes | The exact string to find |
+| `new_string` | string | Yes | The replacement string |
+| `replace_all` | boolean | No | Replace all occurrences (default: false) |
+| `occurrence` | integer | No | Replace only the Nth occurrence |
+| `context_lines` | integer | No | Lines of context to return around the edit (0-20) |
+
+**Returns:** Updated content with context lines, match count, replacements made.
+
+### sprout/delete-file
+
+Deletes a file or directory. Requires the `recursive` flag for non-empty directories.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | File or directory path relative to WordPress root |
+| `recursive` | boolean | No | Required for non-empty directories |
+| `dry_run` | boolean | No | Preview without deleting |
+
+**Returns:** `deleted` (boolean), path, type.
+
+### sprout/list-directory
+
+Lists files and directories with glob filtering, recursive traversal, and sorting.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | No | Directory path (default: WordPress root) |
+| `pattern` | string | No | Glob filter (e.g., `*.php`) |
+| `recursive` | boolean | No | Traverse subdirectories |
+| `max_depth` | integer | No | Maximum recursion depth, 1-10 (default: 3) |
+| `include_hidden` | boolean | No | Include hidden files (default: false) |
+| `sort_by` | string | No | Sort by `name`, `size`, or `modified` |
+| `limit` | integer | No | Maximum entries, 1-5000 (default: 500) |
+
+**Returns:** Array of entries with metadata, plus `total_files`, `total_dirs`, `total_size`.
+
+---
+
+## Theme Management
+
+Read and write access to active theme files.
 
 ### sprout/list-theme-files
 
@@ -210,11 +197,9 @@ Lists editable files from the active child or parent theme.
 
 **Returns:** Array of file paths with `theme_root`.
 
----
-
 ### sprout/read-theme-file
 
-Reads a file from the active theme. Only files with supported extensions can be read.
+Reads a file from the active theme.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -222,8 +207,6 @@ Reads a file from the active theme. Only files with supported extensions can be 
 | `relative_path` | string | Yes | Path relative to the theme root (e.g., `style.css`) |
 
 **Returns:** File content, path, theme scope.
-
----
 
 ### sprout/update-theme-file
 
@@ -240,15 +223,9 @@ Creates or updates a file in the active theme. Supports replace, append, and pre
 
 **Returns:** File path, bytes written, mode used.
 
-<Callout kind="note">
-  Only files with supported extensions can be written. The extension whitelist prevents writing arbitrary file types into theme directories.
-</Callout>
-
----
-
 ### sprout/update-theme-stylesheet
 
-A convenience wrapper for modifying the active theme's `style.css` file. Defaults to append mode.
+A convenience wrapper for modifying the active theme's `style.css`. Defaults to append mode.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -256,29 +233,72 @@ A convenience wrapper for modifying the active theme's `style.css` file. Default
 | `theme_scope` | string | No | `child` (default) or `parent` |
 | `mode` | string | No | `append` (default), `prepend`, or `replace` |
 
-**Returns:** Same as `sprout/update-theme-file`.
-
 ---
 
-## Bridge Module
+## PHP Execution and Sandbox
 
-The Bridge module lets AI agents discover, inspect, and dispatch any registered WordPress ability. It contains 3 tools.
+Run PHP directly inside the live WordPress environment and manage sandbox files. These abilities are available in the GitHub version only - PHP execution is disabled in the WordPress.org build.
 
-### sprout-bridge/discover-tools
+### sprout/execute-php
 
-Returns a catalog of all publicly exposed WordPress abilities with metadata. Takes no input parameters.
+Executes PHP code inside the live WordPress environment with full access to all WordPress APIs (`$wpdb`, `WP_Query`, hooks, options, and more).
 
-**Returns:** Array of abilities, each with: `name`, `label`, `description`, `category`, `readonly`, `destructive`, `idempotent`, `tags`.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | string | Yes | PHP code to execute (without `<?php` tags) |
+| `timeout` | integer | No | Maximum execution time in seconds, 1-120 |
+| `capture_queries` | boolean | No | Include database queries in the response |
 
-<Callout kind="info">
-  Only abilities marked as `public: true` appear in the discovery response. The bridge inspector itself is not discoverable through this tool.
+**Returns:** `return_value`, `output`, `errors`, `execution_time_ms`, memory usage, query details (if captured).
+
+### sprout/batch-execute
+
+Executes multiple abilities in a single request. Useful for multi-step operations without round-trip overhead.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `operations` | array | Yes | Array of operations (max 20), each with `ability_name` and optional `parameters` |
+| `stop_on_error` | boolean | No | Stop on the first error (default: false) |
+
+**Returns:** `success`, `total`, `succeeded`, `failed` counts, plus per-operation results with individual timing.
+
+### sprout/enable-file
+
+Restores a previously disabled sandbox file by removing the `.disabled` extension.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | Path to the disabled file in the sandbox |
+| `dry_run` | boolean | No | Preview without enabling |
+
+### sprout/disable-file
+
+Pauses a sandbox file by appending `.disabled` to its name. The file stays on disk but stops loading.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `path` | string | Yes | Path to the file in the sandbox |
+| `dry_run` | boolean | No | Preview without disabling |
+
+<Callout kind="tip">
+  See the [Sandbox page](/wordpress-plugin/sandbox) for a full explanation of how PHP files are validated, crash-guarded, and rolled back.
 </Callout>
 
 ---
 
+## Bridge Tools
+
+Three abilities that are always available in every Capability Profile, including Ultra-Minimal. Bridge tools are how your AI discovers and calls the full catalogue of 175+ abilities without needing them all loaded upfront.
+
+### sprout-bridge/discover-tools
+
+Returns a catalogue of all publicly exposed abilities currently registered on your site. Takes no input parameters.
+
+**Returns:** Array of abilities, each with `name`, `label`, `description`, `category`, `readonly`, `destructive`, `idempotent`, `tags`.
+
 ### sprout-bridge/dispatch-tool
 
-Executes any registered ability by name. This is a meta-tool that lets the AI call abilities dynamically.
+Calls any registered ability by name. This is how the AI reaches abilities not included in the current Capability Profile.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -286,12 +306,6 @@ Executes any registered ability by name. This is a meta-tool that lets the AI ca
 | `parameters` | object | Yes | Input parameters for the ability |
 
 **Returns:** Standardized envelope with `ok`, `request_id`, `ability`, `duration_ms`, `result` or `error`, and telemetry data.
-
-<Callout kind="note">
-  The dispatch tool enforces all permission checks: the user must have the `read` capability, the ability must exist and be public, and per-ability `check_permissions()` is called before execution.
-</Callout>
-
----
 
 ### sprout-bridge/inspect-tool
 
@@ -305,82 +319,277 @@ Returns the full specification of a single ability including input/output schema
 
 ---
 
-## Filesystem Module
+## Elementor
 
-The Filesystem module provides batch operations and module configuration. It contains 3 tools.
+*Registers only when Elementor is active on your site.*
 
-### sprout/batch-execute
+Full page editing, widget management, global styles, templates, and more. These abilities give your AI direct access to Elementor's data layer - not the visual editor, but the underlying JSON structure that Elementor reads to render pages.
 
-Executes multiple abilities in a single request. Useful for performing several file operations without round-trip overhead.
-
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `operations` | array | Yes | Array of operations (max 20), each with `ability_name` and optional `parameters` |
-| `stop_on_error` | boolean | No | Stop execution on the first error (default: false) |
-
-**Returns:** `success`, `total`, `succeeded`, `failed` counts, plus per-operation results with individual timing.
-
-<Callout kind="info">
-  Each operation in the batch goes through its own permission check. A failed permission check on one operation does not block the others unless `stop_on_error` is true.
-</Callout>
+| Ability | What It Does |
+| --- | --- |
+| `sprout-elementor/list-pages` | Lists all pages built with Elementor |
+| `sprout-elementor/get-element-settings` | Returns settings for a specific element by ID |
+| `sprout-elementor/update-element` | Updates settings on a specific Elementor element |
+| `sprout-elementor/get-container-schema` | Returns the structure of an Elementor container |
+| `sprout-elementor/get-widget-schema` | Returns the full schema for any Elementor widget |
+| `sprout-elementor/list-widgets` | Lists all available Elementor widgets |
+| `sprout-elementor/duplicate-page` | Duplicates an Elementor page with all its content |
+| `sprout-elementor/delete-page-content` | Clears all Elementor content from a page |
+| `sprout-elementor/export-page` | Exports a page's Elementor data as JSON |
+| `sprout-elementor/import-template` | Imports an Elementor template JSON into a page |
+| `sprout-elementor/list-templates` | Lists saved Elementor templates |
+| `sprout-elementor/save-as-template` | Saves a page or section as a reusable Elementor template |
+| `sprout-elementor/apply-template` | Applies a saved template to a page |
+| `sprout-elementor/get-global-settings` | Returns Elementor global settings (colors, typography, breakpoints) |
+| `sprout-elementor/update-global-colors` | Updates the global color palette |
+| `sprout-elementor/update-global-typography` | Updates global typography presets |
+| `sprout-elementor/update-page-settings` | Updates page-level Elementor settings |
+| `sprout-elementor/create-popup` | Creates a new Elementor popup |
+| `sprout-elementor/set-popup-settings` | Updates popup display conditions and trigger settings |
+| `sprout-elementor/create-theme-template` | Creates a new Elementor theme template (header, footer, single, archive) |
+| `sprout-elementor/set-template-conditions` | Sets display conditions for a theme template |
+| `sprout-elementor/list-dynamic-tags` | Lists available Elementor dynamic tags |
+| `sprout-elementor/set-dynamic-tag` | Applies a dynamic tag to an element field |
+| `sprout-elementor/elementor-add-custom-css` | Adds custom CSS to a specific element or page |
+| `sprout-elementor/elementor-add-custom-js` | Adds custom JavaScript to an Elementor page |
+| `sprout-elementor/list-code-snippets` | Lists all Elementor custom code snippets |
+| `sprout-elementor/elementor-add-code-snippet` | Adds a new Elementor custom code snippet |
+| `sprout-elementor/upload-svg` | Uploads an SVG file for use in Elementor |
+| `sprout-elementor/validate-conversion` | Validates Elementor content before a conversion operation |
+| `sprout-elementor/elementor-validate-conversion` | Runs a pre-conversion compatibility check |
 
 ---
 
-### sprout/get-mcp-settings
+## The Plus Addons for Elementor (TPAE)
 
-Returns the current SproutOS module configuration, workspace status, and ability counts. Takes no input parameters.
+*Registers only when The Plus Addons for Elementor is active on your site.*
 
-**Returns:** Module toggle states (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks), sandbox status, and per-module ability counts.
+40+ abilities for TPAE's custom widgets. Each ability maps to a specific widget and lets your AI configure, insert, or update it within an Elementor page.
+
+**Layout and Content**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-accordion` | Accordion |
+| `sprout-tpae/tp-blockquote` | Blockquote |
+| `sprout-tpae/tp-flip-box` | Flip Box |
+| `sprout-tpae/tp-tabs-tours` | Tabs and Tours |
+| `sprout-tpae/tp-toggle` | Toggle |
+| `sprout-tpae/tp-switcher` | Switcher |
+
+**Media**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-carousel-anything` | Carousel Anything |
+| `sprout-tpae/tp-gallery-listout` | Gallery Listout |
+| `sprout-tpae/tp-video-player` | Video Player |
+| `sprout-tpae/tp-image-box` | Image Box |
+
+**Content Blocks**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-info-box` | Info Box |
+| `sprout-tpae/tp-messagebox` | Message Box |
+| `sprout-tpae/tp-hovercard` | Hover Card |
+| `sprout-tpae/tp-heading-title` | Heading Title |
+| `sprout-tpae/tp-heading-animation` | Heading Animation |
+
+**Lists and Icons**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-style-list` | Style List |
+| `sprout-tpae/tp-icon` | Icon |
+| `sprout-tpae/tp-social-icon` | Social Icons |
+| `sprout-tpae/tp-process-steps` | Process Steps |
+
+**Dynamic Content**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-blog-listout` | Blog Listout |
+| `sprout-tpae/tp-team-member-listout` | Team Member Listout |
+| `sprout-tpae/tp-testimonial-listout` | Testimonial Listout |
+| `sprout-tpae/tp-clients-listout` | Clients Listout |
+| `sprout-tpae/tp-dynamic-categories` | Dynamic Categories |
+
+**Commerce and Data**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-pricing-table` | Pricing Table |
+| `sprout-tpae/tp-number-counter` | Number Counter |
+| `sprout-tpae/tp-progress-bar` | Progress Bar |
+| `sprout-tpae/tp-countdown` | Countdown |
+| `sprout-tpae/tp-table` | Table |
+
+**Forms**
+
+| Ability | Plugin |
+| --- | --- |
+| `sprout-tpae/tp-contact-form-7` | Contact Form 7 |
+| `sprout-tpae/tp-gravity-form` | Gravity Forms |
+| `sprout-tpae/tp-ninja-form` | Ninja Forms |
+| `sprout-tpae/tp-everest-form` | Everest Forms |
+| `sprout-tpae/tp-wp-forms` | WPForms |
+| `sprout-tpae/tp-plus-form` | Plus Form |
+
+**Special and Utility**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-dark-mode` | Dark Mode |
+| `sprout-tpae/tp-age-gate` | Age Gate |
+| `sprout-tpae/tp-smooth-scroll` | Smooth Scroll |
+| `sprout-tpae/tp-page-scroll` | Page Scroll |
+| `sprout-tpae/tp-scroll-navigation` | Scroll Navigation |
+| `sprout-tpae/tp-syntax-highlighter` | Syntax Highlighter |
+| `sprout-tpae/tp-webgl` | WebGL |
+| `sprout-tpae/tp-meeting-scheduler` | Meeting Scheduler |
+| `sprout-tpae/tp-social-embed` | Social Embed |
+| `sprout-tpae/tp-header-extras` | Header Extras |
+
+**Post Elements**
+
+| Ability | Widget |
+| --- | --- |
+| `sprout-tpae/tp-post-title` | Post Title |
+| `sprout-tpae/tp-post-content` | Post Content |
+| `sprout-tpae/tp-post-author` | Post Author |
+| `sprout-tpae/tp-post-meta` | Post Meta |
+| `sprout-tpae/tp-post-comment` | Post Comments |
+| `sprout-tpae/tp-post-featured-image` | Featured Image |
+| `sprout-tpae/tp-post-navigation` | Post Navigation |
+| `sprout-tpae/tp-post-search` | Post Search |
+| `sprout-tpae/tp-breadcrumbs-bar` | Breadcrumbs Bar |
+| `sprout-tpae/tp-navigation-menu-lite` | Navigation Menu Lite |
 
 ---
 
-### sprout/update-mcp-settings
+## Builder / Cross-Builder
 
-Updates module toggles and sandbox settings. Supports partial updates. Only include the fields you want to change.
+A page-builder-agnostic layer that works across Elementor, Bricks, and Gutenberg. These abilities let your AI add, move, remove, and restructure page elements without targeting a specific builder's internal format.
 
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| `wordpress` | boolean | No | Enable or disable the WordPress module |
-| `elementor` | boolean | No | Enable or disable the Elementor module |
-| `the_plus_addons` | boolean | No | Enable or disable The Plus Addons module |
-| `nexter_extension` | boolean | No | Enable or disable the Nexter Extension module |
-| `nexter_blocks` | boolean | No | Enable or disable the Nexter Blocks module |
-| `sandbox_enabled` | boolean | No | Enable or disable the sandbox |
+| Ability | What It Does |
+| --- | --- |
+| `sprout-builder/add-container` | Adds a container element to a page |
+| `sprout-builder/add-section` | Adds a section to a page layout |
+| `sprout-builder/add-widget` | Adds a widget inside a container or section |
+| `sprout-builder/apply-patch` | Applies a structured patch to page content |
+| `sprout-builder/batch-update` | Runs multiple builder updates in one request |
+| `sprout-builder/build-page` | Constructs a full page layout from a structured definition |
+| `sprout-builder/bulk-pages-operation` | Applies an operation across multiple pages at once |
+| `sprout-builder/convert-html` | Converts raw HTML into a builder-compatible structure |
+| `sprout-builder/detect-builder` | Detects which page builder is active on a given page |
+| `sprout-builder/duplicate-element` | Duplicates a specific element within a page |
+| `sprout-builder/extract-content` | Extracts text and content from a builder page |
+| `sprout-builder/find-builder-targets` | Finds all pages using a specific builder |
+| `sprout-builder/find-element` | Locates a specific element by type, ID, or content match |
+| `sprout-builder/inject-content` | Injects content into a page at a specific position |
+| `sprout-builder/move-element` | Moves an element to a new position in the layout |
+| `sprout-builder/remove-element` | Removes a specific element from a page |
+| `sprout-builder/reorder-elements` | Reorders elements within a container or section |
+| `sprout-builder/update-element` | Updates settings or content on a specific element |
 
-**Returns:** Updated settings object.
+---
+
+## WooCommerce
+
+*Registers only when WooCommerce is active on your site.*
+
+Products, orders, categories, tags, and reports. Toggle the WooCommerce module on or off from **SproutOS > AI Abilities**.
+
+| Ability | What It Does |
+| --- | --- |
+| `sprout-woo/create-product` | Creates a new WooCommerce product |
+| `sprout-woo/update-product` | Updates a product (title, price, stock, status) |
+| `sprout-woo/get-product` | Returns a single product by ID |
+| `sprout-woo/list-products` | Lists products with filter support |
+| `sprout-woo/delete-product` | Deletes a product |
+| `sprout-woo/duplicate-product` | Duplicates a product |
+| `sprout-woo/get-order` | Returns a single order by ID |
+| `sprout-woo/list-orders` | Lists orders with filter support (status, date range, customer) |
+| `sprout-woo/update-order` | Updates order metadata |
+| `sprout-woo/update-order-status` | Changes the status of an order |
+| `sprout-woo/delete-order` | Deletes an order |
+| `sprout-woo/create-product-category` | Creates a new product category |
+| `sprout-woo/update-product-category` | Updates a product category |
+| `sprout-woo/get-product-category` | Returns a single product category |
+| `sprout-woo/list-product-categories` | Lists all product categories |
+| `sprout-woo/delete-product-category` | Deletes a product category |
+| `sprout-woo/create-product-tag` | Creates a new product tag |
+| `sprout-woo/update-product-tag` | Updates a product tag |
+| `sprout-woo/get-product-tag` | Returns a single product tag |
+| `sprout-woo/list-product-tags` | Lists all product tags |
+| `sprout-woo/delete-product-tag` | Deletes a product tag |
+| `sprout-woo/get-sales-report` | Returns a sales summary for a given date range |
+
+---
+
+## Bricks Builder
+
+*Registers only when Bricks Builder is active on your site.*
+
+Bricks Builder support was added in v0.0.2 via the `sprout_mcp_has_bricks()` plugin-presence helper. When Bricks is active, SproutOS registers abilities for reading and editing Bricks page data.
+
+---
+
+## WDesignKit
+
+Full-site templating and kit management. WDesignKit abilities let your AI browse, apply, and manage site-wide design kits and templates.
+
+Shipped in v0.0.1.
+
+---
+
+## Nexter Blocks and Nexter Extension
+
+Block-based editing and content management for sites using the Nexter ecosystem. Nexter Blocks covers Gutenberg-native block operations; Nexter Extension covers advanced layout and styling features.
+
+Both shipped as modular categories in v0.0.1.
 
 ---
 
 ## Frequently Asked Questions
 
-<Expandable title="How do I know which tools are available on my site?">
-  Use `sprout-bridge/discover-tools` to get a list of all enabled, publicly exposed abilities. This accounts for any modules you have toggled off.
+<Expandable title="How do I see which abilities are active on my site?">
+  Ask your AI client to run `sprout-bridge/discover-tools`. It returns the exact list of currently active, publicly exposed abilities - reflecting your enabled modules and any per-ability toggles.
 </Expandable>
 
-<Expandable title="Can I call tools that belong to other plugins through the bridge?">
-  Yes. The `sprout-bridge/dispatch-tool` can call any registered WordPress ability, not just SproutOS abilities. If another plugin registers abilities through the WordPress Abilities API, the bridge can discover and dispatch them.
+<Expandable title="Why don't I see Elementor or WooCommerce abilities?">
+  These categories only register when the underlying plugin is active. If Elementor or WooCommerce is not installed and active on your site, their abilities are not registered and will not appear in discovery.
+</Expandable>
+
+<Expandable title="Can I disable specific abilities?">
+  Yes. Go to **SproutOS > AI Abilities** and toggle any of the 175+ abilities on or off individually. Changes take effect on the next session.
 </Expandable>
 
 <Expandable title="What is the difference between sprout/write-file and sprout/edit-file?">
-  `sprout/write-file` creates or replaces an entire file. `sprout/edit-file` performs a targeted string replacement within an existing file, leaving the rest of the content unchanged.
+  `sprout/write-file` creates or replaces an entire file. `sprout/edit-file` performs a targeted string replacement within an existing file, leaving all other content unchanged.
 </Expandable>
 
-<Expandable title="Is there a rate limit on batch-execute?">
-  The batch is limited to 20 operations per request. There is no time-based rate limit, but each operation runs sequentially and has its own permission check.
+<Expandable title="Are all abilities available in every Capability Profile?">
+  Every ability is reachable in every profile via the Bridge tools. The profile controls what loads upfront. In Ultra-Minimal, only Bridge tools load - the AI uses `sprout-bridge/dispatch-tool` to call everything else on demand. See [Capability Profiles](/wordpress-plugin/capability-profiles) for details.
+</Expandable>
+
+<Expandable title="Is PHP execution available on the WordPress.org version?">
+  No. `sprout/execute-php` and `sprout/batch-execute` are disabled in the WordPress.org build to comply with directory guidelines. For full PHP execution support, use the GitHub version.
 </Expandable>
 
 ## Next Steps
 
 <Columns cols="3">
-  <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
-    Install the plugin and connect your AI client.
+  <Card title="Capability Profiles" href="/wordpress-plugin/capability-profiles" icon="sliders">
+    Control which abilities load upfront and manage your token budget per session.
   </Card>
 
   <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
-    Understand the sandbox, filesystem restrictions, and crash recovery.
+    Safe Mode, protected files, rate limiting, and audit logs.
   </Card>
 
-  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
-    Fix connection issues, permission errors, and common problems.
+  <Card title="The Sandbox" href="/wordpress-plugin/sandbox" icon="box">
+    How AI-written PHP is isolated, validated, and crash-guarded.
   </Card>
 </Columns>
