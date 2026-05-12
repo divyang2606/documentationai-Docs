@@ -156,6 +156,11 @@
                 "title": "Abilities Reference",
                 "path": "wordpress-plugin/abilities",
                 "icon": "list"
+              },
+              {
+                "title": "Compare",
+                "path": "wordpress-plugin/compare",
+                "icon": "columns"
               }
             ]
           },
