@@ -5,7 +5,7 @@ description: >-
   errors, permission problems, sandbox conflicts, and tool execution errors.
 ---
 
-This page covers the most common issues you may encounter when using the SproutOS WordPress plugin and how to resolve them. If your issue is not listed here, check the activity log at **SproutOS > Activity** for detailed error messages.
+This page covers the most common issues you may encounter when using the SproutOS WordPress plugin and how to resolve them. If your issue is not listed here, check the activity log at **SproutOS > Analytics** for detailed error messages.
 
 ## Connection Issues
 
@@ -31,9 +31,10 @@ This page covers the most common issues you may encounter when using the SproutO
 **Fixes:**
 
 1. **Check that abilities are enabled.** Go to **SproutOS > AI Abilities** and confirm that tools are toggled on
-2. **Check that modules are enabled.** Go to **SproutOS > Settings** and confirm the modules you need (WordPress, Theme, Filesystem) are toggled on
-3. **Check Safe Mode.** If Safe Mode is enabled, only read-only tools are exposed. Disable Safe Mode if you need write access
-4. **Restart your AI client.** Some clients cache the tool list at startup. Restart the client to refresh
+2. **Check your Capability Profile.** If you are on Ultra-Minimal, only Bridge tools load upfront - your AI uses `sprout-bridge/discover-tools` to find the rest. Switch to Minimal or higher if you want more abilities available immediately. See [Capability Profiles](/wordpress-plugin/capability-profiles).
+3. **Check that modules are enabled.** Go to **SproutOS > Settings** and confirm the modules you need (WordPress, Theme, Filesystem) are toggled on
+4. **Check Safe Mode.** If Safe Mode is enabled, only read-only tools are exposed. Disable Safe Mode if you need write access
+5. **Restart your AI client.** Some clients cache the tool list at startup. Restart the client to refresh
 
 ---
 
@@ -47,7 +48,7 @@ This page covers the most common issues you may encounter when using the SproutO
 
 1. **Ensure HTTPS is active.** WordPress disables application passwords over HTTP
 2. **Check for plugins that disable application passwords.** Some security plugins (Wordfence, iThemes Security) can disable this feature. Check their settings
-3. **Verify WordPress version.** Application passwords require WordPress 5.6+. SproutOS requires WordPress 6.5+
+3. **Verify WordPress version.** Application passwords require WordPress 5.6+. SproutOS requires WordPress 6.9+
 
 ### "401 Unauthorized" on every request
 
@@ -56,7 +57,7 @@ This page covers the most common issues you may encounter when using the SproutO
 **Fixes:**
 
 1. **Re-check your username.** Use your WordPress login username, not your email address or display name
-2. **Regenerate the application password.** Go to **SproutOS > Connect**, revoke the old password, and generate a new one
+2. **Regenerate the application password.** Go to **SproutOS > MCP Connect**, revoke the old password, and generate a new one
 3. **Check for extra spaces.** Application passwords are displayed with spaces for readability, but some clients require them without spaces. Try both formats
 
 ---
@@ -155,7 +156,7 @@ This page covers the most common issues you may encounter when using the SproutO
 
 ### Activity log is too large
 
-**Fix:** Adjust the retention period from **SproutOS > Settings**. The daily cleanup cron job removes entries older than the configured retention period. You can also export logs as CSV and then clear the table.
+**Fix:** Adjust the retention period from **SproutOS > Settings**. The daily cleanup cron job removes entries older than the configured retention period. You can also export logs as CSV from **SproutOS > Analytics** and then clear the table.
 
 ---
 
