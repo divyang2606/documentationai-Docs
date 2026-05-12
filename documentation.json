@@ -114,6 +114,11 @@
                 "title": "Getting Started",
                 "path": "wordpress-plugin/getting-started",
                 "icon": "rocket"
+              },
+              {
+                "title": "Capability Profiles",
+                "path": "wordpress-plugin/capability-profiles",
+                "icon": "sliders"
               }
             ]
           },
