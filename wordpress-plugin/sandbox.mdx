@@ -1,0 +1,123 @@
+---
+title: 'The Sandbox'
+description: >-
+  The SproutOS sandbox gives your AI a safe place to write and test PHP - isolated from your core files, auto-validated, and crash-guarded.
+---
+
+When your AI writes PHP, it doesn't go straight into your theme or plugin files. It goes into a dedicated sandbox folder (`wp-content/sproutos-mcp-sandbox/`) where it's validated, loaded automatically, and easy to disable if something goes wrong.
+
+This keeps AI-generated code separate from everything else on your site - and gives you full control over what runs.
+
+{/* IMAGE: Sandbox tab showing list of files with enable/disable toggles */}
+
+<Callout kind="info">
+  The sandbox is disabled by default. You need to turn it on before your AI can write PHP files. PHP execution (`sprout/execute-php`) is a separate feature - see [PHP Execution](#php-execution-vs-sandbox) below.
+</Callout>
+
+## Enabling the Sandbox
+
+<Steps>
+  <Step title="Open SproutOS Settings">
+    In your WordPress admin, go to **SproutOS > Settings**.
+  </Step>
+
+  <Step title="Enable the sandbox">
+    Find the **Sandbox** toggle and turn it on. Save your settings.
+  </Step>
+
+  <Step title="Confirm it's active">
+    A **Sandbox** tab now appears in your SproutOS admin panel. This is where you manage all AI-generated PHP files.
+  </Step>
+</Steps>
+
+## Managing Sandbox Files
+
+Once the sandbox is enabled, every PHP file your AI writes appears in **SproutOS > Sandbox**. From there you can:
+
+- **Enable or disable individual files** - a disabled file stays on disk but stops loading
+- **Review file content** before re-enabling anything that was auto-disabled
+- **Delete files** you no longer need
+
+Files load automatically on every WordPress request the moment they're enabled. Disabling one takes effect immediately on the next request.
+
+## Disabling a Sandbox File
+
+If a file is causing problems or you want to pause it:
+
+<Steps>
+  <Step title="Go to the Sandbox tab">
+    Navigate to **SproutOS > Sandbox**.
+  </Step>
+
+  <Step title="Find the file">
+    Locate the file in the list. Active files show a green status indicator.
+  </Step>
+
+  <Step title="Disable it">
+    Click **Disable**. The file is renamed with a `.disabled` extension and stops loading immediately. It stays on disk - nothing is deleted.
+  </Step>
+</Steps>
+
+To re-enable it, click **Enable** from the same screen.
+
+## Crash Guard
+
+If a sandbox file causes a fatal PHP error, SproutOS handles it automatically:
+
+- The broken file is disabled (`.disabled` extension added)
+- Safe Mode activates - your AI can read but cannot write until you review
+- All other sandbox files keep running normally
+- Nothing is deleted
+
+You review the file in **SproutOS > Sandbox**, fix or remove it, then turn Safe Mode off to resume normal operation.
+
+<Callout kind="tip">
+  Crash Guard means one bad snippet can't take down your site. Each file is isolated - a fatal error in one file doesn't affect the others.
+</Callout>
+
+## PHP Execution vs Sandbox
+
+These are two separate features that work differently:
+
+| | Sandbox | PHP Execution |
+| --- | --- | --- |
+| What it does | AI writes PHP files that auto-load | AI runs PHP code directly in WordPress |
+| How to enable | SproutOS > Settings > Sandbox toggle | Enabled by default in GitHub version |
+| Availability | GitHub + WordPress.org | GitHub version only |
+| Use case | Persistent snippets and custom functionality | Testing, debugging, one-off queries |
+
+Both are available in the GitHub version. PHP execution (`sprout/execute-php`) is disabled in the WordPress.org build.
+
+## Frequently Asked Questions
+
+<Expandable title="Does the sandbox affect my theme or plugin files?">
+  No. The sandbox is a completely separate directory (`wp-content/sproutos-mcp-sandbox/`). Your AI never writes PHP directly into theme or plugin folders - only into the sandbox.
+</Expandable>
+
+<Expandable title="What happens to sandbox files if I deactivate SproutOS?">
+  The files stay on disk but stop loading - SproutOS's sandbox loader is what includes them on each request. Reactivating the plugin restores normal sandbox behavior.
+</Expandable>
+
+<Expandable title="Can I see what code is in a sandbox file?">
+  Yes. Click any file in **SproutOS > Sandbox** to view its content before enabling or disabling it.
+</Expandable>
+
+<Expandable title="Is PHP validated before it's saved to the sandbox?">
+  Yes. SproutOS runs PHP tokenizer validation and symbol conflict detection before saving any file. Malformed code is rejected before it ever reaches the sandbox.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Safe Mode, protected files, rate limiting, and the full safety model.
+  </Card>
+
+  <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for sandbox-related abilities like enable-file and disable-file.
+  </Card>
+
+  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
+    Fix common sandbox issues and Safe Mode recovery steps.
+  </Card>
+</Columns>
