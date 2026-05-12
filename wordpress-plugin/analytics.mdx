@@ -1,0 +1,150 @@
+---
+title: 'Analytics & Monitoring'
+description: >-
+  Every SproutOS tool call is logged automatically. Monitor AI activity, set up notifications, export logs, and control what data is collected.
+---
+
+Every ability your AI runs is logged automatically - no setup required. The Analytics tab gives you a live view of what your AI has done, how long it took, and whether anything failed. You can also set up email or webhook notifications and control exactly what data gets stored.
+
+{/* IMAGE: Analytics dashboard showing 6 stat cards and activity feed */}
+
+## The Analytics Dashboard
+
+Go to **SproutOS > Analytics** to see your dashboard.
+
+**Six stat cards give you a quick summary:**
+
+| Card | What It Shows |
+| --- | --- |
+| Total Calls | Cumulative ability call count |
+| Calls Today | Calls in the last 24 hours |
+| Failed Calls | Error count (shown in red when above zero) |
+| Unique Sessions | Distinct session count |
+| Unique Users | Distinct WordPress user count |
+| Most Used Ability | Top ability by call count |
+
+Below the cards, the **Activity Feed** groups calls by session. Expand any session to see individual entries - each one shows the risk level, ability name, execution time in milliseconds, and an error badge if it failed.
+
+**Risk levels:**
+- `readonly` - read only, no changes made
+- `additive` - new content created
+- `destructive` - content modified or deleted
+- `unknown` - risk level not determined
+
+## Exporting and Clearing Logs
+
+From **SproutOS > Analytics**:
+
+- **Export as CSV** - downloads the full activity log for offline review or sharing with your team
+- **Purge all logs** - clears everything with one click
+
+Log retention is configurable. Go to **SproutOS > Settings** and set `analytics_retention_days` to control how long entries are kept. A daily cron job prunes old entries automatically.
+
+## Email Notifications
+
+Get a summary of AI activity delivered to your inbox.
+
+<Steps>
+  <Step title="Open Settings">
+    Go to **SproutOS > Settings** and find the Email Notifications section.
+  </Step>
+
+  <Step title="Choose a frequency">
+    Select **Every Session** to get a summary after each AI session, or **Daily Digest** for a once-a-day summary. Set to **Off** to disable.
+  </Step>
+
+  <Step title="Set a recipient">
+    Enter the email address where notifications should be sent.
+  </Step>
+</Steps>
+
+Each notification includes a summary of abilities called, success count, and error count.
+
+## Webhook Notifications
+
+Send real-time notifications to Slack, Discord, or any custom endpoint when abilities run.
+
+<Steps>
+  <Step title="Open Settings">
+    Go to **SproutOS > Settings** and find the Webhook Notifications section.
+  </Step>
+
+  <Step title="Add your endpoint">
+    Enter your Slack webhook URL, Discord webhook URL, or any custom HTTPS endpoint.
+  </Step>
+
+  <Step title="Choose an event filter">
+    Select what triggers a notification:
+    - **All ability calls** - every tool call
+    - **Destructive only** - only write, edit, or delete operations
+    - **Errors only** - only failed calls
+  </Step>
+
+  <Step title="Test it">
+    Click **Send Test** to confirm your endpoint is receiving payloads correctly.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Webhook payloads are signed with HMAC using the `X-Sprout-Signature` header. Add a `webhook_secret` in Settings to verify payloads on your endpoint.
+</Callout>
+
+## Privacy Controls
+
+Control exactly what data SproutOS collects and stores. Go to **SproutOS > Settings** and find the Analytics Data Collection section.
+
+| Toggle | What It Controls |
+| --- | --- |
+| Store IP addresses | Captures the MCP caller's IP address |
+| Anonymize IP | Masks the last octet (e.g., 192.168.1.xxx) |
+| Store user identity | Links log entries to a WordPress user ID |
+| Store full request body | Saves the complete JSON input for each call |
+| Store full response body | Saves the complete JSON output for each call |
+
+The **Data Summary Table** at the bottom of Settings shows a live view of what's collected, where it goes (AI client, database, webhook), and what each toggle affects.
+
+## Server Instructions
+
+SproutOS tells your AI client basic information about your site at the start of each session. You control what it shares. From **SproutOS > Settings**, toggle each item:
+
+- WordPress version
+- PHP version
+- Active theme name and version
+- Elementor version (only shown when Elementor is active)
+- List of active plugins with versions
+
+Turn off anything you don't want your AI client to know about upfront.
+
+## Frequently Asked Questions
+
+<Expandable title="Where is the analytics data stored?">
+  All logs are stored in a custom database table on your WordPress installation. Nothing is sent to external servers. You control retention, export, and deletion entirely from the SproutOS admin panel.
+</Expandable>
+
+<Expandable title="Can I filter the activity feed by risk level?">
+  Yes. The activity feed in the Analytics tab can be filtered by risk level so you can focus on destructive or failed calls.
+</Expandable>
+
+<Expandable title="What's in a webhook payload?">
+  Each payload includes: ability name, status (success or error), session ID, WordPress user, and timestamp. Add a `webhook_secret` in Settings to verify the `X-Sprout-Signature` header on your endpoint.
+</Expandable>
+
+<Expandable title="How do I stop logging entirely?">
+  Go to **SproutOS > Settings** and set the log level to **Off**. You can also purge existing logs from the Analytics tab at any time.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Safe Mode, Ability Manager, and the full safety model.
+  </Card>
+
+  <Card title="Use Cases" href="/wordpress-plugin/use-cases" icon="lightbulb">
+    Real-world prompt examples by category.
+  </Card>
+
+  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
+    Fix common issues with connections, permissions, and logs.
+  </Card>
+</Columns>
