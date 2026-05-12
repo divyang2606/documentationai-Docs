@@ -72,12 +72,17 @@ SproutOS uses two open standards to connect your AI directly to WordPress.
 | **Save** | Working code becomes a sandbox file - loaded on every request, crash-guarded, manageable from the admin dashboard |
 | **Expand** | Bridge tools let your AI call any of the 175+ abilities on demand, regardless of your Capability Profile |
 
-**Two ways to connect:**
+**Two ways to connect your AI client:**
 
-| Transport | When To Use | How |
-| --- | --- | --- |
-| **STDIO** | Local development sites | Via WP-CLI: `wp mcp-adapter serve` |
-| **HTTP** | Remote or production sites | Via `@automattic/mcp-wordpress-remote` package |
+<Columns cols="2">
+  <Card title="Local Site" icon="monitor">
+    WordPress running on your own computer. Connects via WP-CLI using a direct command - no internet required.
+  </Card>
+
+  <Card title="Remote Site" icon="globe">
+    WordPress hosted on a server or staging URL. Connects over HTTPS using your Application Password.
+  </Card>
+</Columns>
 
 <Card title="How It Works - Full Breakdown" href="/wordpress-plugin/how-it-works" icon="zap">
   Architecture, transport options, the bridge system, and how AI discovers tools.
