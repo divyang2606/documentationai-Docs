@@ -1,73 +1,91 @@
 ---
-title: 'Use Cases'
+title: 'Prompt Examples'
 description: >-
-  Real-world prompts for SproutOS across site maintenance, performance, security, content, code, and WooCommerce. See what your AI can actually do.
+  Ready-to-use prompts for SproutOS across site maintenance, performance, security, content, code, and WooCommerce. Copy, adapt, and run them today.
 ---
 
-SproutOS works from plain language. You describe what you want - your AI figures out which abilities to call and in what order. These are real workflows you can run today.
+You don't need to learn commands or tool names. Just describe what you want in plain language - your AI handles the rest. These are real prompts you can copy, adapt to your site, and run today.
 
 ## Site Maintenance
 
-> "Check for plugin updates each morning, take a full UpdraftPlus backup first, then apply updates one by one and verify the site after each one."
+**Weekly plugin update routine for a client site**
+> "Before touching anything, take a full UpdraftPlus backup of the site. Then check for available plugin updates. Apply them one at a time - after each update, check if the site loads correctly and flag any errors. Give me a summary at the end with what was updated and anything that failed."
 
-> "Run a complete site health check: uptime, pending updates, database size, broken links, disk usage."
+**Monthly site health audit**
+> "Run a full site health check. I want to know: are there any pending plugin or theme updates, how large is the database, are there any broken internal links, how much disk space are we using, and are there any PHP errors in the debug log. Give me a structured report I can share with the client."
 
-> "Find all posts without a featured image and flag them for review."
+**Content cleanup before a site handoff**
+> "Go through all published posts and pages. Find anything that has no featured image, no meta description, or is still sitting in draft with a modified date older than 6 months. List everything with the post ID, title, and what's missing."
 
-> "Find and delete all post revisions older than 30 days."
+**Database cleanup after a year of posts**
+> "Find all post revisions older than 30 days and delete them. Also remove any orphaned postmeta rows, expired transients older than 7 days, and spam comments. Show me the counts before and after so I can see what was cleared."
 
 ## Performance
 
-> "Run a full Lighthouse audit and trace the exact cause of the slow score."
+**Diagnosing a slow page score before a client call**
+> "Run a Lighthouse performance audit on the homepage. For every issue it flags, trace the exact cause - which plugin, theme file, or script is responsible. I need to walk into a client call with specific answers, not generic suggestions."
 
-> "Check our autoload data and tell me what's slowing down the site."
+**Finding what's bloating the database autoload**
+> "Check the wp_options table and show me everything in autoload sorted by size. Flag anything over 10KB and tell me which plugin or theme owns it. I want to know what's slowing down every page load before I start removing anything."
 
-> "Find abandoned post revisions, orphaned metadata, expired transients, and spam comments - report first, then clean up."
+**Full database and cache cleanup on a mature site**
+> "This site has been running for 3 years without a cleanup. Find and report: abandoned post revisions, orphaned postmeta, expired transients, spam comments, and unused terms. Don't delete anything yet - just give me the full report with counts and estimated sizes so I can decide what to clean."
 
 ## Security
 
-> "Scan our theme files for any hardcoded credentials."
+**Pre-launch security check on a client build**
+> "Scan all active theme files and child theme files for hardcoded credentials, API keys, passwords, or anything that looks like a secret. Also check functions.php and any custom plugin files in wp-content. List every match with the file path and line number."
 
-> "Audit all active plugins and check for known vulnerabilities."
+**Quarterly plugin vulnerability audit**
+> "List all active plugins with their current versions. For each one, check if there are known vulnerabilities reported in the changelog or readme. Flag anything that hasn't been updated in over 6 months. Give me a risk summary I can use to prioritize what to update or replace."
 
 ## Content and SEO
 
-> "Create a landing page for our summer sale with this content."
+**Building a campaign landing page fast**
+> "Create a new page called 'Summer Sale 2025'. Set it to draft. Use this content: [paste your content here]. Structure it with a hero section, three feature blocks, and a CTA at the bottom. Use our active theme's CSS classes for the layout so it matches the rest of the site."
 
-> "List all WooCommerce orders from last month and show me the total revenue."
+**Pre-migration URL audit**
+> "We're moving this site to a new domain next week. Find every hardcoded reference to the current domain across all theme files, functions.php, and the wp_options table. List each one with the file path or option name so we can update them before the migration."
 
-> "Find all hardcoded URLs in theme files before we move to the new domain."
+**WooCommerce revenue report for the finance team**
+> "Pull all WooCommerce orders from last month with status 'completed'. Give me the total revenue, average order value, top 5 products by revenue, and number of orders per week. Format it as a summary table I can copy into a spreadsheet."
 
 ## Code and Automation
 
-> "Change the button border radius to 8px across the whole site."
+**Global design tweak across an Elementor site**
+> "Change the border radius on all buttons across the site to 8px. Check the Elementor global styles first - if it's set there, update it at the global level. If buttons have it set per-widget, find them and update each one. Let me know how many were changed and if anything was skipped."
 
-> "Create and deploy a custom PHP snippet that adds a banner to all product pages."
+**Deploying a custom PHP snippet without touching plugin files**
+> "Write a PHP snippet that adds a sticky announcement banner to the top of every product page. The banner should say 'Free shipping on orders over $50' and be dismissible with a close button. Save it to the sandbox so it loads automatically. Make sure it doesn't conflict with any existing hooks."
 
-> "Find and trace the JavaScript error caused by a plugin conflict, then fix it."
+**Tracking down a JavaScript conflict after a plugin update**
+> "After yesterday's plugin updates, there's a JS error on the checkout page that's stopping the order button from working. Check the browser console output, read the active theme's JS files, and look at any scripts enqueued by WooCommerce or recently updated plugins. Find the conflict and suggest a fix."
 
 ## WooCommerce
 
-> "Export orders with custom filters in plain English."
+**Stock alert before a product restock decision**
+> "List all products where stock quantity is below 5 units. Include the product ID, name, current stock, and whether it's set to backorder. Sort by stock level low to high. I need this to decide what to reorder this week."
 
-> "List products with stock below 5 units."
+**End-of-quarter coupon performance report**
+> "Generate a report for all coupon codes used in the last 3 months. For each coupon, show: total uses, total discount given, and total revenue on orders where it was applied. Highlight any that were used more than 50 times - those are the ones worth renewing."
 
-> "Generate a coupon report for last quarter."
+**Bulk product update before a sale**
+> "We're running a 20% sale on all products in the 'Summer Collection' category starting tomorrow. Set all of them to sale price at 20% off their regular price. Don't touch any products that already have a sale price set. Show me a list of what was changed before saving."
 
-## How to Write Good Prompts
+## How to Write Better Prompts
 
-You don't need to know ability names or technical details. A few habits make prompts more effective:
+A few habits that consistently produce better results:
 
-- **Be specific about the outcome, not the method.** "Change the hero heading color to blue" works better than "edit style.css line 42."
-- **Reference your actual setup.** Say "our active theme" or "the Elementor homepage" so the AI reads the right files first.
-- **Ask for a report before asking for changes.** When exploring an unfamiliar part of your site, start with "show me" or "find" before "update" or "delete."
-- **Break large tasks into steps.** If a task has many moving parts, give the AI one phase at a time and review between them.
+- **Describe the outcome, not the method.** "Make all product images square with a white background" is clearer than "update the image CSS." Let the AI choose the approach.
+- **Reference your actual setup.** Mention your theme name, plugin names, or page names - "our Astra child theme" or "the Elementor homepage" - so the AI reads the right files first.
+- **Ask for a report before making changes.** On anything unfamiliar or risky, start with "show me" or "find and list" before "update" or "delete." Review what the AI finds, then tell it to proceed.
+- **Break large tasks into phases.** Give the AI one step at a time for complex workflows. Review the result of each phase before moving to the next.
 
 ## Next Steps
 
 <Columns cols="3">
   <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
-    See the full list of 175+ abilities your AI can call.
+    Full list of 175+ abilities your AI can call.
   </Card>
 
   <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
