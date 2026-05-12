@@ -103,11 +103,6 @@
                 "title": "Connect WordPress with AI",
                 "path": "wordpress-plugin/what-is-mcp",
                 "icon": "zap"
-              },
-              {
-                "title": "Prompt Library",
-                "path": "wordpress-plugin/use-cases",
-                "icon": "lightbulb"
               }
             ]
           },
@@ -129,6 +124,11 @@
                 "title": "The Sandbox",
                 "path": "wordpress-plugin/sandbox",
                 "icon": "box"
+              },
+              {
+                "title": "Prompt Library",
+                "path": "wordpress-plugin/use-cases",
+                "icon": "lightbulb"
               }
             ]
           },
