@@ -1,0 +1,92 @@
+---
+title: 'Capability Profiles'
+description: >-
+  Control how many of SproutOS's 175+ abilities load at the start of each AI session, and manage your token budget without losing access to any tool.
+---
+
+Every time your AI client connects to SproutOS, it receives a list of available abilities. That list consumes tokens - the currency of every AI session. The longer the list, the more tokens used before your AI even starts working.
+
+Capability Profiles let you control that list. You choose how much to send upfront, and the AI uses Bridge tools to discover and call everything else on demand. You never lose access to any ability - you just control when the AI learns about it.
+
+{/* IMAGE: Capability Profile selector in the AI Abilities tab */}
+
+## The 4 Profiles
+
+<Callout kind="info">
+  **Minimal** is the default profile. It gives the AI enough context to handle most tasks while keeping token usage low. Start here unless you have a specific reason to change it.
+</Callout>
+
+| Profile | What loads upfront | Best for |
+| --- | --- | --- |
+| **Ultra-Minimal** | Bridge tools only (3 abilities) | Token-critical sessions, exploration, audits |
+| **Minimal** *(default)* | Core abilities - ~6 KB / ~1,500 tokens | Most workflows - the right starting point |
+| **Standard** | Larger catalogue | Sessions where you want the AI to have more context immediately |
+| **Full** | All 175+ abilities with complete schemas | Deep, multi-step work where the AI needs to reason across all tools from the start |
+
+All four profiles include the Bridge tools. The AI can reach any of the 175+ abilities in any profile - the difference is only in what's visible upfront versus discovered on demand.
+
+## How to Choose
+
+| If you're doing this... | Use this profile |
+| --- | --- |
+| General site management, content, maintenance | Minimal |
+| Read-only audits, exploration on a live site | Ultra-Minimal |
+| Deep Elementor or builder work | Standard or Full |
+| Token budget is tight | Ultra-Minimal or Minimal |
+| You want the AI to have everything ready immediately | Full |
+
+When in doubt, stay on Minimal. The AI will find what it needs through the Bridge.
+
+## How Bridge Tools Make Every Profile Work
+
+Bridge tools are three special abilities that are always available, in every profile:
+
+- `sprout-bridge/discover-tools` - returns a catalogue of every ability registered on your site
+- `sprout-bridge/inspect-tool` - shows the full schema for any specific ability
+- `sprout-bridge/dispatch-tool` - calls any registered ability by name, on demand
+
+When you use Ultra-Minimal, the AI starts with only these three tools. The moment it needs a specific ability - say, `sprout/update-page` - it calls `discover-tools` to find it, then `dispatch-tool` to run it. The result is the same as if the ability had been loaded upfront. The only difference is a small extra round-trip.
+
+<Callout kind="tip">
+  Ultra-Minimal works best for focused tasks. If your AI needs to jump between many different ability categories in one session, Standard or Full will save round-trips and keep the session faster.
+</Callout>
+
+## Changing Your Profile
+
+Go to **SproutOS > AI Abilities** and select a profile from the **Capability Profile** selector. The change takes effect on the next session - your current connection will use the profile it started with.
+
+You can switch profiles anytime without affecting your abilities, sandbox files, or analytics data.
+
+## Frequently Asked Questions
+
+<Expandable title="Will Ultra-Minimal limit what the AI can do?">
+  No. Every one of the 175+ abilities is still reachable via Bridge tools in Ultra-Minimal mode. The profile only controls what loads upfront - not what the AI can access.
+</Expandable>
+
+<Expandable title="What does 'tokens upfront' actually mean?">
+  When your AI client connects, SproutOS sends a tool manifest - a JSON description of every ability the AI can see. That manifest consumes tokens from your session budget before you've asked a single question. Minimal sends ~1,500 tokens worth. Full sends the complete catalogue. Ultra-Minimal sends only 3 tool definitions.
+</Expandable>
+
+<Expandable title="Which profile should agencies use on live sites?">
+  Most agencies run Minimal on live sites. It's fast, low on token cost, and the AI discovers deeper tools automatically when a task requires them. If you're running automated or batch workflows, Standard or Full may reduce latency.
+</Expandable>
+
+<Expandable title="Can I create a custom profile?">
+  Not yet. You can fine-tune which individual abilities are active from the **AI Abilities** tab - enabling or disabling each of the 175+ abilities independently - but profiles themselves are preset. Custom profiles are on the roadmap.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for all 175+ abilities across 10 categories.
+  </Card>
+
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    Safe Mode, sandbox isolation, protected files, and audit logs.
+  </Card>
+
+  <Card title="The Sandbox" href="/wordpress-plugin/sandbox" icon="box">
+    How AI-written PHP is isolated, validated, and crash-guarded.
+  </Card>
+</Columns>
