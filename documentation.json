@@ -135,6 +135,11 @@
                 "title": "Security & Best Practices",
                 "path": "wordpress-plugin/security",
                 "icon": "shield"
+              },
+              {
+                "title": "Analytics & Monitoring",
+                "path": "wordpress-plugin/analytics",
+                "icon": "bar-chart"
               }
             ]
           },
