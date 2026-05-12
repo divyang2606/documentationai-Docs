@@ -14,7 +14,7 @@ The SproutOS plugin connects your WordPress site to AI agents through MCP (Model
 | --- | --- |
 | **WordPress** | 6.9 or higher |
 | **PHP** | 8.0 or higher |
-| **Node.js** | 18 or higher (on your local machine, not the server) |
+| **Node.js** | 18 or higher (on the machine running your AI client) |
 | **HTTPS** | Required for HTTP transport |
 | **AI Client** | Any MCP-compatible client (Claude Desktop, Claude Code, Cursor, Windsurf) |
 
@@ -48,77 +48,33 @@ The SproutOS plugin connects your WordPress site to AI agents through MCP (Model
   </Step>
 
   <Step title="Connect your AI client">
-    Add SproutOS as an MCP server in your AI client. Choose your transport based on how you're connecting:
+    Add SproutOS as an MCP server in your AI client. Your site must use HTTPS. Add this to your AI client's MCP configuration:
 
-    <Callout kind="info">
-      **STDIO** is for local WordPress sites accessed via WP-CLI. **HTTP** is for remote or production sites accessed over the network.
-    </Callout>
-
-    <Tabs>
-      <Tab title="STDIO (local sites)">
-        Use STDIO when your WordPress site is running locally and you have WP-CLI installed. Add this to your AI client's MCP configuration:
-
-        ```json
-        {
-          "mcpServers": {
-            "wordpress": {
-              "command": "wp",
-              "args": [
-                "--path=/path/to/your/wordpress",
-                "mcp-adapter",
-                "serve",
-                "--server=mcp-adapter-default-server",
-                "--user=admin"
-              ]
-            }
+    ```json
+    {
+      "mcpServers": {
+        "wordpress": {
+          "command": "npx",
+          "args": ["-y", "@automattic/mcp-wordpress-remote@latest"],
+          "env": {
+            "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
+            "WP_API_USERNAME": "your-username",
+            "WP_API_PASSWORD": "your-application-password"
           }
         }
-        ```
+      }
+    }
+    ```
 
-        Replace `/path/to/your/wordpress` with the actual path to your WordPress installation.
-      </Tab>
-
-      <Tab title="HTTP (remote sites)">
-        Use HTTP for remote or production sites. Your site must use HTTPS. Add this to your AI client's MCP configuration:
-
-        ```json
-        {
-          "mcpServers": {
-            "wordpress-remote": {
-              "command": "npx",
-              "args": ["-y", "@automattic/mcp-wordpress-remote@latest"],
-              "env": {
-                "WP_API_URL": "https://your-site.com/wp-json/mcp/mcp-adapter-default-server",
-                "WP_API_USERNAME": "your-username",
-                "WP_API_PASSWORD": "your-application-password"
-              }
-            }
-          }
-        }
-        ```
-
-        Replace the values with your site URL, WordPress username, and the application password from the previous step.
-      </Tab>
-    </Tabs>
+    Replace the values with your site URL, WordPress username, and the application password from the previous step.
   </Step>
 
   <Step title="Verify the connection">
-    Test the connection using WP-CLI:
+    Open your AI client and type a simple prompt:
 
-    ```bash
-    echo '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | \
-      wp mcp-adapter serve --user=admin --server=mcp-adapter-default-server
-    ```
+    > "List the files in my WordPress root directory."
 
-    Or list all registered MCP servers:
-
-    ```bash
-    wp mcp-adapter list
-    ```
-
-    You can also open your AI client and ask it to list your WordPress root directory files. If connected, the AI will use `sprout/list-directory` and return the listing.
-
-    If it doesn't connect, check the [Troubleshooting guide](/wordpress-plugin/troubleshooting) for common issues.
+    If connected, the AI will return a file listing from your site. If it doesn't respond as expected, check the [Troubleshooting guide](/wordpress-plugin/troubleshooting) for common issues.
   </Step>
 
   <Step title="Choose a Capability Profile">
@@ -152,9 +108,6 @@ The SproutOS plugin connects your WordPress site to AI agents through MCP (Model
   No. WordPress application passwords require HTTPS. For local development, use a tool like mkcert, Laravel Valet, or Local by Flywheel to add SSL.
 </Expandable>
 
-<Expandable title="Do I need WP-CLI for HTTP transport?">
-  No. WP-CLI is only required for STDIO transport. HTTP transport uses the Automattic proxy package and connects over your site's REST API.
-</Expandable>
 
 ## Next Steps
 

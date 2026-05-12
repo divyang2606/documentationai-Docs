@@ -72,21 +72,7 @@ SproutOS uses two open standards to connect your AI directly to WordPress.
 | **Save** | Working code becomes a sandbox file - loaded on every request, crash-guarded, manageable from the admin dashboard |
 | **Expand** | Bridge tools let your AI call any of the 175+ abilities on demand, regardless of your Capability Profile |
 
-**Two ways to connect your AI client:**
-
-<Columns cols="2">
-  <Card title="Local Site" icon="monitor">
-    WordPress running on your own computer. Connects via WP-CLI using a direct command - no internet required.
-  </Card>
-
-  <Card title="Remote Site" icon="globe">
-    WordPress hosted on a server or staging URL. Connects over HTTPS using your Application Password.
-  </Card>
-</Columns>
-
-<Card title="How It Works - Full Breakdown" href="/wordpress-plugin/how-it-works" icon="zap">
-  Architecture, transport options, the bridge system, and how AI discovers tools.
-</Card>
+SproutOS connects over HTTPS using your WordPress Application Password. Any MCP-compatible AI client can connect to any site - staging, production, or agency client sites.
 
 ---
 
@@ -209,7 +195,7 @@ The plugin adds a **SproutOS** menu in your WordPress admin with five tabs.
 
 | Tab | What It's For |
 | --- | --- |
-| **MCP Connect** | Generate and manage Application Passwords. Copy connection config snippets for STDIO or HTTP. |
+| **MCP Connect** | Generate and manage Application Passwords. Copy connection config snippets. |
 | **AI Abilities** | Toggle individual tools on/off. Choose Capability Profile. Enable Safe Mode. |
 | **Sandbox** | View and manage AI-generated PHP files. Enable or disable files individually. Only shown when sandbox is enabled. |
 | **Analytics** | Six stat cards, session-grouped activity feed, CSV export. Every tool call logged with risk level and execution time. |
@@ -271,7 +257,7 @@ Every tool call is logged automatically. No setup required.
 
 ## Compatible AI Clients
 
-SproutOS works with any MCP-compatible client. Connect over STDIO for local development or HTTP for remote sites.
+SproutOS works with any MCP-compatible client. Connect over HTTPS to any WordPress site - staging, production, or agency client sites.
 
 - **Claude Desktop** - Anthropic's desktop AI application
 - **Claude Code** - Anthropic's CLI tool for developers
@@ -296,7 +282,7 @@ SproutOS works with any MCP-compatible client. Connect over STDIO for local deve
 | --- | --- |
 | WordPress | 6.9+ |
 | PHP | 8.0+ |
-| Node.js | 18+ (on your local machine, not the server) |
+| Node.js | 18+ (on the machine running your AI client) |
 | HTTPS | Required for HTTP transport |
 | AI Client | Any MCP-compatible client |
 
