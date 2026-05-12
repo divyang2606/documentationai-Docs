@@ -1,131 +1,99 @@
 ---
-title: 'Connect WordPress with AI: What Is MCP?'
+title: 'What is MCP?'
 description: >-
-  Learn what MCP (Model Context Protocol) is and why it is the best way to
-  connect AI tools like Claude, ChatGPT, and Cursor to your WordPress site
-  for building, editing, and managing content.
+  MCP (Model Context Protocol) is the open standard that lets AI clients talk directly to your WordPress site. Learn how it works and why SproutOS uses it.
 ---
 
-MCP (Model Context Protocol) is an open standard that lets AI tools talk directly to your WordPress site. Instead of copying code from a chatbot and pasting it into your editor, MCP lets the AI read your files, edit your theme, create pages, and run code on your site, all from inside the AI chat window. You stay in control the whole time.
+MCP stands for **Model Context Protocol** - an open standard that lets AI tools call actions on external systems. SproutOS uses MCP to connect your AI client directly to your WordPress site, so instead of copy-pasting code between windows, the AI reads your files and acts on your site from inside the chat.
 
-## The Old Way: Copy and Paste
+Think of MCP as a translator. Your AI speaks MCP. Your WordPress site (with SproutOS installed) listens for MCP. They talk directly - no manual steps in between.
 
-Without MCP, working with AI on a WordPress site looks like this:
+## How MCP Works With SproutOS
 
-1. You open ChatGPT, Claude, or another AI tool
-2. You describe what you want, like "add a contact form to my homepage"
-3. The AI generates code and shows it to you
-4. You copy the code
-5. You switch to your WordPress editor or file manager
-6. You paste the code in the right place
-7. You refresh your site to check if it worked
-8. If something broke, you go back to the AI, explain the error, and repeat
+SproutOS registers 175+ tools on your WordPress site using the **WordPress Abilities API** - a built-in WordPress feature (WP 6.9+) that lets plugins expose callable actions with defined input and output schemas.
 
-This loop is slow. The AI cannot see your site. It does not know what theme you use, what plugins are installed, or what your pages look like. It is guessing every time.
+When you ask your AI something, it:
+1. Looks at the available tools SproutOS has registered
+2. Picks the right one based on what you asked
+3. Calls it with the right parameters
+4. Returns the result to you in plain language
 
-## The MCP Way: Direct Connection
+You never need to know the tool names. The AI figures it out automatically.
 
-With MCP, the AI connects directly to your WordPress site. The workflow becomes:
+**A few examples of what that looks like:**
 
-1. You open your AI tool (Claude Desktop, Claude Code, Cursor, or any MCP-compatible client)
-2. You describe what you want, like "add a contact form to my homepage"
-3. The AI reads your theme files, checks your page structure, writes the code, and applies it to your site
-4. You review the changes
-
-No copying. No pasting. No switching between windows. The AI sees your actual site and works with it directly.
-
-## What MCP Actually Does
-
-Think of MCP as a translator between your AI tool and your WordPress site.
-
-- Your AI tool speaks "MCP", a standard language for requesting actions
-- Your WordPress site (with SproutOS installed) understands MCP and exposes a set of **tools** the AI can use
-- The AI calls these tools to read files, write code, create pages, and more
-
-Here is a simple example:
-
-| What You Say | What the AI Does Behind the Scenes |
+| What You Say | What the AI Calls |
 | --- | --- |
-| "Show me my homepage code" | Calls `sprout/read-file` to read your front-page template |
-| "Change the heading color to blue" | Calls `sprout/update-theme-stylesheet` to add CSS to your theme |
-| "Create an About page" | Calls `sprout/create-page` to create a new WordPress page |
-| "List all my theme files" | Calls `sprout/list-theme-files` to show your theme structure |
+| "Show me my homepage code" | `sprout/read-file` on your front-page template |
+| "Change the heading color to blue" | `sprout/update-theme-stylesheet` with the new CSS |
+| "Create an About page" | `sprout/create-page` with your title and content |
+| "List all my theme files" | `sprout/list-theme-files` on the active theme |
 
-You do not need to know these tool names. The AI picks the right tool automatically based on what you ask.
+## Why MCP and Not FTP or REST API?
 
-## Why MCP Instead of Other Methods
-
-You might wonder why not just give the AI your FTP password or use the WordPress REST API directly. Here is how MCP compares:
-
-| Method | AI Sees Your Site | Safety Controls | Works With Any AI | Easy Setup |
+| Method | AI Sees Your Site | Safety Controls | Works With Any AI Client | Setup |
 | --- | --- | --- | --- | --- |
-| **Copy-paste** | No | N/A | Yes | N/A |
-| **FTP/SSH access** | Yes | No sandbox, no restrictions | No | Hard |
-| **REST API directly** | Partially | WordPress permissions only | No | Medium |
-| **MCP (SproutOS)** | Yes | Sandbox, file restrictions, activity log, safe mode | Yes | Yes |
+| Copy-paste | No | None | Yes | None |
+| FTP / SSH | Yes | No sandbox, no restrictions | No | Complex |
+| WordPress REST API | Partially | WordPress permissions only | No | Medium |
+| MCP via SproutOS | Yes | Sandbox, Safe Mode, Audit Log, per-tool controls | Yes - any MCP client | Simple |
 
-MCP gives the AI full visibility into your site while keeping safety controls in place. Every action is logged. Dangerous files are protected. PHP code runs in a sandbox. You can turn individual tools on or off.
+FTP gives the AI raw access with no guardrails. The REST API exposes limited endpoints and requires custom integration per AI client. MCP is designed for AI agents from the ground up - the AI discovers available tools automatically, and SproutOS adds the safety layer on top.
 
-## What AI Tools Work With MCP
+## Which AI Clients Support MCP?
 
-MCP is an open standard. Any AI client that supports it can connect to your WordPress site through SproutOS. Currently supported clients include:
+MCP is an open standard. Any client that adopts it can connect to SproutOS with no extra setup:
 
-- **Claude Desktop** by Anthropic (desktop AI app)
-- **Claude Code** by Anthropic (CLI tool for developers)
-- **Cursor** (AI-powered code editor)
-- **Windsurf** (AI coding assistant)
-- **Zed** (collaborative code editor with MCP support)
-- **Any future MCP-compatible client**, since the protocol is open and new tools can adopt it
+- **Claude Desktop** - Anthropic's desktop AI application
+- **Claude Code** - Anthropic's CLI tool for developers
+- **Cursor** - AI-powered code editor
+- **Windsurf** - AI coding assistant
+- **Zed** - collaborative code editor with MCP support
+- **Any future MCP-compatible client** - the protocol is open
 
-## Is It Safe?
+## Is MCP Safe?
 
-MCP itself is just a communication protocol, similar to HTTP for websites. The safety comes from what SproutOS does on top of it:
+MCP itself is just a communication protocol - similar to HTTP. The safety comes from what SproutOS adds on top:
 
-- **Authentication required.** The AI must log in with a WordPress application password over HTTPS
-- **Admin-only access.** Only users with Administrator role can use the tools
-- **Sandbox for PHP.** AI-written PHP code goes into a separate folder, not into your core files
-- **Protected files.** Critical files like `wp-config.php` and `.htaccess` cannot be touched
-- **Activity log.** Every action the AI takes is recorded with timestamps and details
-- **Safe Mode.** One toggle to restrict everything to read-only
+- Authentication via WordPress Application Password over HTTPS
+- Admin-only access (`manage_options` required)
+- Sandbox isolation for all AI-written PHP
+- Protected files and directories that can never be touched
+- Safe Mode to make everything read-only instantly
+- A full Audit Log of every tool call
 
-<Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
-  Full details on the sandbox, file restrictions, crash recovery, and recommended setup.
-</Card>
+See [Security & Best Practices](/wordpress-plugin/security) for the full safety model.
 
 ## Frequently Asked Questions
 
 <Expandable title="Do I need to understand MCP to use SproutOS?">
-  No. MCP works behind the scenes. You just install the SproutOS plugin, connect your AI client, and start talking to it in plain language. The AI handles the MCP communication automatically.
+  No. MCP works behind the scenes. Install the plugin, connect your AI client, and talk to it in plain language. The AI handles all MCP communication automatically.
 </Expandable>
 
 <Expandable title="Does MCP work with ChatGPT?">
-  MCP requires client-side support. As of now, ChatGPT does not natively support MCP. Claude Desktop, Claude Code, Cursor, and Windsurf do. Check your AI tool's documentation for MCP support.
-</Expandable>
-
-<Expandable title="Can MCP break my site?">
-  MCP is just the communication layer. It cannot break anything on its own. The risk comes from the actions the AI takes through the tools. SproutOS includes safety controls like sandboxing, protected paths, and safe mode to minimize risk. Always use a staging site and keep backups.
+  Not natively. As of now, ChatGPT does not support MCP. Claude Desktop, Claude Code, Cursor, Windsurf, and Zed do. Check your AI tool's documentation for MCP support.
 </Expandable>
 
 <Expandable title="Is MCP the same as an API?">
-  MCP is similar to an API but designed specifically for AI agents. A traditional API requires the caller to know exact endpoints and data formats. MCP lets the AI discover available tools and their parameters automatically, so it can figure out what to call on its own.
+  Similar, but designed specifically for AI agents. A traditional API requires the caller to know exact endpoints and formats. MCP lets the AI discover available tools and their parameters automatically - it figures out what to call on its own.
 </Expandable>
 
 <Expandable title="Do I need to install anything extra for MCP?">
-  You need the SproutOS plugin on your WordPress site, and Node.js 18+ on your local machine (where your AI client runs). No additional MCP plugins or adapters are needed.
+  Just the SproutOS plugin on your WordPress site, and Node.js 18+ on the machine running your AI client. No extra MCP adapters or proxies needed.
 </Expandable>
 
 ## Next Steps
 
 <Columns cols="3">
-  <Card title="SproutOS Plugin Overview" href="/wordpress-plugin" icon="home">
-    See all the tools SproutOS gives your AI and what the plugin can do.
-  </Card>
-
   <Card title="Getting Started" href="/wordpress-plugin/getting-started" icon="rocket">
-    Install the plugin and connect your AI client in 5 steps.
+    Install SproutOS and connect your first AI client.
   </Card>
 
   <Card title="Abilities Reference" href="/wordpress-plugin/abilities" icon="list">
-    Full reference for every tool the AI can use on your site.
+    Every tool the AI can call - all 175+ documented.
+  </Card>
+
+  <Card title="Security & Best Practices" href="/wordpress-plugin/security" icon="shield">
+    The full safety model: sandbox, Safe Mode, audit logs, and more.
   </Card>
 </Columns>
