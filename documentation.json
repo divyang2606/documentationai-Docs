@@ -100,6 +100,11 @@
                 "icon": "home"
               },
               {
+                "title": "How It Works",
+                "path": "wordpress-plugin/how-it-works",
+                "icon": "activity"
+              },
+              {
                 "title": "What is MCP?",
                 "path": "wordpress-plugin/what-is-mcp",
                 "icon": "zap"
