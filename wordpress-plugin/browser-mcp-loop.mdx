@@ -1,0 +1,164 @@
+---
+title: 'Close the Loop with a Browser MCP'
+description: >-
+  Let your AI see the result of its changes. Pair SproutOS with Chrome DevTools MCP or Playwright MCP to build, screenshot, and iterate in one conversation.
+---
+
+SproutOS lets your AI **build** on WordPress. Pair it with a browser MCP so your AI can **see** the page, check the result, and iterate visually. Build, look, fix, repeat.
+
+<Columns cols="2">
+  <Card title="The Loop" href="#why-pair-with-a-browser-mcp" icon="refresh-cw">
+    Build with SproutOS, see with a browser MCP. Your AI closes the gap between code and what users actually see.
+  </Card>
+
+  <Card title="Chrome DevTools MCP" href="#how-do-i-connect-chrome-devtools-mcp" icon="chrome">
+    Google's official browser MCP. Screenshots, DOM inspection, network and console access. Your AI sees what users see.
+  </Card>
+
+  <Card title="Playwright MCP" href="#how-do-i-connect-playwright-mcp" icon="play">
+    Microsoft's browser MCP. Full browser automation across Chromium, Firefox, and WebKit. Scripted flows, not just snapshots.
+  </Card>
+
+  <Card title="Which One to Pick" href="#when-should-i-use-which" icon="git-compare">
+    Quick visual feedback or full cross-browser automation? Use one or both. Here's how to decide.
+  </Card>
+</Columns>
+
+---
+
+Here's how to set it up and what you can do with it.
+
+## Why pair with a browser MCP?
+
+SproutOS gives your AI deep access to your WordPress site - files, database, themes, builders, PHP. But there's one thing it can't do: see what the page actually looks like in a browser.
+
+A browser MCP closes that gap. Your AI can:
+
+- Open any page on your site
+- Take a screenshot and look at it
+- Inspect the DOM, console errors, or network calls
+- Click, scroll, fill forms, run interactive flows
+- Adjust the code and try again
+
+With both connected, your AI can edit a theme file in WordPress, open the page in a browser, check for issues, and adjust - all in one conversation.
+
+<Callout kind="tip">
+  Browser MCPs run on your local machine, just like your AI client. No extra setup on your WordPress server.
+</Callout>
+
+## How do I connect Chrome DevTools MCP?
+
+Chrome DevTools MCP is Google's official browser MCP. It gives your AI screenshot, DOM, console, and network access through Chrome.
+
+<Steps>
+  <Step title="Install Node.js 18+">
+    Chrome DevTools MCP runs on Node.js. If you don't have it, download from [nodejs.org](https://nodejs.org).
+  </Step>
+
+  <Step title="Add it to your AI client config">
+    Edit your MCP client config file and add the Chrome DevTools MCP entry:
+
+    ```json
+    {
+      "mcpServers": {
+        "chrome-devtools": {
+          "command": "npx",
+          "args": ["-y", "chrome-devtools-mcp@latest"]
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Restart your AI client">
+    Restart Claude Desktop, Cursor, or whichever client you use. The new MCP server will load automatically on startup.
+  </Step>
+</Steps>
+
+For the latest install commands and full documentation, see the [Chrome DevTools MCP repository](https://github.com/ChromeDevTools/chrome-devtools-mcp).
+
+## How do I connect Playwright MCP?
+
+Playwright MCP is Microsoft's browser automation MCP. It works across Chromium, Firefox, and WebKit - useful when you need to test across browsers or run scripted interactive flows.
+
+<Steps>
+  <Step title="Install Node.js 18+">
+    Same as Chrome DevTools MCP - Playwright MCP runs on Node.js.
+  </Step>
+
+  <Step title="Add it to your AI client config">
+    Edit your MCP client config file and add the Playwright entry:
+
+    ```json
+    {
+      "mcpServers": {
+        "playwright": {
+          "command": "npx",
+          "args": ["-y", "@playwright/mcp@latest"]
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Restart your AI client">
+    Restart your client to load the new MCP server.
+  </Step>
+</Steps>
+
+For the latest install commands and full documentation, see the [Playwright MCP repository](https://github.com/microsoft/playwright-mcp).
+
+## When should I use which?
+
+Both work great with SproutOS. Pick based on what you need.
+
+| Need | Chrome DevTools MCP | Playwright MCP |
+| --- | --- | --- |
+| Quick screenshots | Yes | Yes |
+| DOM and console inspection | Yes | Yes |
+| Network request capture | Yes | Yes |
+| Cross-browser testing | Chrome only | Chromium, Firefox, WebKit |
+| Scripted interactive flows | Limited | Full automation |
+| Best for | Quick visual feedback | Full QA automation |
+
+You can also install both. Your AI will pick the right one for the task.
+
+## What workflows does this enable?
+
+These are real prompts you type directly into your AI client. Your AI uses SproutOS to make the change and the browser MCP to verify it.
+
+**Visual debugging**
+
+> "Open the homepage, take a screenshot, then look at the hero section. The padding looks off - inspect the CSS and fix it in the theme."
+
+**Cross-browser testing**
+
+> "Open my pricing page in Chromium, Firefox, and WebKit. Compare the layout and tell me if anything renders differently."
+
+**Form testing**
+
+> "Open the contact form, fill it with test data, submit it, then check that the confirmation message appears."
+
+**Console error fixing**
+
+> "Open the checkout page, capture any console errors, then trace them back to the theme or plugin that's causing them."
+
+**Iterative styling**
+
+> "I want the CTA button to be more prominent. Try a few different styles - take a screenshot of each, show me the options, then apply the one I pick."
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="How It Works" href="/wordpress-plugin/how-it-works" icon="activity">
+    The connection model, MCP protocol, and the 4-step task flow.
+  </Card>
+
+  <Card title="Quick Start" href="/wordpress-plugin/quick-start" icon="rocket">
+    Install SproutOS and connect your AI client in under 5 minutes.
+  </Card>
+
+  <Card title="All Abilities" href="/wordpress-plugin/abilities" icon="list">
+    Full reference for all 175+ tools across 10 categories.
+  </Card>
+</Columns>
