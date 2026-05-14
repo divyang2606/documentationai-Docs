@@ -4,23 +4,27 @@ description: >-
   How SproutOS keeps your site safe - Safe Mode, Ability Manager, protected files, Crash Guard, and recommended setup for AI-powered WordPress management.
 ---
 
-SproutOS gives your AI real access to your WordPress site. That power comes with layered safety controls so you stay in charge of what the AI can and cannot do. This guide walks you through the controls that matter most and how to use them.
+SproutOS gives your AI direct access to your WordPress site. Here is every control that keeps you in charge of what it can touch - and what it cannot.
+
+<Callout kind="info">
+  **No anonymous access.** Every connection requires a WordPress Application Password over HTTPS. Only Administrator-role users can connect. Generate and revoke passwords anytime from **SproutOS > MCP Connect**.
+</Callout>
 
 <Columns cols="2">
   <Card title="Safe Mode" href="#safe-mode" icon="shield">
-    One toggle makes every ability read-only. AI can explore your site without writing, editing, or executing anything.
+    One toggle makes every ability read-only instantly. Your AI can read files, check themes, and audit your database - but cannot write, edit, or execute anything. Use it any time you want to explore without risk.
   </Card>
 
   <Card title="Ability Manager" href="#ability-manager" icon="sliders">
-    Enable or disable any of the 175+ abilities individually. Restrict exactly what your AI can touch and nothing more.
+    Every one of the 175+ abilities can be enabled or disabled individually. Working on themes only? Disable everything else. Less surface area means less risk - re-enable categories any time.
   </Card>
 
   <Card title="Protected Files" href="#whats-always-protected" icon="lock">
-    Core files and directories are always blocked - regardless of which abilities are enabled.
+    Core files are always blocked regardless of which abilities are on. `.env`, `wp-config.php`, `.htaccess`, and core WordPress directories cannot be read, written, or deleted - ever.
   </Card>
 
   <Card title="Safety Controls" href="#more-safety-controls" icon="settings">
-    Rate Limiter, Crash Guard, Audit Log, Meta Snapshots, Domain Lock, and per-call approval - all configurable.
+    Crash Guard auto-disables any file that causes a fatal error and activates Safe Mode. Rate Limiter caps operations per minute. Audit Log records every call with risk level and execution time.
   </Card>
 </Columns>
 
