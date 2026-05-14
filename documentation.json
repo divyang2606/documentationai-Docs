@@ -112,7 +112,7 @@
             "pages": [
               {
                 "title": "Quick Start",
-                "path": "wordpress-plugin/getting-started",
+                "path": "wordpress-plugin/quick-start",
                 "icon": "rocket"
               },
               {
