@@ -7,26 +7,30 @@ description: >-
 Every ability your AI runs is logged automatically - no setup required. The Analytics tab gives you a live view of what your AI has done, how long it took, and whether anything failed. You can also set up email or webhook notifications and control exactly what data gets stored.
 
 <Columns cols="2">
-  <Card title="Analytics Dashboard" href="#the-analytics-dashboard" icon="bar-chart">
+  <Card title="Analytics Dashboard" href="#whats-in-the-analytics-dashboard" icon="bar-chart">
     Six stat cards and a session-grouped activity feed. Every tool call logged with risk level, execution time, and error status.
   </Card>
 
-  <Card title="Email Notifications" href="#email-notifications" icon="mail">
+  <Card title="Email Notifications" href="#how-do-i-set-up-email-notifications" icon="mail">
     Get a summary of AI activity after every session or as a daily digest - delivered straight to your inbox.
   </Card>
 
-  <Card title="Webhook Notifications" href="#webhook-notifications" icon="zap">
+  <Card title="Webhook Notifications" href="#how-do-i-set-up-webhook-notifications" icon="zap">
     Send real-time alerts to Slack, Discord, or any custom endpoint. Filter by all calls, destructive only, or errors only.
   </Card>
 
-  <Card title="Privacy Controls" href="#privacy-controls" icon="eye-off">
+  <Card title="Privacy Controls" href="#how-do-i-control-what-data-is-collected" icon="eye-off">
     Toggle what gets stored - IP addresses, user identity, request and response bodies. Full control from Settings.
   </Card>
 </Columns>
 
+---
+
+Here's how each part works and how to configure it.
+
 {/* IMAGE: Analytics dashboard showing 6 stat cards and activity feed */}
 
-## The Analytics Dashboard
+## What's in the Analytics Dashboard?
 
 Go to **SproutOS > Analytics** to see your dashboard.
 
@@ -49,7 +53,7 @@ Below the cards, the **Activity Feed** groups calls by session. Expand any sessi
 - `destructive` - content modified or deleted
 - `unknown` - risk level not determined
 
-## Exporting and Clearing Logs
+## How do I export or clear my logs?
 
 From **SproutOS > Analytics**:
 
@@ -58,7 +62,7 @@ From **SproutOS > Analytics**:
 
 Log retention is configurable. Go to **SproutOS > Settings** and set `analytics_retention_days` to control how long entries are kept. A daily cron job prunes old entries automatically.
 
-## Email Notifications
+## How do I set up email notifications?
 
 Get a summary of AI activity delivered to your inbox.
 
@@ -78,7 +82,7 @@ Get a summary of AI activity delivered to your inbox.
 
 Each notification includes a summary of abilities called, success count, and error count.
 
-## Webhook Notifications
+## How do I set up webhook notifications?
 
 Send real-time notifications to Slack, Discord, or any custom endpoint when abilities run.
 
@@ -107,9 +111,9 @@ Send real-time notifications to Slack, Discord, or any custom endpoint when abil
   Webhook payloads are signed with HMAC using the `X-Sprout-Signature` header. Add a `webhook_secret` in Settings to verify payloads on your endpoint.
 </Callout>
 
-## Privacy Controls
+## How do I control what data is collected?
 
-Control exactly what data SproutOS collects and stores. Go to **SproutOS > Settings** and find the Analytics Data Collection section.
+Go to **SproutOS > Settings** and find the Analytics Data Collection section.
 
 | Toggle | What It Controls |
 | --- | --- |
@@ -121,9 +125,9 @@ Control exactly what data SproutOS collects and stores. Go to **SproutOS > Setti
 
 The **Data Summary Table** at the bottom of Settings shows a live view of what's collected, where it goes (AI client, database, webhook), and what each toggle affects.
 
-## Server Instructions
+## What does SproutOS share with my AI upfront?
 
-SproutOS tells your AI client basic information about your site at the start of each session. You control what it shares. From **SproutOS > Settings**, toggle each item:
+SproutOS sends basic site context to your AI at the start of each session. You control what it includes. From **SproutOS > Settings**, toggle each item:
 
 - WordPress version
 - PHP version
