@@ -8,13 +8,35 @@ When your AI writes PHP, it doesn't go straight into your theme or plugin files.
 
 This keeps AI-generated code separate from everything else on your site - and gives you full control over what runs.
 
+<Columns cols="2">
+  <Card title="Isolated Folder" href="#how-do-i-enable-the-sandbox" icon="box">
+    AI-generated PHP lives in `wp-content/sproutos-mcp-sandbox/` — completely separate from your theme and plugin files.
+  </Card>
+
+  <Card title="Crash Guard" href="#what-happens-if-a-php-file-crashes" icon="shield">
+    Fatal errors auto-disable the broken file and activate Safe Mode. The rest of your site keeps running untouched.
+  </Card>
+
+  <Card title="File Controls" href="#how-do-i-manage-sandbox-files" icon="toggle-right">
+    Enable, disable, review, or delete individual PHP files at any time from **SproutOS > Sandbox**.
+  </Card>
+
+  <Card title="Sandbox vs PHP Execution" href="#whats-the-difference-between-the-sandbox-and-php-execution" icon="code">
+    Two separate features. The sandbox persists files that auto-load. PHP Execution runs code directly in WordPress.
+  </Card>
+</Columns>
+
 {/* IMAGE: Sandbox tab showing list of files with enable/disable toggles */}
 
+---
+
+Here's how to set up and manage your sandbox.
+
 <Callout kind="info">
-  The sandbox is disabled by default. You need to turn it on before your AI can write PHP files. PHP execution (`sprout/execute-php`) is a separate feature - see [PHP Execution](#php-execution-vs-sandbox) below.
+  The sandbox is disabled by default. You need to turn it on before your AI can write PHP files. PHP execution (`sprout/execute-php`) is a separate feature - see [What's the difference between the Sandbox and PHP Execution?](#whats-the-difference-between-the-sandbox-and-php-execution) below.
 </Callout>
 
-## Enabling the Sandbox
+## How do I enable the Sandbox?
 
 <Steps>
   <Step title="Open SproutOS Settings">
@@ -30,7 +52,7 @@ This keeps AI-generated code separate from everything else on your site - and gi
   </Step>
 </Steps>
 
-## Managing Sandbox Files
+## How do I manage sandbox files?
 
 Once the sandbox is enabled, every PHP file your AI writes appears in **SproutOS > Sandbox**. From there you can:
 
@@ -40,7 +62,7 @@ Once the sandbox is enabled, every PHP file your AI writes appears in **SproutOS
 
 Files load automatically on every WordPress request the moment they're enabled. Disabling one takes effect immediately on the next request.
 
-## Disabling a Sandbox File
+## How do I disable a sandbox file?
 
 If a file is causing problems or you want to pause it:
 
@@ -60,7 +82,7 @@ If a file is causing problems or you want to pause it:
 
 To re-enable it, click **Enable** from the same screen.
 
-## Crash Guard
+## What happens if a PHP file crashes?
 
 If a sandbox file causes a fatal PHP error, SproutOS handles it automatically:
 
@@ -75,7 +97,7 @@ You review the file in **SproutOS > Sandbox**, fix or remove it, then turn Safe 
   Crash Guard means one bad snippet can't take down your site. Each file is isolated - a fatal error in one file doesn't affect the others.
 </Callout>
 
-## PHP Execution vs Sandbox
+## What's the difference between the Sandbox and PHP Execution?
 
 These are two separate features that work differently:
 
