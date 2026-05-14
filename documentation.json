@@ -158,7 +158,7 @@
             "icon": "list",
             "pages": [
               {
-                "title": "Abilities Reference",
+                "title": "AI Abilities",
                 "path": "wordpress-plugin/abilities",
                 "icon": "list"
               },
