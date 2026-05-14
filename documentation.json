@@ -172,6 +172,16 @@
                 "title": "Troubleshooting",
                 "path": "wordpress-plugin/troubleshooting",
                 "icon": "alert-triangle"
+              },
+              {
+                "title": "Video Guides",
+                "path": "wordpress-plugin/video-guides",
+                "icon": "video"
+              },
+              {
+                "title": "Changelog",
+                "path": "wordpress-plugin/changelog",
+                "icon": "clock"
               }
             ]
           }
