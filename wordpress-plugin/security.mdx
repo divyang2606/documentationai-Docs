@@ -7,34 +7,34 @@ description: >-
 SproutOS gives your AI real access to your WordPress site. That power comes with layered safety controls so you stay in charge of what the AI can and cannot do. This guide walks you through the controls that matter most and how to use them.
 
 <Columns cols="2">
-  <Card title="Safe Mode" href="#safe-mode" icon="shield">
+  <Card title="Safe Mode" href="#how-do-i-make-my-ai-read-only" icon="shield">
     One toggle makes every ability read-only instantly. Your AI can explore and audit - but cannot write, edit, or execute anything.
   </Card>
 
-  <Card title="Ability Manager" href="#ability-manager" icon="sliders">
+  <Card title="Ability Manager" href="#how-do-i-control-which-abilities-are-active" icon="sliders">
     Enable or disable any of the 175+ abilities individually. Turn off entire categories when you don't need them.
   </Card>
 
-  <Card title="No Anonymous Access" href="#authentication" icon="key">
+  <Card title="No Anonymous Access" href="#how-do-i-manage-connection-passwords" icon="key">
     Every connection requires a WordPress Application Password over HTTPS. Only Administrator-role users can connect.
   </Card>
 
-  <Card title="Protected Files" href="#whats-always-protected" icon="lock">
+  <Card title="Protected Files" href="#what-files-are-always-blocked" icon="lock">
     Core files are always blocked regardless of which abilities are on. `.env`, `wp-config.php`, `.htaccess`, and core directories cannot be touched.
   </Card>
 
-  <Card title="Safety Controls" href="#more-safety-controls" icon="settings">
+  <Card title="Safety Controls" href="#what-other-safety-controls-are-available" icon="settings">
     Crash Guard auto-disables fatal files and activates Safe Mode. Rate Limiter, Audit Log, and Meta Snapshots are all configurable from Settings.
   </Card>
 
-  <Card title="Admin Bar Indicator" href="#the-admin-bar-indicator" icon="monitor">
+  <Card title="Admin Bar Indicator" href="#how-do-i-know-if-sproutos-is-active" icon="monitor">
     Your admin bar always shows Sprout MCP: ON or OFF. Always visible so you know the current state at a glance.
   </Card>
 </Columns>
 
 {/* IMAGE: Safe Mode toggle in the AI Abilities tab */}
 
-## Safe Mode
+## How do I make my AI read-only?
 
 Safe Mode is the fastest way to lock down AI access. One toggle makes every ability read-only - your AI can explore and report, but cannot write, edit, or execute anything.
 
@@ -58,7 +58,7 @@ Use it when you want your AI to audit your site, check for issues, or research w
   Safe Mode is ideal for exploring a live site. Your AI can read everything - files, theme, database - without touching anything.
 </Callout>
 
-## Ability Manager
+## How do I control which abilities are active?
 
 Every one of the 175+ abilities can be enabled or disabled individually. If you only need your AI to work with theme files, disable everything else. Less surface area means less risk.
 
@@ -74,7 +74,7 @@ Every one of the 175+ abilities can be enabled or disabled individually. If you 
 
 You can also disable entire categories - for example, turn off WooCommerce abilities when you're not doing store work, then re-enable them when you need them.
 
-## The Admin Bar Indicator
+## How do I know if SproutOS is active?
 
 Your WordPress admin bar always shows whether AI abilities are active:
 
@@ -83,13 +83,13 @@ Your WordPress admin bar always shows whether AI abilities are active:
 
 Check this anytime you're unsure whether SproutOS is active.
 
-## Authentication
+## How do I manage connection passwords?
 
 Every connection requires a WordPress Application Password over HTTPS. There's no anonymous access - your AI client must authenticate with a valid username and password before it can call any ability.
 
 Generate and manage passwords from **SproutOS > MCP Connect**. Give each AI client its own password so you can revoke one without affecting others.
 
-## What's Always Protected
+## What files are always blocked?
 
 Regardless of which abilities are enabled, these are always blocked:
 
@@ -101,7 +101,7 @@ Regardless of which abilities are enabled, these are always blocked:
 
 All file operations are also constrained to your WordPress root - symlinks are rejected to prevent directory traversal.
 
-## More Safety Controls
+## What other safety controls are available?
 
 SproutOS includes additional controls you can configure from **SproutOS > Settings**:
 
@@ -116,7 +116,7 @@ SproutOS includes additional controls you can configure from **SproutOS > Settin
 
 For a full breakdown of every safety control, see the [Abilities Reference](/wordpress-plugin/abilities).
 
-## Recommended Workflow
+## What is the recommended setup?
 
 <Steps>
   <Step title="Start on staging">
