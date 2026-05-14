@@ -105,11 +105,6 @@
                 "icon": "activity"
               },
               {
-                "title": "What is MCP?",
-                "path": "wordpress-plugin/what-is-mcp",
-                "icon": "zap"
-              },
-              {
                 "title": "Browser MCP Loop",
                 "path": "wordpress-plugin/browser-mcp-loop",
                 "icon": "monitor"
