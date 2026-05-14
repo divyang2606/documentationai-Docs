@@ -111,7 +111,7 @@
             "icon": "rocket",
             "pages": [
               {
-                "title": "Getting Started",
+                "title": "Quick Start",
                 "path": "wordpress-plugin/getting-started",
                 "icon": "rocket"
               },
