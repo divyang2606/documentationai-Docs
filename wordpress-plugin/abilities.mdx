@@ -1,5 +1,5 @@
 ---
-title: 'Abilities Reference'
+title: 'AI Abilities'
 description: >-
   Complete reference for all 175+ SproutOS abilities across 10 categories. WordPress Core, File Operations, Theme Management, PHP Execution, Bridge Tools, Elementor, TPAE, Builder, WooCommerce, Bricks, WDesignKit, and Nexter.
 ---
@@ -8,13 +8,41 @@ SproutOS registers 175+ abilities on your WordPress site across 10 categories. Y
 
 Abilities are organized into modular categories. Some categories only register when a specific plugin is active on your site - those are marked as plugin-presence gated below.
 
+<Columns cols="2">
+  <Card title="WordPress Core" href="#wordpress-core" icon="layout">
+    Posts, pages, users, menus, media, taxonomies, and comments. The full WordPress data layer in ~40 abilities.
+  </Card>
+
+  <Card title="Files & Theme" href="#file-operations" icon="file-text">
+    Read and write files across the WordPress filesystem, plus direct access to active theme files.
+  </Card>
+
+  <Card title="PHP Execution" href="#php-execution-and-sandbox" icon="code">
+    Run PHP directly in your live WordPress environment with full access to all WordPress APIs.
+  </Card>
+
+  <Card title="Page Builders" href="#elementor" icon="layers">
+    Elementor, TPAE, cross-builder, and Bricks. Deep access to the underlying builder data layer.
+  </Card>
+
+  <Card title="WooCommerce" href="#woocommerce" icon="shopping-cart">
+    Products, orders, categories, and sales reports. Only registers when WooCommerce is active.
+  </Card>
+
+  <Card title="Bridge Tools" href="#bridge-tools" icon="git-branch">
+    Three always-available abilities for on-demand discovery and dispatch across the full catalogue.
+  </Card>
+</Columns>
+
 {/* IMAGE: Ability categories grid from the AI Abilities tab in admin */}
+
+---
+
+Here's the full reference for each category.
 
 <Callout kind="info">
   Use `sprout-bridge/discover-tools` to see the exact list of abilities currently active on your site. This reflects your enabled modules and any per-ability toggles.
 </Callout>
-
----
 
 ## WordPress Core
 
