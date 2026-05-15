@@ -1,24 +1,10 @@
 ---
-title: 'SproutOS vs Novamira: Full Comparison (2026)'
+title: 'SproutOS vs Novamira'
 description: >-
-  A detailed side-by-side comparison of SproutOS and Novamira — two WordPress MCP plugins for AI-powered site management. Covers pricing, tools, page builder support, safety, token efficiency, analytics, and who each tool is best for.
+  Side-by-side comparison of SproutOS and Novamira for AI-powered WordPress management. Covers pricing, free vs paid features, page builder support, per-tool control, token efficiency, and analytics. Based on publicly available information as of May 2026.
 ---
 
-SproutOS and Novamira are both WordPress MCP plugins that connect your AI client to a live WordPress site. Both support PHP execution. Both follow the same installation pattern: install the plugin, activate it, connect your AI client. The differences show up in pricing, how many tools you get without paying, and the control layer each plugin gives you.
-
-This comparison is based on publicly available information and source code as of May 2026.
-
-<Columns cols="3">
-  <Card title="SproutOS" icon="box">
-    Free forever. 175+ abilities across all categories, including Elementor, Bricks, WooCommerce, PHP execution, analytics, and webhooks — all at no cost.
-  </Card>
-  <Card title="Novamira" icon="box">
-    Free tier with 10 tools covering PHP execution and filesystem access. Pro from €49/year adds Elementor, Bricks, content management, and cross-session memory.
-  </Card>
-  <Card title="Who wins on price" icon="dollar-sign">
-    SproutOS is free with no paid tier. Novamira has a useful free tier but locks the most-needed tools behind a subscription.
-  </Card>
-</Columns>
+Both SproutOS and Novamira are AI-powered WordPress plugins. Both support PHP execution and follow the same install pattern: add the plugin, activate it, connect your AI client. SproutOS is free with no paid tier. Novamira has a useful free tier but locks Elementor, Bricks, and content management behind a paid plan. The biggest differences are in pricing, per-tool control, and monitoring.
 
 ---
 
@@ -37,47 +23,43 @@ This comparison is based on publicly available information and source code as of
 | **Analytics dashboard** | Yes | No |
 | **Webhook notifications** | Yes (Slack, Discord) | No |
 | **Per-tool control** | 175+ individual toggles | None |
-| **Architecture** | WP plugin only | WP plugin only |
-| **AI-native (MCP)** | Yes | Yes |
 | **Upfront token cost** | ~6 KB (Minimal profile) | ~14 KB |
 
 <Callout kind="info">
-SproutOS is free and open source under the GPL license. Every feature in this comparison — Elementor, Bricks, WooCommerce, analytics, webhooks, Capability Profiles — is included at no cost. There is no paid tier.
+Every feature in this table — Elementor, Bricks, WooCommerce, analytics, webhooks, Capability Profiles — is included in SproutOS at no cost.
 </Callout>
 
 ---
 
 ## Pricing
 
-**SproutOS** has no paid plan. There is no Pro tier, no subscription, and no features gated behind payment. The GitHub version and the WordPress.org version are both free. The only difference between the two builds is PHP execution: the GitHub build enables it, the WordPress.org build disables it to comply with directory guidelines.
+SproutOS has no paid plan. Both the GitHub build and the WordPress.org build are free. PHP execution is only available on the GitHub build due to WordPress.org directory guidelines.
 
-**Novamira** has two tiers:
+Novamira has three paid tiers:
 
 | Plan | Price | Sites | What's included |
 |---|---|---|---|
 | Free | €0 | 1 | PHP execution, filesystem tools, sandbox — 10 tools |
-| Pro Starter | €49/yr | 3 | + Elementor, Bricks, content management, cross-session memory |
+| Pro Starter | €49/yr | 3 | Elementor, Bricks, content management, cross-session memory |
 | Pro Growth | €99/yr | 10 | Same as Starter, more sites |
 | Pro Agency | €249/yr | Unlimited | Same as Starter, unlimited sites |
 
-Novamira's free tier is genuinely useful if PHP execution and filesystem access cover your workflow. The moment you need page builder support or content management, you're on a paid plan.
+Novamira's free tier covers PHP execution and filesystem access. Page builder support and content management require a paid plan.
 
 ---
 
-## What Do You Get for Free?
+## Free vs Paid
 
-The most practical question is: what can you actually do without paying?
+SproutOS gives you everything free: posts, pages, users, menus, media, custom post types, Elementor, Bricks, WooCommerce, file operations, PHP execution, analytics, webhooks, and all 4 Capability Profiles.
 
-**SproutOS** — everything. Posts, pages, users, menus, media, custom post types, Elementor, Bricks, WooCommerce, file operations, theme management, PHP execution (GitHub build), analytics, webhooks, and all 4 Capability Profiles.
-
-**Novamira** — PHP execution, filesystem read/write, and sandbox management. That's 10 tools. Content management, page builder support, cross-session memory, and the full tool catalogue require Pro.
+Novamira's free tier covers 10 tools: PHP execution, filesystem read/write, and sandbox management. Content management, page builder support, and cross-session memory require Pro.
 
 <Columns cols="2">
   <Card title="Elementor on SproutOS" icon="layers">
-    Included free. Full access to page editing, widget management, global styles, templates, popups, dynamic tags, and custom code snippets. Activates automatically when Elementor is installed.
+    Included free. Activates automatically when Elementor is installed on your site.
   </Card>
   <Card title="Elementor on Novamira" icon="lock">
-    Pro only. Requires a €49/year subscription for up to 3 sites. Not available on the free plan.
+    Pro only. Requires a €49/year subscription for up to 3 sites.
   </Card>
 </Columns>
 
@@ -85,39 +67,33 @@ The most practical question is: what can you actually do without paying?
 
 ## PHP Execution
 
-Both plugins support PHP execution, but with different defaults.
+Both plugins support PHP execution. The sandbox pattern is the same: AI-written code runs in an isolated directory, and fatal errors disable the file and trigger safe mode automatically.
 
-**SproutOS** requires the GitHub build for PHP execution. The WordPress.org build disables it to comply with directory guidelines. Both builds are free. PHP runs inside the live WordPress environment with full access to `$wpdb`, `WP_Query`, hooks, and all WordPress APIs. Output goes to the Sandbox — a dedicated directory (`wp-content/sproutos-mcp-sandbox/`) where AI-written files are isolated from core files.
+SproutOS wraps PHP execution with additional safety controls: Safe Mode toggle, per-tool control, and an analytics log. Novamira does not have these layers.
 
-**Novamira** includes PHP execution in its free tier. The sandbox architecture follows the same pattern: AI writes code, it runs in an isolated directory, fatal errors disable the file automatically and trigger safe mode.
-
-Both handle crash recovery the same way. Where they differ: SproutOS wraps PHP execution with a broader safety system (Safe Mode toggle, per-tool control, analytics) that Novamira doesn't have.
+SproutOS requires the GitHub build for PHP execution. The WordPress.org build disables it to comply with directory guidelines.
 
 ---
 
 ## Page Builder Support
 
-**SproutOS** ships dedicated ability modules for Elementor and Bricks. Both are free and plugin-presence gated — they register automatically when the builder is active. On top of that, SproutOS includes 18 cross-builder abilities that work across Elementor, Bricks, and Gutenberg without targeting a builder's internal format.
+SproutOS includes dedicated ability modules for Elementor and Bricks, both free. They activate automatically when the builder plugin is present on your site. SproutOS also includes 18 cross-builder abilities covering Elementor, Bricks, and Gutenberg.
 
-**Novamira** adds Elementor and Bricks in Pro. Other builders are not supported natively. However, because PHP execution is available on the free tier, your AI can interact with any builder indirectly through code — though this requires more back-and-forth than a dedicated tool would.
-
----
-
-## Control Over What Your AI Can Do
-
-This is one of the sharpest differences between the two plugins.
-
-**SproutOS** gives you per-tool control across all 175+ abilities. You can allow file reads but block file writes. You can keep PHP execution on but disable Elementor. You can enable WooCommerce tools but turn off media uploads. Every toggle takes effect immediately. The AI Abilities tab shows the full list organized by category.
-
-**Novamira** has no per-tool controls. All tools are either on or off. There is no way to restrict individual abilities without disabling the entire plugin.
+Novamira adds Elementor and Bricks in its Pro tier. Other builders are not supported natively. PHP execution lets your AI work with unsupported builders through code, but this requires more steps than a dedicated module.
 
 ---
 
-## Capability Profiles and Token Efficiency
+## Per-Tool Control
 
-Every tool definition your AI receives at session start consumes tokens. Over a long session or across multiple sites, this adds up.
+SproutOS lets you enable or disable any of its 175+ abilities individually from the **AI Abilities** tab. You can block file writes while keeping file reads on. You can disable PHP execution without touching anything else. Changes take effect immediately.
 
-**SproutOS** is the only plugin here with Capability Profiles — a system for controlling how many abilities are sent to your AI client upfront.
+Novamira has no per-tool controls. All tools are either fully on or fully off.
+
+---
+
+## Capability Profiles and Token Usage
+
+SproutOS is the only plugin here with Capability Profiles. They control how many abilities are sent to your AI client at session start, which directly affects token usage.
 
 | Profile | Upfront cost | Best for |
 |---|---|---|
@@ -126,86 +102,54 @@ Every tool definition your AI receives at session start consumes tokens. Over a 
 | Standard | Moderate catalogue | Builder-heavy sessions |
 | Full | Complete catalogue | Maximum tool depth |
 
-Even on Ultra-Minimal, your AI can still call any of the 175+ abilities on demand via `sprout-bridge/dispatch-tool`. The token savings don't limit capability.
+All 175+ abilities are reachable in every profile via `sprout-bridge/dispatch-tool`. The profile controls what loads upfront, not what is available.
 
-**Novamira** sends approximately 14 KB upfront. There is no way to reduce this.
+Novamira sends approximately 14 KB upfront with no way to reduce it.
 
 ---
 
 ## Analytics and Monitoring
 
-**SproutOS** ships a built-in analytics dashboard. Every tool call is logged with a timestamp, the WordPress user who triggered it, the ability name, the risk level (readonly, additive, destructive, or unknown), and execution time in milliseconds. Six stat cards show totals, today's calls, failed calls, unique sessions, unique users, and the most-used ability.
+SproutOS logs every tool call with a timestamp, the WordPress user who triggered it, the ability name, risk level (readonly, additive, destructive, or unknown), and execution time in milliseconds.
 
-Webhook notifications let you push events to Slack, Discord, or any custom endpoint — filtered by all calls, destructive-only, or errors-only. Payloads are HMAC-signed. There is also a CSV export and a one-click log purge.
+The dashboard shows six stat cards: total calls, calls today, failed calls, unique sessions, unique users, and most-used ability. Webhook notifications support Slack, Discord, or any custom endpoint. Payloads are HMAC-signed. CSV export and log purge are also included.
 
-**Novamira** has no logging or monitoring.
+Novamira has no logging or monitoring.
 
 ---
 
 ## Safety
 
-Both plugins use a crash-guard pattern for PHP execution: if a sandbox file triggers a fatal error, it is automatically disabled and safe mode activates. Neither leaves a broken file running unattended.
+Both plugins auto-disable a sandbox PHP file that triggers a fatal error and activate safe mode. Neither leaves broken code running.
 
-**SproutOS** adds several layers on top of this:
+SproutOS adds additional layers:
 
-- **Safe Mode toggle** — one click makes every ability read-only across the whole plugin
-- **Protected files** — `.env`, `wp-config.php`, `.htaccess` are hard-blocked at the code level
-- **Protected directories** — `wp-admin/`, `wp-includes/`, plugin and theme folders are hard-blocked from deletion
-- **Meta snapshots** — state captured before destructive changes
-- **Per-tool control** — disable any specific ability without affecting others
+- **Safe Mode toggle:** one click makes every ability read-only
+- **Protected files:** `.env`, `wp-config.php`, `.htaccess` are hard-blocked
+- **Protected directories:** `wp-admin/`, `wp-includes/`, plugin and theme folders cannot be deleted
+- **Meta snapshots:** state is captured before destructive changes
+- **Per-tool control:** disable any ability without affecting others
 
-**Novamira** uses sandbox isolation and crash recovery. No Safe Mode toggle, no per-tool control, no protected directory list.
-
----
-
-## Who Is SproutOS For?
-
-SproutOS makes the most sense when:
-
-- You want everything free with no subscription to manage
-- You use Elementor or Bricks Builder and don't want to pay extra for it
-- You need WooCommerce tools without an add-on fee
-- You want to control exactly which abilities your AI can call
-- You run multi-site workflows and want analytics across all of them
-- Token efficiency matters in your AI client
-
----
-
-## Who Is Novamira For?
-
-Novamira's free tier makes sense when:
-
-- You primarily need PHP execution and filesystem access
-- You don't use Elementor or Bricks (so Pro's main additions don't apply)
-- You prefer AGPL licensing over GPL
-
-Novamira's Pro plan makes sense when:
-
-- You need Elementor or Bricks support and prefer a vendor that charges for it
-- You want cross-session memory (not available in SproutOS)
+Novamira uses sandbox isolation and crash recovery only.
 
 ---
 
 ## Frequently Asked Questions
 
-<Expandable title="Is SproutOS really free, or are there hidden costs?">
-  SproutOS is entirely free. There is no Pro plan, no usage-based pricing, and no features that require payment. The GitHub build and WordPress.org build are both free — the only difference is PHP execution availability due to WordPress.org directory guidelines.
+<Expandable title="Is SproutOS really free with no hidden costs?">
+  Yes. There is no Pro plan, no usage-based pricing, and no features that require payment. The GitHub build and WordPress.org build are both free. The only difference is PHP execution availability due to WordPress.org guidelines.
 </Expandable>
 
-<Expandable title="Does Novamira's free tier include enough to be useful?">
-  It depends on your workflow. If PHP execution and direct filesystem access cover your main use cases, the free tier works well. If you need to edit Elementor pages, manage posts and pages through the AI, or work with Bricks — you need Pro.
-</Expandable>
-
-<Expandable title="Can I use SproutOS alongside Novamira?">
-  Both plugins expose MCP endpoints. You can configure your AI client to connect to either, but running both simultaneously on the same site isn't a supported or tested configuration.
+<Expandable title="Does Novamira's free tier cover most workflows?">
+  It depends on what you need. If PHP execution and filesystem access are your main use cases, the free tier works well. Elementor, Bricks, and content management all require a paid plan.
 </Expandable>
 
 <Expandable title="Does SproutOS have cross-session memory like Novamira Pro?">
-  No. SproutOS does not have built-in cross-session memory. This is a feature unique to Novamira's Pro tier. In SproutOS, your AI client's own memory and context management handle continuity between sessions.
+  No. SproutOS does not include built-in cross-session memory. Your AI client's own memory and context management handle continuity between sessions.
 </Expandable>
 
-<Expandable title="Which plugin sends fewer tokens to my AI client at startup?">
-  SproutOS on the Minimal profile sends approximately 6 KB (~1,500 tokens). The Ultra-Minimal profile sends only the 3 Bridge tools. Novamira sends approximately 14 KB with no way to reduce it. For long sessions or token-constrained models, SproutOS's Capability Profiles make a meaningful difference.
+<Expandable title="Which plugin uses fewer tokens at session start?">
+  SproutOS on the Minimal profile sends approximately 6 KB. The Ultra-Minimal profile sends only the 3 Bridge tools. Novamira sends approximately 14 KB with no way to reduce it.
 </Expandable>
 
 ---
