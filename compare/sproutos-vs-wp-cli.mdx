@@ -1,0 +1,209 @@
+---
+title: 'SproutOS vs WP-CLI: What Is the Difference?'
+description: >-
+  A clear breakdown of how SproutOS and WP-CLI differ for WordPress management. WP-CLI is a developer command-line tool. SproutOS is an AI-native MCP plugin. They are not the same category — and many teams use both.
+---
+
+WP-CLI comes up in almost every conversation about AI and WordPress automation. It's worth addressing directly, because SproutOS and WP-CLI are not the same kind of tool and should not be compared the same way you'd compare two MCP plugins.
+
+**WP-CLI** is a command-line interface. You write a command, it runs, you get output. No AI layer. No natural language. No decision-making. You need to know what to run before you can run it.
+
+**SproutOS** is an AI-native plugin that implements the Model Context Protocol (MCP). You describe what you want to your AI client in plain language. The AI figures out which ability to call, runs it, reads the result, and decides what to do next. You don't need to know the underlying command.
+
+That difference is the whole point.
+
+<Columns cols="3">
+  <Card title="WP-CLI" icon="terminal">
+    Command-line tool. Requires exact syntax. Developer-facing. Fast for known tasks. No AI layer. Free and open source.
+  </Card>
+  <Card title="SproutOS" icon="box">
+    AI-native MCP plugin. Natural language interface. Works for any skill level. Handles multi-step workflows. Free and open source.
+  </Card>
+  <Card title="Bottom line" icon="check">
+    These are different categories of tool. Most developers use both. WP-CLI for precise manual commands. SproutOS for AI-driven, multi-step workflows.
+  </Card>
+</Columns>
+
+---
+
+## What Is WP-CLI?
+
+WP-CLI (WordPress Command Line Interface) is the official CLI tool for managing WordPress installations. It lets developers run administrative operations from the terminal without opening a browser.
+
+Common WP-CLI commands look like this:
+
+```bash
+wp plugin list --update=available --format=table
+wp post list --post_status=draft --fields=ID,post_title
+wp db query "SELECT option_name, option_value FROM wp_options WHERE autoload='yes'"
+wp cache flush
+wp cron event run --due-now
+```
+
+Each command requires you to know:
+- The exact command name
+- The correct flags and syntax
+- What output format you want
+- How to interpret the result
+
+WP-CLI is extremely fast and precise when you know exactly what to do. It's the right tool for developers scripting routine maintenance, running batch operations from CI/CD pipelines, or automating known tasks in shell scripts.
+
+---
+
+## What Is SproutOS?
+
+SproutOS is a WordPress plugin that implements the Model Context Protocol. It registers 175+ abilities on your WordPress site and exposes them to AI clients — Claude, GPT-4, or any MCP-compatible assistant.
+
+When you connect your AI client to SproutOS, it can:
+
+- Understand what you're asking in plain language
+- Choose the right ability (or sequence of abilities) to accomplish it
+- Execute those abilities against your live WordPress site
+- Read the results and decide what to do next
+- Report back to you with findings or ask a follow-up question
+
+With SproutOS, you'd phrase the same operations like this:
+
+> "Check all plugins for available updates and tell me which ones have known security issues."
+
+> "List all draft posts from the last 30 days and let me know which ones are missing a featured image."
+
+> "Find all WooCommerce orders from this week that are still in 'pending payment' status and group them by total value."
+
+The AI figures out which abilities to call. You don't need to know the underlying syntax.
+
+---
+
+## Side-by-Side Comparison
+
+| | **WP-CLI** | **SproutOS** |
+|---|---|---|
+| **Type** | Command-line tool | AI-native MCP plugin |
+| **Interface** | Terminal commands | Natural language via AI client |
+| **Who operates it** | Developer writes commands | AI interprets intent and acts |
+| **Learning curve** | High — must know exact syntax | Low — describe what you want |
+| **Multi-step workflows** | Manual chaining with bash scripts | AI handles sequencing automatically |
+| **Page builder access** | None | Elementor, Bricks, cross-builder |
+| **WooCommerce** | Partial (via WC-CLI extension) | Full (products, orders, reports) |
+| **PHP execution** | Full shell access | Sandboxed WordPress-env PHP |
+| **Analytics/monitoring** | None | Built-in dashboard + webhooks |
+| **Capability control** | N/A | 4 Capability Profiles, per-tool toggles |
+| **AI integration** | No | Yes (MCP) |
+| **Price** | Free | Free |
+| **License** | MIT | GPL |
+
+---
+
+## Where WP-CLI Wins
+
+**Speed on known tasks.** If you know exactly what you want to run, WP-CLI executes it faster than any AI-mediated workflow. `wp cache flush` takes milliseconds. Asking an AI to flush the cache and waiting for it to call the ability takes longer.
+
+**Shell scripting and CI/CD.** WP-CLI integrates cleanly into bash scripts, cron jobs, and deployment pipelines. You can chain commands, pipe output, use conditional logic, and automate maintenance across a fleet of sites without an AI client in the loop.
+
+**Direct database access.** `wp db query` and `wp db export` give raw database access. SproutOS has database-aware abilities, but raw SQL from a shell is more powerful for complex migrations.
+
+**No AI dependency.** WP-CLI works without an AI client, API key, or network connection to an LLM provider. It runs on your server or local machine entirely self-contained.
+
+---
+
+## Where SproutOS Wins
+
+**You don't know what command to run.** If you need to audit a site for performance issues, find all posts that reference a deleted product, or identify which plugin is causing excessive database queries — you'd have to research the right WP-CLI commands, chain several together, and interpret the output. With SproutOS, you describe the goal and the AI figures out the path.
+
+**Multi-step workflows.** "Check for plugin updates, identify any with security advisories, update only the safe ones, and send me a summary" is a multi-tool workflow. WP-CLI requires you to script each step manually. SproutOS with an AI client executes the whole sequence in one session.
+
+**Page builder editing.** WP-CLI has no native tools for Elementor, Bricks, Gutenberg blocks, or any visual page builder. SproutOS ships dedicated ability modules for Elementor and Bricks, plus 18 cross-builder abilities for structural operations.
+
+**Non-developer users.** WP-CLI requires terminal access, server permissions, and knowledge of command syntax. SproutOS works through any MCP-compatible AI client using plain language — accessible to anyone on the team, not just developers.
+
+**Agentic investigation.** When you need the AI to explore a problem — check the logs, test a hypothesis, look at a related file, form a conclusion — WP-CLI can't do that. It runs one command at a time on your instruction. SproutOS lets the AI run a sequence of abilities, interpret intermediate results, and adapt its approach before reporting back.
+
+---
+
+## Do They Overlap?
+
+Yes, in some areas. Both can:
+
+- List plugins and their update status
+- Create, update, and delete posts
+- Manage users
+- Run database queries (WP-CLI directly; SproutOS via PHP execution)
+- Flush caches
+
+The difference is not the operations available — it's who drives them and how. WP-CLI requires developer intent and exact syntax. SproutOS requires natural language and lets the AI handle execution.
+
+---
+
+## Can You Use Both?
+
+Yes, and many teams do. SproutOS does not replace WP-CLI. They operate in different contexts.
+
+A common split:
+
+- **WP-CLI** for scripted maintenance, deployments, batch operations, and CI/CD pipelines where a developer knows exactly what to run
+- **SproutOS** for exploratory workflows, client site audits, content operations, page builder editing, and any task where you'd rather describe the goal than write the command
+
+You can also combine them. SproutOS's PHP execution lets your AI write and run PHP that calls WP-CLI commands programmatically — though direct WP-CLI integration through STDIO is a separate connection method and not the default workflow.
+
+---
+
+## A Concrete Example
+
+**Goal:** Find all pages on the site that use Elementor and have no featured image set.
+
+**With WP-CLI:**
+```bash
+# Get list of pages using Elementor
+wp post list --post_type=page --meta_key=_elementor_edit_mode --meta_value=builder --fields=ID --format=csv | \
+  # Check each for thumbnail
+  while read id; do
+    thumb=$(wp post meta get $id _thumbnail_id 2>/dev/null)
+    [ -z "$thumb" ] && echo "Page $id has no featured image"
+  done
+```
+
+You need to know the meta key Elementor uses, understand the pipe syntax, and write and test the script.
+
+**With SproutOS:**
+
+> "Find all pages built with Elementor that don't have a featured image set."
+
+The AI calls `sprout-elementor/list-pages`, cross-references with media metadata, and returns the list. You described the goal. The AI handled the rest.
+
+---
+
+## Frequently Asked Questions
+
+<Expandable title="Does SproutOS replace WP-CLI?">
+  No. WP-CLI is a developer CLI tool for scripting and automation. SproutOS is an AI-native plugin for natural language workflows. They serve different use cases and most professional WordPress developers use both.
+</Expandable>
+
+<Expandable title="Can SproutOS run WP-CLI commands?">
+  Not directly through the SproutOS MCP endpoint. SproutOS's PHP execution lets your AI write and run PHP inside the WordPress environment, which can call WP-CLI programmatically via `shell_exec` if the server allows it — but this is not a standard or recommended workflow. For WP-CLI tasks, use WP-CLI directly.
+</Expandable>
+
+<Expandable title="Can WP-CLI connect to an AI client?">
+  WP-CLI has no native AI or MCP integration. There are third-party experiments that wrap WP-CLI output for use with LLMs, but WP-CLI itself has no AI layer. For AI-native WordPress management, MCP plugins like SproutOS are the current standard approach.
+</Expandable>
+
+<Expandable title="Is SproutOS only for non-developers?">
+  No. SproutOS is useful for anyone who wants to delegate multi-step WordPress workflows to an AI client. Developers use it for tasks where describing the goal is faster than writing the commands — audits, exploratory investigations, content operations, and page builder editing. The natural language interface doesn't make it less powerful for developers.
+</Expandable>
+
+<Expandable title="Do I need WP-CLI installed for SproutOS to work?">
+  No. SproutOS connects to your AI client via HTTP (remote sites) or via WP-CLI's STDIO transport for local environments. The STDIO connection method requires WP-CLI, but the HTTP method — the most common setup — does not.
+</Expandable>
+
+---
+
+<Columns cols="3">
+  <Card title="Download SproutOS" icon="download" href="https://github.com/posimyth/sprout-os">
+    Free forever. GPL licensed. No subscription required.
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/wordpress-plugin/quick-start">
+    Install and connect your AI client in under 10 minutes.
+  </Card>
+  <Card title="Full Comparison" icon="columns" href="/wordpress-plugin/compare">
+    See how SproutOS compares against Novamira, Respira, and WP-CLI together.
+  </Card>
+</Columns>

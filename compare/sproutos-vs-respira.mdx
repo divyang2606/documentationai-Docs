@@ -1,0 +1,238 @@
+---
+title: 'SproutOS vs Respira: Full Comparison (2026)'
+description: >-
+  An in-depth comparison of SproutOS and Respira for AI-powered WordPress management. Covers architecture, pricing, page builder breadth, PHP execution, safety models, token usage, and which tool is right for your agency workflow.
+---
+
+SproutOS and Respira both connect AI clients to WordPress via MCP. Both are designed for agencies managing multiple WordPress sites. The similarities end there.
+
+Respira is the most feature-rich WordPress MCP solution available — 234 named tools, 11 supported page builders, a human approval workflow before changes go live, and a dedicated Node.js server that adds capability at the transport layer. SproutOS is a free, plugin-only alternative with PHP execution, Capability Profiles for token control, a built-in analytics dashboard, and a layered safety model — all at no cost.
+
+This comparison is based on publicly available information and source code as of May 2026.
+
+<Columns cols="3">
+  <Card title="SproutOS" icon="box">
+    Free forever. Plugin-only install. PHP execution, 4 Capability Profiles, analytics, webhooks, Elementor, Bricks, and WooCommerce — all included at no cost.
+  </Card>
+  <Card title="Respira" icon="box">
+    Paid from €71/year. Requires a separate Node.js MCP server running locally. 234 tools, 11 page builders, human approval workflow, and per-call watchdogs.
+  </Card>
+  <Card title="Key difference" icon="alert-triangle">
+    Respira trades cost and setup complexity for the broadest builder coverage and the most conservative approval workflow. SproutOS trades breadth for freedom — free, simpler to install, with PHP execution as an escape hatch.
+  </Card>
+</Columns>
+
+---
+
+## At a Glance
+
+| | **SproutOS** | **Respira** |
+|---|---|---|
+| **Price** | Free forever | From €5.92/mo (€71/yr) |
+| **License** | GPL | GPLv2 (paid license required) |
+| **Total tools** | 175+ | 234 |
+| **Elementor** | Free | Included (paid plan) |
+| **Bricks Builder** | Free | Included (paid plan) |
+| **Supported page builders** | 2 (+ cross-builder layer) | 11 |
+| **WooCommerce** | Free | Add-on (+€95/yr) |
+| **PHP execution** | Yes (GitHub build) | No |
+| **Capability Profiles** | 4 profiles | None |
+| **Analytics dashboard** | Yes | No (audit log only) |
+| **Webhook notifications** | Yes (Slack, Discord) | No |
+| **Per-tool control** | 175+ individual toggles | Site-level allowlists |
+| **Architecture** | WP plugin only | WP plugin + Node.js server |
+| **Human approval step** | No (Safe Mode for read-only) | Yes (duplicate-first) |
+| **Upfront token cost** | ~6 KB (Minimal profile) | ~25 KB |
+| **AI-native (MCP)** | Yes | Yes |
+
+<Callout kind="info">
+Respira's WooCommerce support costs an additional €95/year on top of your base plan. SproutOS includes WooCommerce free.
+</Callout>
+
+---
+
+## Pricing
+
+**SproutOS** is free. There is no subscription, no paid tier, and no features locked behind payment. The GitHub build and WordPress.org build are both free — the only difference is that PHP execution is disabled on WordPress.org to comply with directory guidelines.
+
+**Respira** requires a paid plan from the start:
+
+| Plan | Price | Sites |
+|---|---|---|
+| Maker | €5.92/mo (€71/yr) | 1 |
+| Builder | €12.50/mo (€150/yr) | 5 |
+| Studio | €25.75/mo (€309/yr) | 25 |
+| WooCommerce add-on | +€95/yr | All plans |
+| Accessibility add-on | +€49/mo | All plans |
+
+For an agency managing 5 sites that uses WooCommerce, Respira costs at least €245/year. For the same setup, SproutOS costs €0.
+
+---
+
+## Architecture: Plugin vs Plugin + Server
+
+This is the most fundamental difference between the two.
+
+**SproutOS** is a pure WordPress plugin. Install it, activate it, add your AI client credentials. No other software required. Your AI client connects directly to the plugin's MCP endpoint — over HTTP for remote sites, or via STDIO through WP-CLI for local environments.
+
+**Respira** requires two components:
+
+1. A WordPress plugin installed on your site
+2. A Node.js MCP server installed separately on your local machine
+
+The Node server downloads from respira.press, runs locally, and proxies requests to your WordPress REST API. This adds a setup dependency and a process that needs to stay running throughout your session. If the Node server crashes or you switch machines, the connection drops.
+
+The upside of Respira's server architecture is real: the Node layer adds per-call watchdogs, upload timeouts, multi-site connection switching, and agent telemetry headers — capabilities that sit outside the WordPress environment and can't be added by a plugin alone.
+
+<Columns cols="2">
+  <Card title="SproutOS setup" icon="plug">
+    Install plugin → activate → add credentials to your AI client. Done. No local process, no additional software, no server to maintain.
+  </Card>
+  <Card title="Respira setup" icon="server">
+    Install WP plugin → download Node.js MCP server → configure with API key and site URL → run server alongside your AI client. Two ongoing dependencies.
+  </Card>
+</Columns>
+
+---
+
+## Page Builder Support
+
+**Respira** has the broadest page builder support of any WordPress MCP plugin. It covers 11 builders with dedicated schema layers for each:
+
+Gutenberg, Divi 4, Divi 5, Elementor, Oxygen Classic, Oxygen 6, Bricks, WPBakery, Beaver Builder, Thrive Architect, Brizy, Visual Composer, and Breakdance.
+
+Each builder integration includes a data schema that helps the AI understand the underlying format — not just tool coverage, but structured intelligence about how each builder stores page data. For agencies that serve clients across many different site stacks, this breadth is a meaningful advantage.
+
+**SproutOS** supports Elementor and Bricks with dedicated ability modules, plus 18 cross-builder abilities that work across Elementor, Bricks, and Gutenberg without targeting a builder's internal format. If a client's site runs WPBakery or Beaver Builder, SproutOS has no dedicated tools for those builders — though PHP execution lets your AI interact with any builder through code.
+
+---
+
+## PHP Execution
+
+**SproutOS** supports PHP execution. You can ask your AI to write a PHP snippet, run it against the live WordPress environment, iterate on errors, and deploy working code to the Sandbox — all in one session. This works for custom reports, one-off database operations, plugin interactions, performance diagnostics, and any task that needs running code rather than a named tool.
+
+**Respira** does not support PHP execution. Its 234 named tools cover a wide surface, but when a task falls outside what a named tool handles, there is no code execution fallback. You'd need to write the code yourself or find another path.
+
+<Callout kind="info">
+PHP execution in SproutOS requires the GitHub build. The WordPress.org build disables it to comply with directory guidelines. Both builds are free.
+</Callout>
+
+This is a real trade-off, not a clear win either way. Respira's 234 tools cover more page builder scenarios natively. SproutOS's PHP execution covers everything else programmatically. Depending on your agency's workflow, one or the other will feel like the bigger capability gap.
+
+---
+
+## Safety and Change Approval
+
+Both plugins take safety seriously, but they make opposite bets about where the risk is.
+
+**Respira** uses a **duplicate-first, human-approval model**. When your AI edits a page, it edits a copy — not the original. You review the change in a visual preview, compare before and after, and approve it before it goes live. Every change is version-tracked with a one-click restore. This is the most conservative approach of any WordPress MCP plugin and suits workflows where you want a human sign-off before anything publishes.
+
+**SproutOS** uses a **layered technical model**:
+
+- **Safe Mode** — one toggle makes every ability read-only instantly
+- **The Sandbox** — AI-written PHP goes into `wp-content/sproutos-mcp-sandbox/`, isolated from core files
+- **Crash Guard** — a fatal PHP error disables the broken file and activates Safe Mode automatically
+- **Protected files** — `.env`, `wp-config.php`, `.htaccess` are hard-blocked from all AI access
+- **Protected directories** — `wp-admin/`, `wp-includes/`, plugin and theme folders cannot be deleted
+- **Meta snapshots** — state captured before destructive changes
+- **Per-tool control** — disable any ability individually without affecting others
+
+SproutOS's model is more technical and automated. Respira's model is more human-in-the-loop. Neither is strictly safer — they suit different risk tolerance and workflow preferences.
+
+---
+
+## Token Efficiency
+
+Long sessions or multi-site workflows accumulate token costs fast. Every tool definition sent to your AI at session start costs context window space.
+
+**SproutOS** is the only plugin here with Capability Profiles — a system that controls how many abilities are sent upfront:
+
+| Profile | Upfront cost | Best for |
+|---|---|---|
+| Ultra-Minimal | Bridge tools only | Token-sensitive sessions |
+| Minimal (default) | ~1,500 tokens / ~6 KB | Most workflows |
+| Standard | Moderate catalogue | Builder-heavy sessions |
+| Full | Complete catalogue | Maximum tool depth |
+
+Even on Ultra-Minimal, your AI can reach all 175+ abilities on demand via `sprout-bridge/dispatch-tool`. The token savings don't limit what's possible.
+
+**Respira** sends approximately 25 KB upfront. There is no way to reduce this. For a long agentic session on a model with a small effective context window, this overhead is a real constraint.
+
+---
+
+## Analytics and Monitoring
+
+**SproutOS** ships a built-in analytics dashboard. Every ability call is logged: timestamp, WordPress user, ability name, risk level (readonly, additive, destructive, unknown), and execution time. The dashboard surfaces six stat cards and supports webhook notifications to Slack, Discord, or any custom endpoint — filtered by all calls, destructive-only, or errors-only. Payloads are HMAC-signed. CSV export and one-click log purge are included.
+
+**Respira** has an audit log that records all API activity. It's a useful compliance record, but there's no dashboard, no outbound notifications, and no ability-level risk tagging.
+
+---
+
+## WooCommerce
+
+**SproutOS** includes WooCommerce abilities free — products, orders, categories, tags, and sales reports. The module registers automatically when WooCommerce is active. No extra charge.
+
+**Respira** charges an additional €95/year for WooCommerce support on top of your base plan. On the Maker plan (€71/yr), adding WooCommerce brings the annual cost to €166/year for a single site.
+
+---
+
+## Who Is SproutOS For?
+
+SproutOS makes the most sense when:
+
+- Budget is a constraint — free with no subscription
+- You need PHP execution as a fallback when no named tool covers the task
+- Your agency primarily works with Elementor and Bricks sites
+- Token efficiency matters in your AI client
+- You want detailed analytics and monitoring without extra tooling
+- You want a simple install with no local server dependency
+
+---
+
+## Who Is Respira For?
+
+Respira makes the most sense when:
+
+- Your agency works across many different page builders — especially Divi, Oxygen, WPBakery, Beaver Builder, or Thrive Architect
+- You need a human approval step before AI changes go live on client sites
+- You're willing to pay for the broadest tool coverage available
+- You manage sites where the Node.js server architecture's added transport capabilities (watchdogs, upload timeouts, multi-site switching) provide value
+- PHP execution is not something you want available to your AI
+
+---
+
+## Frequently Asked Questions
+
+<Expandable title="Can SproutOS and Respira be used on the same WordPress site?">
+  Both install as WordPress plugins and expose separate MCP endpoints. You could technically configure your AI client to connect to both, but this is not a tested or recommended configuration. There would be no conflict at the WordPress level, but managing two overlapping tool sets from a single AI session would create confusion.
+</Expandable>
+
+<Expandable title="Does Respira's 234-tool count mean it's more powerful than SproutOS's 175+?">
+  Not necessarily. Respira's count reflects its 11 builder integrations — many tools are builder-specific. SproutOS's PHP execution covers use cases that no fixed-count tool list can address. For Elementor and Bricks workflows, the specific numbers don't tell the full story. For Divi, Oxygen, or Beaver Builder, Respira has tools that SproutOS doesn't.
+</Expandable>
+
+<Expandable title="Is Respira's Node.js server hard to set up?">
+  It adds a step compared to a plugin-only install. You need Node.js available on your machine, download the server package from respira.press, configure it with your API key and site URL, and run it alongside your AI client. For developers, this is straightforward. For non-developers managing client sites, the ongoing dependency is a higher bar than a plugin install.
+</Expandable>
+
+<Expandable title="What happens on SproutOS if there's no named tool for the task?">
+  PHP execution acts as the fallback. Your AI can write a PHP snippet, run it in the live WordPress environment via `sprout/execute-php`, inspect the output, and iterate. This covers most custom tasks that fall outside the 175+ named abilities. Requires the GitHub build.
+</Expandable>
+
+<Expandable title="Does SproutOS support Divi or Beaver Builder?">
+  Not with dedicated ability modules. SproutOS supports Elementor, Bricks, and Gutenberg through the cross-builder layer. For Divi, WPBakery, Beaver Builder, Oxygen, and others, SproutOS's PHP execution lets your AI interact with those builders through code — but without the structured schema intelligence that Respira's dedicated integrations provide.
+</Expandable>
+
+---
+
+<Columns cols="3">
+  <Card title="Download SproutOS" icon="download" href="https://github.com/posimyth/sprout-os">
+    Free forever. GPL licensed. No subscription required.
+  </Card>
+  <Card title="Quick Start" icon="rocket" href="/wordpress-plugin/quick-start">
+    Install and connect your AI client in under 10 minutes.
+  </Card>
+  <Card title="Full Comparison" icon="columns" href="/wordpress-plugin/compare">
+    See how SproutOS compares against Novamira, Respira, and WP-CLI together.
+  </Card>
+</Columns>
