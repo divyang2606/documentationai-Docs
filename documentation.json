@@ -190,27 +190,21 @@
       {
         "tab": "Compare",
         "icon": "columns",
-        "groups": [
+        "pages": [
           {
-            "group": "SproutOS vs Alternatives",
-            "icon": "columns",
-            "pages": [
-              {
-                "title": "SproutOS vs Novamira",
-                "path": "compare/sproutos-vs-novamira",
-                "icon": "box"
-              },
-              {
-                "title": "SproutOS vs Respira",
-                "path": "compare/sproutos-vs-respira",
-                "icon": "box"
-              },
-              {
-                "title": "SproutOS vs WP-CLI",
-                "path": "compare/sproutos-vs-wp-cli",
-                "icon": "terminal"
-              }
-            ]
+            "title": "SproutOS vs Novamira",
+            "path": "compare/sproutos-vs-novamira",
+            "icon": "box"
+          },
+          {
+            "title": "SproutOS vs Respira",
+            "path": "compare/sproutos-vs-respira",
+            "icon": "box"
+          },
+          {
+            "title": "SproutOS vs WP-CLI",
+            "path": "compare/sproutos-vs-wp-cli",
+            "icon": "terminal"
           }
         ]
       },
