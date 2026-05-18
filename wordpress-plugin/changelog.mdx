@@ -4,6 +4,74 @@ description: >-
   Version history and release notes for the SproutOS WordPress MCP Plugin.
 ---
 
-<Callout kind="info">
-The full changelog is coming soon. For the latest release notes, visit the <a href="https://github.com/posimyth/sprout-os" target="_blank">GitHub repository</a>.
-</Callout>
+All notable changes to the SproutOS WordPress plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## 0.0.2 (2026-04-27)
+
+### Added
+
+- **Capability Profiles** selector (Ultra-Minimal, Minimal, Standard, Full) in the Safety tab. Admins control how much of the tool catalogue is exposed to AI clients upfront. Default is **Minimal**, which loads approximately 1,500 tokens upfront. Agents can still reach the full ability library on demand through bridge dispatch.
+- `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, and `sprout-bridge/dispatch-tool` are now first-class public tools available in every profile. Light-profile sessions can reach the full ability library on demand.
+
+### Changed
+
+- Plugin-presence gating: Elementor, Bricks, and WooCommerce abilities now register only when the underlying plugin or theme is active. WordPress-only installs no longer load unused Elementor or WooCommerce tool schemas.
+- Sandbox PHP execution is now opt-in. The `sandbox_enabled` setting defaults to `false`.
+- The `dry_run_default` setting now defaults to `false` for a clearer first-run experience.
+- The Safety tab has been redesigned and now hosts the Capability Profile selector and the WooCommerce module toggle.
+
+### Removed
+
+- **Approval queue.** The approval queue, its related abilities, and the admin UI section have been removed. Snapshots are now the single recovery path for destructive changes.
+- **Confirmation-token system.** The `sprout/request-confirmation-token` ability and related gatekeeper checks have been removed.
+- **Safe Mode setting.** `safety_mode` and its resolver have been removed. Rate limiting and dry-run are now plain settings: `rate_limit_ops_per_min` and `dry_run_default`.
+- **Anomaly tripwire.** The anomaly detection system and its related option keys have been removed.
+
+### Fixed
+
+- **Path-traversal hardening (high severity).** The path resolver and the sandbox source AJAX handler now append a directory separator before the prefix match. A sibling directory like `/var/www/html-evil/` can no longer bypass the boundary check.
+- **Sensitive-file enumeration via list-directory (medium severity).** The `sprout/list-directory` ability now applies the same sensitive-file guard that `sprout/read-file` already used. Paths like `.git/`, `.env`, `wp-config.php`, and similar files are blocked from listing.
+
+---
+
+## 0.0.1 (2026-04-12)
+
+### Added
+
+- WordPress admin dashboard with connection settings, module controls, analytics, and privacy options
+- AI-powered workflow tools via MCP (Model Context Protocol 2025-06-18 specification)
+- **Content tools:** `sprout/create-page`, `sprout/update-page`
+- **Filesystem tools:** `sprout/read-file`, `sprout/write-file`, `sprout/edit-file`, `sprout/delete-file`, `sprout/directory-list`
+- **Theme tools:** `sprout/list-theme-files`, `sprout/read-theme-file`, `sprout/update-theme-file`, `sprout/update-theme-stylesheet`
+- **Code execution tools:** `sprout/execute-php` with configurable timeout (1-120s), query capture, and execution telemetry; `sprout/batch-execute`
+- **Sandbox tools:** `sprout/sandbox-enable`, `sprout/sandbox-disable`
+- **Module management:** `sprout/manage-modules` for enabling and disabling tool categories at runtime
+- **Bridge tools:** `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, `sprout-bridge/dispatch-tool`
+- Sandbox environment at `wp-content/sproutos-mcp-sandbox/` with syntax validation, symbol conflict detection, automatic crash recovery, Safe Mode, validation caching, and multi-file project support
+- 6 modular ability categories (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks, WDesignKit) with independent enable and disable toggles
+- Per-tool enable and disable toggles from the admin UI
+- One-click Safe Mode (read-only) with automatic configuration save and restore
+- Sensitive file protection covering `.env`, `wp-config.php`, `.htaccess`, `debug.log`, `.git/`, and `.sql` files
+- Path boundary enforcement restricting all operations to ABSPATH
+- Symlink rejection on all filesystem operations
+- Analytics and activity tracking with configurable log levels (all, errors, off)
+- Configurable log retention with automatic cron-based cleanup
+- Email notifications (per-session or daily digest)
+- Webhook notifications for Slack, Discord, and custom endpoints
+- Privacy controls for IP storage, IP anonymization, user identity, and request and response body logging
+- Server instruction customization (WordPress version, PHP version, theme info, plugin list, custom text)
+- Admin bar status indicator showing Sprout MCP: ON or OFF
+- Bundled MCP Adapter with HTTP and STDIO transport support
+- WP-CLI integration via `wp mcp-adapter serve` and `wp mcp-adapter list`
+- Clean uninstall handler that removes all options, database tables, transients, cron jobs, and the sandbox directory
+
+### Security
+
+- All MCP operations require the `manage_options` capability (Administrator role)
+- Application Password authentication for HTTP transport
+- Nonce verification on all AJAX handlers
+- Input sanitization on all user-supplied values
+- Parameterized queries on all database operations
+- Ability source tracking limited to admin context only
