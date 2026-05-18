@@ -1,12 +1,12 @@
 ---
-title: 'Install Node.js & npm — Required for MCP Setup'
+title: 'Install Node.js & npm: Required for MCP Setup'
 description: >-
   Node.js 18 or higher is required on the machine running your AI client. Learn how to install it on Windows, macOS, and Linux in three steps.
 ---
 
-Node.js 18 or higher must be installed on the machine where you run your AI client — not on your WordPress server. SproutOS uses `npx` to download and run the MCP connector that links your AI client to your site. Without Node.js, that command will fail. This guide gets you set up in three steps.
+Node.js 18 or higher must be installed on the machine where you run your AI client. It does not need to be on your WordPress server. SproutOS uses `npx` to download and run the MCP connector that links your AI client to your site. Without Node.js, that command will fail. This guide gets you set up in three steps.
 
-## Step 1 — Check if Node.js is already installed
+## Step 1: Check if Node.js is already installed
 
 Open a terminal and run:
 
@@ -17,7 +17,7 @@ npm --version
 
 If both commands return version numbers, Node.js is already installed. If Node.js is version 18 or higher, skip to the [Quick Start](/wordpress-plugin/quick-start). If the commands return an error or an older version, continue to Step 2.
 
-## Step 2 — Install Node.js & npm
+## Step 2: Install Node.js & npm
 
 <Tabs>
   <Tab title="Recommended">
@@ -25,16 +25,16 @@ If both commands return version numbers, Node.js is already installed. If Node.j
 
     [Download Node.js (LTS)](https://nodejs.org/en/download)
 
-    Choose the **LTS** version. LTS stands for Long-Term Support — it is the stable release recommended for most users. After the installer finishes, restart your terminal before continuing.
+    Choose the **LTS** version. LTS stands for Long-Term Support. It is the stable release recommended for most users. After the installer finishes, restart your terminal before continuing.
   </Tab>
   <Tab title="Windows">
-    **Option A — Official installer:**
+    **Option A: Official installer**
 
     [Download for Windows](https://nodejs.org/en/download)
 
     Run the `.msi` installer and follow the prompts. Restart your terminal after installation.
 
-    **Option B — winget:**
+    **Option B: winget**
 
     ```powershell
     winget install OpenJS.NodeJS.LTS
@@ -43,7 +43,7 @@ If both commands return version numbers, Node.js is already installed. If Node.j
     Run this in PowerShell or Command Prompt. Restart your terminal after installation.
   </Tab>
   <Tab title="macOS">
-    **Option A — Homebrew:**
+    **Option A: Homebrew**
 
     ```bash
     brew install node
@@ -51,7 +51,7 @@ If both commands return version numbers, Node.js is already installed. If Node.j
 
     If you do not have Homebrew installed, use Option B instead.
 
-    **Option B — Official installer:**
+    **Option B: Official installer**
 
     [Download for macOS](https://nodejs.org/en/download)
 
@@ -75,7 +75,7 @@ If both commands return version numbers, Node.js is already installed. If Node.j
   </Tab>
 </Tabs>
 
-## Step 3 — Verify the installation
+## Step 3: Verify the installation
 
 Open a new terminal window and run:
 
@@ -100,7 +100,7 @@ Node.js must be version 18 or higher. If the version is lower, re-run the instal
 ## Frequently Asked Questions
 
 <Expandable title="Do I need to install Node.js on my WordPress server?">
-  No. Node.js runs on your local machine — the same computer where you use your AI client. Your WordPress server only needs WordPress 6.9+ and PHP 8.0+.
+  No. Node.js runs on your local machine. That is the same computer where you use your AI client. Your WordPress server only needs WordPress 6.9+ and PHP 8.0+.
 </Expandable>
 
 <Expandable title="Which Node.js version does SproutOS require?">
@@ -108,7 +108,7 @@ Node.js must be version 18 or higher. If the version is lower, re-run the instal
 </Expandable>
 
 <Expandable title="What is npm and do I need to install it separately?">
-  npm (Node Package Manager) is installed automatically alongside Node.js. You do not need to install it separately. SproutOS uses `npx` — a tool included with npm — to run the MCP connector package.
+  npm stands for Node Package Manager. It is installed automatically alongside Node.js. SproutOS uses `npx`, a tool included with npm, to run the MCP connector package. You do not need to install anything separately.
 </Expandable>
 
 <Expandable title="How do I update an older version of Node.js?">
