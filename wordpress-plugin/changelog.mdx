@@ -6,39 +6,37 @@ description: >-
 
 All notable changes to the SproutOS WordPress plugin are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
----
+<Update label="2026-04-27" description="v0.0.2" tags={["feature", "improvement", "bugfix"]}>
 
-## 0.0.2 (2026-04-27)
+## Added
 
-### Added
+- **Capability Profiles** selector (Ultra-Minimal, Minimal, Standard, Full) in the Safety tab. Admins control how much of the tool catalogue is exposed to AI clients upfront. Default is **Minimal**, which loads approximately 1,500 tokens upfront. Agents reach the full ability library on demand through bridge dispatch.
+- `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, and `sprout-bridge/dispatch-tool` are now first-class public tools available in every profile. Light-profile sessions can still reach the full ability library on demand.
 
-- **Capability Profiles** selector (Ultra-Minimal, Minimal, Standard, Full) in the Safety tab. Admins control how much of the tool catalogue is exposed to AI clients upfront. Default is **Minimal**, which loads approximately 1,500 tokens upfront. Agents can still reach the full ability library on demand through bridge dispatch.
-- `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, and `sprout-bridge/dispatch-tool` are now first-class public tools available in every profile. Light-profile sessions can reach the full ability library on demand.
-
-### Changed
+## Changed
 
 - Plugin-presence gating: Elementor, Bricks, and WooCommerce abilities now register only when the underlying plugin or theme is active. WordPress-only installs no longer load unused Elementor or WooCommerce tool schemas.
 - Sandbox PHP execution is now opt-in. The `sandbox_enabled` setting defaults to `false`.
 - The `dry_run_default` setting now defaults to `false` for a clearer first-run experience.
 - The Safety tab has been redesigned and now hosts the Capability Profile selector and the WooCommerce module toggle.
 
-### Removed
+## Removed
 
 - **Approval queue.** The approval queue, its related abilities, and the admin UI section have been removed. Snapshots are now the single recovery path for destructive changes.
 - **Confirmation-token system.** The `sprout/request-confirmation-token` ability and related gatekeeper checks have been removed.
 - **Safe Mode setting.** `safety_mode` and its resolver have been removed. Rate limiting and dry-run are now plain settings: `rate_limit_ops_per_min` and `dry_run_default`.
 - **Anomaly tripwire.** The anomaly detection system and its related option keys have been removed.
 
-### Fixed
+## Fixed
 
 - **Path-traversal hardening (high severity).** The path resolver and the sandbox source AJAX handler now append a directory separator before the prefix match. A sibling directory like `/var/www/html-evil/` can no longer bypass the boundary check.
 - **Sensitive-file enumeration via list-directory (medium severity).** The `sprout/list-directory` ability now applies the same sensitive-file guard that `sprout/read-file` already used. Paths like `.git/`, `.env`, `wp-config.php`, and similar files are blocked from listing.
 
----
+</Update>
 
-## 0.0.1 (2026-04-12)
+<Update label="2026-04-12" description="v0.0.1" tags={["feature"]}>
 
-### Added
+## Added
 
 - WordPress admin dashboard with connection settings, module controls, analytics, and privacy options
 - AI-powered workflow tools via MCP (Model Context Protocol 2025-06-18 specification)
@@ -67,7 +65,7 @@ All notable changes to the SproutOS WordPress plugin are documented here. The fo
 - WP-CLI integration via `wp mcp-adapter serve` and `wp mcp-adapter list`
 - Clean uninstall handler that removes all options, database tables, transients, cron jobs, and the sandbox directory
 
-### Security
+## Security
 
 - All MCP operations require the `manage_options` capability (Administrator role)
 - Application Password authentication for HTTP transport
@@ -75,3 +73,5 @@ All notable changes to the SproutOS WordPress plugin are documented here. The fo
 - Input sanitization on all user-supplied values
 - Parameterized queries on all database operations
 - Ability source tracking limited to admin context only
+
+</Update>
