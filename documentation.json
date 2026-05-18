@@ -116,6 +116,11 @@
             "icon": "rocket",
             "pages": [
               {
+                "title": "Install Node.js & npm",
+                "path": "wordpress-plugin/install-nodejs",
+                "icon": "terminal"
+              },
+              {
                 "title": "Quick Start",
                 "path": "wordpress-plugin/quick-start",
                 "icon": "rocket"

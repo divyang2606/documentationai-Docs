@@ -1,0 +1,136 @@
+---
+title: 'Install Node.js & npm — Required for MCP Setup'
+description: >-
+  Node.js 18 or higher is required on the machine running your AI client. Learn how to install it on Windows, macOS, and Linux in three steps.
+---
+
+Node.js 18 or higher must be installed on the machine where you run your AI client — not on your WordPress server. SproutOS uses `npx` to download and run the MCP connector that links your AI client to your site. Without Node.js, that command will fail. This guide gets you set up in three steps.
+
+## Step 1 — Check if Node.js is already installed
+
+Open a terminal and run:
+
+```bash
+node --version
+npm --version
+```
+
+If both commands return version numbers, Node.js is already installed. If Node.js is version 18 or higher, skip to the [Quick Start](/wordpress-plugin/quick-start). If the commands return an error or an older version, continue to Step 2.
+
+## Step 2 — Install Node.js & npm
+
+<Tabs>
+  <Tab title="Recommended">
+    Download the official installer from the Node.js website. It installs both Node.js and npm in one step.
+
+    [Download Node.js (LTS)](https://nodejs.org/en/download)
+
+    Choose the **LTS** version. LTS stands for Long-Term Support — it is the stable release recommended for most users. After the installer finishes, restart your terminal before continuing.
+  </Tab>
+  <Tab title="Windows">
+    **Option A — Official installer:**
+
+    [Download for Windows](https://nodejs.org/en/download)
+
+    Run the `.msi` installer and follow the prompts. Restart your terminal after installation.
+
+    **Option B — winget:**
+
+    ```powershell
+    winget install OpenJS.NodeJS.LTS
+    ```
+
+    Run this in PowerShell or Command Prompt. Restart your terminal after installation.
+  </Tab>
+  <Tab title="macOS">
+    **Option A — Homebrew:**
+
+    ```bash
+    brew install node
+    ```
+
+    If you do not have Homebrew installed, use Option B instead.
+
+    **Option B — Official installer:**
+
+    [Download for macOS](https://nodejs.org/en/download)
+
+    Run the `.pkg` installer and follow the prompts. Restart your terminal after installation.
+  </Tab>
+  <Tab title="Linux">
+    **Ubuntu / Debian:**
+
+    ```bash
+    sudo apt update
+    sudo apt install nodejs npm -y
+    ```
+
+    **Fedora / RHEL:**
+
+    ```bash
+    sudo dnf install nodejs npm -y
+    ```
+
+    Restart your terminal after installation.
+  </Tab>
+</Tabs>
+
+## Step 3 — Verify the installation
+
+Open a new terminal window and run:
+
+```bash
+node --version
+npm --version
+```
+
+You should see version numbers similar to these:
+
+```
+v20.11.0
+10.2.4
+```
+
+Node.js must be version 18 or higher. If the version is lower, re-run the installer and select the LTS version.
+
+<Callout kind="tip">
+  If the commands still return "not found" after installing, close all terminal windows and open a fresh one. The installer updates your system PATH, and the old terminal session may not reflect that change.
+</Callout>
+
+## Frequently Asked Questions
+
+<Expandable title="Do I need to install Node.js on my WordPress server?">
+  No. Node.js runs on your local machine — the same computer where you use your AI client. Your WordPress server only needs WordPress 6.9+ and PHP 8.0+.
+</Expandable>
+
+<Expandable title="Which Node.js version does SproutOS require?">
+  Node.js 18 or higher. The LTS version from nodejs.org always meets this requirement.
+</Expandable>
+
+<Expandable title="What is npm and do I need to install it separately?">
+  npm (Node Package Manager) is installed automatically alongside Node.js. You do not need to install it separately. SproutOS uses `npx` — a tool included with npm — to run the MCP connector package.
+</Expandable>
+
+<Expandable title="How do I update an older version of Node.js?">
+  Download the latest LTS installer from nodejs.org and run it. The installer replaces the older version. After installing, restart your terminal and run `node --version` to confirm.
+</Expandable>
+
+<Expandable title="Does it matter which package manager I use on macOS?">
+  No. Both Homebrew and the official installer install the same Node.js runtime. Use whichever you already have set up on your machine.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="3">
+  <Card title="Quick Start" href="/wordpress-plugin/quick-start" icon="rocket">
+    Install the SproutOS plugin and connect your AI client via MCP.
+  </Card>
+
+  <Card title="What is MCP?" href="/wordpress-plugin/what-is-mcp" icon="activity">
+    Learn how MCP connects your AI client to your WordPress site.
+  </Card>
+
+  <Card title="Troubleshooting" href="/wordpress-plugin/troubleshooting" icon="alert-triangle">
+    Fix connection issues, authentication errors, and other common problems.
+  </Card>
+</Columns>
