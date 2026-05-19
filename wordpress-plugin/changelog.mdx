@@ -7,12 +7,12 @@ description: >-
 <Update label="2026-04-27" description="v0.0.2" tags={["feature", "improvement", "bugfix", "security"]}>
 
 **New**
-- Capability Profiles — control AI agent access from the Safety tab with presets from Ultra-Minimal to Full
+- Capability Profiles: control AI agent access from the Safety tab with presets from Ultra-Minimal to Full
 
 **Improved**
 - Bridge tools (discover, inspect, dispatch) now available across every capability profile
 - Elementor, Bricks, and WooCommerce tools only load when those plugins are active
-- Sandbox disabled by default — must be explicitly opted into to run PHP
+- Sandbox is now disabled by default and must be explicitly opted into
 - Dry-run mode off by default for accurate out-of-the-box behavior
 - Safety tab redesigned to consolidate Capability Profile selector and module settings
 
@@ -20,7 +20,7 @@ description: >-
 - Approval queue, confirmation tokens, Safe Mode setting, and anomaly detection system
 
 **Fixed**
-- Path-traversal vulnerability — sibling directories can no longer bypass the boundary check
+- Path-traversal vulnerability: sibling directories can no longer bypass the boundary check
 - `list-directory` now blocks `.git/`, `.env`, and `wp-config.php` to match `read-file` guards
 
 </Update>
@@ -28,20 +28,20 @@ description: >-
 <Update label="2026-04-12" description="v0.0.1" tags={["feature", "security"]}>
 
 **New**
-- Admin Dashboard — manage MCP connection, modules, analytics, and privacy from one screen
-- MCP Integration — connect any AI client to WordPress using the Model Context Protocol (2025-06-18 spec)
-- Content tools — create and update pages via AI (`sprout/create-page`, `sprout/update-page`)
-- Filesystem tools — read, write, edit, and delete files without FTP
-- Theme tools — edit theme files and stylesheets directly from an AI session
-- Code execution tools — run PHP from AI with query capture, telemetry, and configurable timeout
-- PHP Sandbox — isolated PHP execution to keep AI-generated code off your live site
-- Modular tool categories — enable only the tools your site needs, per-category and per-tool
-- Bridge tools — reach the full ability library on demand via `sprout-bridge/dispatch-tool`
-- Analytics — activity logging with configurable levels and automatic retention cleanup
-- Notifications — email alerts and webhooks (Slack, Discord, custom) for AI session activity
-- Privacy controls — configure IP storage, anonymization, and request/response body logging
-- Server instructions — customize what AI clients know about your site's environment
-- MCP Adapter — HTTP and STDIO transport with WP-CLI integration
+- Admin Dashboard: manage MCP connection, modules, analytics, and privacy from one screen
+- MCP Integration: connect any AI client to WordPress using the Model Context Protocol (2025-06-18 spec)
+- Content tools: create and update pages via AI (`sprout/create-page`, `sprout/update-page`)
+- Filesystem tools: read, write, edit, and delete files without FTP
+- Theme tools: edit theme files and stylesheets directly from an AI session
+- Code execution tools: run PHP from AI with query capture, telemetry, and configurable timeout
+- PHP Sandbox: isolated PHP execution to keep AI-generated code off your live site
+- Modular tool categories: enable only the tools your site needs, per-category and per-tool
+- Bridge tools: reach the full ability library on demand via `sprout-bridge/dispatch-tool`
+- Analytics: activity logging with configurable levels and automatic retention cleanup
+- Notifications: email alerts and webhooks (Slack, Discord, custom) for AI session activity
+- Privacy controls: configure IP storage, anonymization, and request/response body logging
+- Server instructions: customize what AI clients know about your site's environment
+- MCP Adapter: HTTP and STDIO transport with WP-CLI integration
 
 **Security**
 - Admin-only access, Application Password auth, nonce verification, and parameterized queries
