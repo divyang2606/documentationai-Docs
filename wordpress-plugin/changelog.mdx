@@ -6,64 +6,44 @@ description: >-
 
 <Update label="2026-04-27" description="v0.0.2" tags={["feature", "improvement", "bugfix", "security"]}>
 
-## Added
+**New**
+- Capability Profiles — control AI agent access from the Safety tab with presets from Ultra-Minimal to Full
 
-- **Capability Profiles:** Now you can control exactly what your AI agent can access from the Safety tab. Pick a profile from Ultra-Minimal to Full. Default is Minimal (~1,500 tokens). Agents can still reach the full library on demand via bridge dispatch.
-- **Bridge tools:** Use bridge tools from any profile, even the lightest one. `discover-tools`, `inspect-tool`, and `dispatch-tool` are now available in every profile.
+**Improved**
+- Bridge tools (discover, inspect, dispatch) now available across every capability profile
+- Elementor, Bricks, and WooCommerce tools only load when those plugins are active
+- Sandbox disabled by default — must be explicitly opted into to run PHP
+- Dry-run mode off by default for accurate out-of-the-box behavior
+- Safety tab redesigned to consolidate Capability Profile selector and module settings
 
-## Changed
+**Removed**
+- Approval queue, confirmation tokens, Safe Mode setting, and anomaly detection system
 
-- **Plugin-presence gating:** Stop loading tools your site does not use. Elementor, Bricks, and WooCommerce tools now register only when those plugins are active.
-- **Sandbox:** Avoid unexpected PHP execution on first setup. `sandbox_enabled` now defaults to `false` and must be explicitly opted into.
-- **Dry-run:** Get accurate results out of the box without adjusting settings. `dry_run_default` now defaults to `false`.
-- **Safety tab:** Find profile controls and module settings in one place. Redesigned to consolidate the Capability Profile selector and WooCommerce toggle.
-
-## Removed
-
-- **Approval queue:** Removed entirely. Snapshots are now the only recovery path for destructive changes.
-- **Confirmation tokens:** `sprout/request-confirmation-token` and all gatekeeper checks removed.
-- **Safe Mode setting:** `safety_mode` removed. Use `rate_limit_ops_per_min` and `dry_run_default` instead.
-- **Anomaly tripwire:** Anomaly detection system and all related option keys removed.
-
-## Fixed
-
-- **Path-traversal hardening (high severity):** Directory separator now appended before prefix matching. Sibling paths like `/var/www/html-evil/` can no longer bypass the boundary check.
-- **Sensitive-file enumeration (medium severity):** `list-directory` now blocks `.git/`, `.env`, `wp-config.php`, and similar paths, matching the guard already in `read-file`.
+**Fixed**
+- Path-traversal vulnerability — sibling directories can no longer bypass the boundary check
+- `list-directory` now blocks `.git/`, `.env`, and `wp-config.php` to match `read-file` guards
 
 </Update>
 
 <Update label="2026-04-12" description="v0.0.1" tags={["feature", "security"]}>
 
-## Added
+**New**
+- Admin Dashboard — manage MCP connection, modules, analytics, and privacy from one screen
+- MCP Integration — connect any AI client to WordPress using the Model Context Protocol (2025-06-18 spec)
+- Content tools — create and update pages via AI (`sprout/create-page`, `sprout/update-page`)
+- Filesystem tools — read, write, edit, and delete files without FTP
+- Theme tools — edit theme files and stylesheets directly from an AI session
+- Code execution tools — run PHP from AI with query capture, telemetry, and configurable timeout
+- PHP Sandbox — isolated PHP execution to keep AI-generated code off your live site
+- Modular tool categories — enable only the tools your site needs, per-category and per-tool
+- Bridge tools — reach the full ability library on demand via `sprout-bridge/dispatch-tool`
+- Analytics — activity logging with configurable levels and automatic retention cleanup
+- Notifications — email alerts and webhooks (Slack, Discord, custom) for AI session activity
+- Privacy controls — configure IP storage, anonymization, and request/response body logging
+- Server instructions — customize what AI clients know about your site's environment
+- MCP Adapter — HTTP and STDIO transport with WP-CLI integration
 
-- **Admin Dashboard:** Manage your MCP connection, modules, analytics, and privacy settings from one screen.
-- **MCP Integration:** Connect AI clients to your WordPress site using the latest MCP standard. Supports Model Context Protocol 2025-06-18 spec.
-- **Content tools:** Create and update pages directly from an AI client. `sprout/create-page`, `sprout/update-page`
-- **Filesystem tools:** Read, write, edit, and delete files from an AI session without FTP. `sprout/read-file`, `sprout/write-file`, `sprout/edit-file`, `sprout/delete-file`, `sprout/directory-list`
-- **Theme tools:** Customize theme files and stylesheets through an AI session. `sprout/list-theme-files`, `sprout/read-theme-file`, `sprout/update-theme-file`, `sprout/update-theme-stylesheet`
-- **Code execution tools:** Run PHP directly from an AI session with full visibility into queries and execution. `sprout/execute-php` with configurable timeout (1-120s), query capture, and execution telemetry; `sprout/batch-execute`
-- **Sandbox tools:** Enable or disable the PHP sandbox without leaving your AI session. `sprout/sandbox-enable`, `sprout/sandbox-disable`
-- **Module management:** Turn tool categories on or off without restarting. `sprout/manage-modules` enables and disables categories at runtime.
-- **Bridge tools:** Reach the full ability library from any profile on demand. `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, `sprout-bridge/dispatch-tool`
-- **PHP Sandbox:** Run AI-generated PHP safely without risking your live site. Isolated execution at `wp-content/sproutos-mcp-sandbox/` with syntax validation, crash recovery, validation caching, and multi-file project support.
-- **Modular tool categories:** Enable only the tools your site actually needs. 6 categories (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks, WDesignKit) with per-category and per-tool enable/disable toggles.
-- **Safe Mode:** Lock the site to read-only instantly during sensitive work. One-click activation with automatic configuration save and restore.
-- **Sensitive file protection:** Keep critical files off-limits from AI sessions. Blocks access to `.env`, `wp-config.php`, `.htaccess`, `debug.log`, `.git/`, and `.sql` files.
-- **Path boundary enforcement:** Prevent AI operations from touching files outside your WordPress install. All filesystem operations restricted to ABSPATH. Symlinks rejected.
-- **Analytics:** Track exactly what your AI sessions are doing. Activity logging with configurable levels (all, errors, off) and cron-based retention cleanup.
-- **Notifications:** Stay informed when AI sessions run on your site. Email alerts (per-session or daily digest) and webhook support for Slack, Discord, and custom endpoints.
-- **Privacy controls:** Decide exactly what gets logged about your users and sessions. Configure IP storage, anonymization, user identity logging, and request/response body logging.
-- **Server instructions:** Tell AI clients exactly what they need to know about your site. Customize WordPress version, PHP version, theme info, plugin list, and custom text.
-- **Admin bar indicator:** See your MCP connection status at a glance. Shows Sprout MCP: ON or OFF in the admin bar.
-- **MCP Adapter:** Connect any MCP-compatible client over HTTP or STDIO. Bundled adapter with WP-CLI integration via `wp mcp-adapter serve` and `wp mcp-adapter list`.
-- **Clean uninstall:** Leave no trace when you remove the plugin. Removes all options, database tables, transients, cron jobs, and the sandbox directory on uninstall.
-
-## Security
-
-- **Access control:** All MCP operations require the `manage_options` capability (Administrator role).
-- **Authentication:** Application Password authentication for HTTP transport.
-- **Request integrity:** Nonce verification on all AJAX handlers.
-- **Input handling:** All user-supplied values sanitized; all database operations use parameterized queries.
-- **Ability source tracking:** Tool registration limited to admin context only.
+**Security**
+- Admin-only access, Application Password auth, nonce verification, and parameterized queries
 
 </Update>
