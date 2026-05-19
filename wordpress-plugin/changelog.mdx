@@ -8,8 +8,8 @@ description: >-
 
 ## Added
 
-- **Capability Profiles:** Control exactly how much of the tool catalogue your AI client loads at startup. New selector in the Safety tab (Ultra-Minimal to Full). Default is Minimal (~1,500 tokens). Full library is always reachable on demand via bridge dispatch.
-- **Bridge tools:** Access the full tool library from any profile without switching profiles. `discover-tools`, `inspect-tool`, and `dispatch-tool` are now available in every profile, including light ones.
+- **Capability Profiles:** Not every AI session needs every tool. Pick a profile in the Safety tab, from Ultra-Minimal to Full. Default is Minimal (~1,500 tokens). Agents can still reach the full library on demand via bridge dispatch.
+- **Bridge tools:** Use bridge tools from any profile, even the lightest one. `discover-tools`, `inspect-tool`, and `dispatch-tool` are now available in every profile.
 
 ## Changed
 
@@ -36,17 +36,17 @@ description: >-
 
 ## Added
 
-- **Admin Dashboard:** Manage your MCP connection, modules, analytics, and privacy settings from one screen. Includes connection settings, module controls, analytics, and privacy options.
+- **Admin Dashboard:** Manage your MCP connection, modules, analytics, and privacy settings from one screen.
 - **MCP Integration:** Connect AI clients to your WordPress site using the latest MCP standard. Supports Model Context Protocol 2025-06-18 spec.
 - **Content tools:** Create and update pages directly from an AI client. `sprout/create-page`, `sprout/update-page`
 - **Filesystem tools:** Read, write, edit, and delete files from an AI session without FTP. `sprout/read-file`, `sprout/write-file`, `sprout/edit-file`, `sprout/delete-file`, `sprout/directory-list`
 - **Theme tools:** Customize theme files and stylesheets through an AI session. `sprout/list-theme-files`, `sprout/read-theme-file`, `sprout/update-theme-file`, `sprout/update-theme-stylesheet`
 - **Code execution tools:** Run PHP directly from an AI session with full visibility into queries and execution. `sprout/execute-php` with configurable timeout (1-120s), query capture, and execution telemetry; `sprout/batch-execute`
-- **Sandbox tools:** Toggle a safe execution environment without leaving your AI session. `sprout/sandbox-enable`, `sprout/sandbox-disable`
+- **Sandbox tools:** Enable or disable the PHP sandbox without leaving your AI session. `sprout/sandbox-enable`, `sprout/sandbox-disable`
 - **Module management:** Turn tool categories on or off without restarting. `sprout/manage-modules` enables and disables categories at runtime.
 - **Bridge tools:** Reach the full ability library from any profile on demand. `sprout-bridge/discover-tools`, `sprout-bridge/inspect-tool`, `sprout-bridge/dispatch-tool`
 - **PHP Sandbox:** Run AI-generated PHP safely without risking your live site. Isolated execution at `wp-content/sproutos-mcp-sandbox/` with syntax validation, crash recovery, validation caching, and multi-file project support.
-- **Modular tool categories:** Enable only the tools your site needs and keep token usage lean. 6 categories (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks, WDesignKit) with per-category and per-tool enable/disable toggles.
+- **Modular tool categories:** Enable only the tools your site actually needs. 6 categories (WordPress, Elementor, The Plus Addons, Nexter Extension, Nexter Blocks, WDesignKit) with per-category and per-tool enable/disable toggles.
 - **Safe Mode:** Lock the site to read-only instantly during sensitive work. One-click activation with automatic configuration save and restore.
 - **Sensitive file protection:** Keep critical files off-limits from AI sessions. Blocks access to `.env`, `wp-config.php`, `.htaccess`, `debug.log`, `.git/`, and `.sql` files.
 - **Path boundary enforcement:** Prevent AI operations from touching files outside your WordPress install. All filesystem operations restricted to ABSPATH. Symlinks rejected.
