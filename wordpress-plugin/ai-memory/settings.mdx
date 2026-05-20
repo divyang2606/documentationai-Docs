@@ -1,0 +1,93 @@
+---
+title: 'AI Memory Settings'
+description: >-
+  Control how aggressively SproutOS saves new memories, set memory limits, and configure named playbooks the agent can fetch on demand.
+---
+
+The AI Memory settings control two things: how freely the agent saves new memories on its own, and how your memory library is capped. Getting these right means fewer unwanted memories cluttering your list and fewer times you have to clean up after an overly eager agent.
+
+<Columns cols="2">
+  <Card title="Save Behavior Presets" href="#what-are-the-save-behavior-presets" icon="sliders">
+    Strict, Loose, or Custom - control how aggressively the agent saves memories during a session.
+  </Card>
+
+  <Card title="Memory Limits" href="#how-do-memory-limits-work" icon="bar-chart">
+    Soft cap warns at 500. Hard cap auto-archives at 1,000 to keep things clean.
+  </Card>
+
+  <Card title="Slug-Callable Memories" href="#what-are-slug-callable-memories" icon="key">
+    Give a memory a name and the agent can fetch it on demand for specific tasks.
+  </Card>
+</Columns>
+
+---
+
+Here's how each setting works.
+
+## What are the save behavior presets?
+
+The preset controls the auto-save threshold - the confidence level the agent must reach before it saves a memory on its own. A higher threshold means fewer automatic saves. A lower threshold means the agent saves more freely.
+
+| Preset | What it means | Best for |
+| --- | --- | --- |
+| **Strict** *(default)* | Agent only saves when you clearly told it to, or corrected the same behavior twice. Low-confidence inferences go to Pending review instead. | Most users - keeps your memory list clean and intentional |
+| **Loose** | Agent saves more freely, including inferences and implied context from the conversation. More memories land as Active instead of Pending review. | Power users who want the agent to capture context automatically with minimal friction |
+| **Custom** | You set the threshold yourself (0.0 to 1.0) and choose whether schema violations block the save or just warn. | Teams with specific quality requirements or workflows |
+
+<Callout kind="tip">
+  Start on Strict. If you find yourself manually creating memories for things the agent should have caught on its own, switch to Loose. You can always tighten it back up.
+</Callout>
+
+## How do memory limits work?
+
+SproutOS enforces two caps on your memory library.
+
+The **soft cap** is 500 active memories. When you reach 90% of that (450 memories), SproutOS shows a warning in the dashboard. Saves are not blocked - it's just a signal to review and archive memories you no longer need.
+
+The **hard cap** is 1,000 memories. When a new save would push you over 1,000, SproutOS automatically archives the lowest-confidence non-pinned memory to make room. If every memory is pinned, the save is blocked entirely until you manually archive something.
+
+Archived, Stale, and Disputed memories don't count against either cap.
+
+## What are slug-callable memories?
+
+A slug-callable memory is a named playbook the agent can fetch on demand. Instead of being injected automatically into every session, it sits in the background until the agent needs it for a specific task.
+
+**How to set one up:** Open any memory's edit form and fill in the **Slug** field. Use lowercase letters, digits, and hyphens only. Max 100 characters. The slug must be unique across your site.
+
+Once a slug is set, SproutOS appends that memory's name and description to the agent system prompt as a catalogue entry. The agent can then call `sprout/memory-get` with the slug to load the full content when a task calls for it.
+
+**When to use a slug instead of Always applied:**
+
+Use a slug when the memory is only relevant for specific tasks - not every session. A memory you need for every session belongs on Always applied. A memory for a particular kind of task belongs on a slug.
+
+**Example:** A memory with slug `brand-voice` contains your full brand writing guidelines. You don't need those guidelines injected into a session where you're debugging a plugin conflict. But when you ask the agent to write copy, it fetches `brand-voice` automatically and applies it.
+
+<Callout kind="tip">
+  Good slug names are short and task-oriented: `brand-voice`, `seo-rules`, `staging-creds`, `image-style`. The agent uses the slug name and description to decide when to fetch it - a clear name makes that decision more reliable.
+</Callout>
+
+## Frequently Asked Questions
+
+<Expandable title="What is the practical difference between Strict and Loose?">
+  On Strict, the agent only saves automatically when you explicitly asked it to remember something, or when you corrected the same behavior at least twice. Everything else goes to Pending review or isn't saved at all. On Loose, the agent also saves inferred context - things it picked up from the conversation without you explicitly saying "remember this." Loose produces more memories with less effort, but also more noise to clean up.
+</Expandable>
+
+<Expandable title="What happens when I hit the hard cap of 1,000 memories?">
+  SproutOS automatically archives the memory with the lowest confidence score that isn't pinned. This frees up one slot so the new save can proceed. If every memory in your library is pinned, the save is blocked and you'll see an error. The fix is to manually archive at least one pinned memory from the AI Memory tab.
+</Expandable>
+
+<Expandable title="When should I use a slug instead of Always applied?">
+  Use Always applied for context the agent needs in every session - your house rules, your site profile, your current sprint goals. Use a slug for context that only matters for specific tasks. If the memory is relevant in maybe 20% of sessions, a slug is the right call. Keeping Always applied lean (under 10 memories) also keeps your session startup fast and focused.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="2">
+  <Card title="Managing Memories" href="/wordpress-plugin/ai-memory/managing-memories" icon="list">
+    Create, edit, filter, and archive memories from the AI Memory dashboard.
+  </Card>
+
+  <Card title="AI Abilities" href="/wordpress-plugin/abilities" icon="layers">
+    Full reference for all 175+ abilities, including the 4 AI Memory abilities.
+  </Card>
+</Columns>

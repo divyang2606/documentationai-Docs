@@ -155,6 +155,11 @@
                 "title": "Managing Memories",
                 "path": "wordpress-plugin/ai-memory/managing-memories",
                 "icon": "list"
+              },
+              {
+                "title": "Settings",
+                "path": "wordpress-plugin/ai-memory/settings",
+                "icon": "sliders"
               }
             ]
           },
