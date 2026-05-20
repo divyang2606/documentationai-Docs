@@ -150,6 +150,11 @@
                 "title": "What is AI Memory",
                 "path": "wordpress-plugin/ai-memory",
                 "icon": "cpu"
+              },
+              {
+                "title": "Managing Memories",
+                "path": "wordpress-plugin/ai-memory/managing-memories",
+                "icon": "list"
               }
             ]
           },

@@ -1,0 +1,169 @@
+---
+title: 'Managing Memories'
+description: >-
+  Create, edit, filter, and archive memories from the AI Memory tab in your WordPress admin. Control what the agent knows, who it applies to, and when it activates.
+---
+
+All memory management happens in **SproutOS > AI Memory**. From there you can create new memories, edit existing ones, filter by type or status, review AI-saved memories before they go live, and archive memories you no longer need. The dashboard at the top shows how many memories you have and how close you are to the memory cap.
+
+<Columns cols="2">
+  <Card title="Memory Dashboard" href="#how-do-i-read-the-memory-dashboard" icon="bar-chart">
+    Health bar, total count, and type breakdown. See where you stand at a glance.
+  </Card>
+
+  <Card title="Filter and Browse" href="#how-do-i-find-and-browse-memories" icon="search">
+    Filter by type, status, or visibility. Every memory shows its status, author, and last edit.
+  </Card>
+
+  <Card title="Create a Memory" href="#how-do-i-create-a-memory" icon="save">
+    Step-by-step walkthrough of every form field - name, type, content, slug, expiry, and tags.
+  </Card>
+
+  <Card title="Memory Statuses" href="#what-statuses-can-i-set-on-a-memory" icon="activity">
+    Active, Always applied, Pinned, Archived - and when to use each one.
+  </Card>
+
+  <Card title="Pending Review" href="#what-is-the-pending-review-queue" icon="clock">
+    The AI saved a memory that needs your approval before it goes live.
+  </Card>
+
+  <Card title="Archive vs Delete" href="#what-is-the-difference-between-archiving-and-deleting" icon="layers">
+    Archiving is reversible. Hard delete is permanent and admin-only.
+  </Card>
+</Columns>
+
+---
+
+Here's how each part of the Memory tab works.
+
+## How do I read the memory dashboard?
+
+The dashboard sits at the top of the AI Memory tab and gives you a quick read on your memory usage.
+
+- **Memory health bar** - shows your active memory count against the soft cap of 500. A warning appears when you reach 90% (450 memories).
+- **Total count** - the total number of memories across all statuses.
+- **Type breakdown** - four count cards for Context, Rules, Profile, and Reference. Click any card to filter the list below by that type.
+
+The hard cap is 1,000 memories. When you hit it, SproutOS automatically archives the lowest-confidence non-pinned memory to make room. If all your memories are pinned, the save is blocked until you archive one manually.
+
+## How do I find and browse memories?
+
+The filter bar sits directly above the memory list.
+
+| Control | Options |
+| --- | --- |
+| **Type** | All types / Context / Rules / Profile / Reference |
+| **Status** | All statuses / Active / Always applied / Pinned / Pending review / Stale / Disputed |
+| **Visibility** | All visibilities / Private / Team / System |
+| **Include archived** | Toggle to show archived memories in the list |
+| **Reset** | Clears all active filters |
+| **+ New memory** | Opens the create form |
+
+Each memory card in the list shows the type icon, name, description, status chip, byline (author and last edited by), relative timestamp, an archive toggle switch, and a three-dot menu with Edit, Pin, Unpin, and Delete options.
+
+## How do I create a memory?
+
+Click **+ New memory** in the filter bar to open the create form. Fill in the fields in order:
+
+<Steps>
+  <Step title="Name">
+    A short, specific title for the memory. Required. Max 200 characters. Be specific - "No Gutenberg on client sites" is more useful than "Editor rule."
+  </Step>
+
+  <Step title="Description">
+    10-300 characters. This text appears in the memory index, not the content - write it so you can identify the memory at a glance without opening it.
+  </Step>
+
+  <Step title="Type">
+    Pick one: **Context**, **Rules**, **Profile**, or **Reference**. The type you choose determines which schema rule applies to the content field.
+  </Step>
+
+  <Step title="Visibility">
+    **Private** - you and admins only. **Team** - all logged-in users. **System** - all users regardless of who is connected to the AI. System is only visible to admins.
+  </Step>
+
+  <Step title="Status">
+    Set the starting status. See the statuses section below for when to use each one.
+  </Step>
+
+  <Step title="Content">
+    The memory itself. Required. 30-2048 characters. Follow the schema rule for your chosen type: Rules memories must include `**Why:**` and `**How to apply:**` sections. Context memories must use absolute dates - e.g. 2026-06-04, not "next Friday."
+  </Step>
+
+  <Step title="Slug (optional)">
+    A short lowercase identifier - letters, digits, and hyphens only, max 100 characters. Adding a slug makes this memory callable by name so the agent can fetch it on demand for specific tasks. See [AI Memory Settings](/wordpress-plugin/ai-memory/settings) for more on slug-callable memories.
+  </Step>
+
+  <Step title="Expires at (optional)">
+    A date and time in `YYYY-MM-DD HH:MM` format. When this date passes, the decay system automatically marks the memory as Stale.
+  </Step>
+
+  <Step title="Tags (optional)">
+    Comma-separated labels, max 10. Tags are for your own organization - they don't affect how the agent fetches or applies memories.
+  </Step>
+</Steps>
+
+## What statuses can I set on a memory?
+
+These four statuses are set by you:
+
+| Status | What it means |
+| --- | --- |
+| **Active** | Normal state. The agent can fetch this memory on demand when it's relevant. |
+| **Always applied** | Injected into every agent session automatically. Max 20 memories can have this status at once. |
+| **Pinned** | Immune to decay. Never auto-archived by the cap system. Stays until you manually change it. |
+| **Archived** | Soft-deleted. Data is preserved and the memory can be restored to Active at any time. |
+
+Two more statuses are set automatically by the system: **Stale** (memory expired or went unused too long) and **Disputed** (the AI recorded a contradiction). If you see either of these, restore the memory to Active if it's still valid - or archive it if it isn't.
+
+<Callout kind="tip">
+  Use Pinned for memories that must survive the cap system - like your house rules or site profile. Use Always applied only for memories the agent genuinely needs in every session. Most memories work fine as Active.
+</Callout>
+
+## What is the pending review queue?
+
+When the AI saves a memory on its own during a session, it lands in **Pending review** first. SproutOS holds it there until a human approves it.
+
+The queue appears above the memory list whenever pending memories exist. Each item shows the name, type, description, and the date the AI proposed saving it.
+
+- **Approve** - sets the memory to Active and adds it to the normal list
+- **Reject** - moves it to Archived
+- **No action for 7 days** - the memory auto-promotes to Active
+
+<Callout kind="tip">
+  Check the pending queue after any long session. The AI often captures useful context automatically - approving good memories saves you from typing them in yourself.
+</Callout>
+
+## What is the difference between archiving and deleting?
+
+**Archiving** is a soft delete. The memory is hidden from normal views and stops counting against your cap, but all data is preserved. You can restore an archived memory to Active at any time using the three-dot menu.
+
+**Hard delete** is permanent. It removes the memory and all its history and cannot be undone. Hard delete is admin-only and requires a confirmation dialog.
+
+When in doubt, archive. You can always restore.
+
+## Frequently Asked Questions
+
+<Expandable title="How do I make a memory apply to every session automatically?">
+  Set the memory's status to **Always applied**. SproutOS injects all Always applied memories into the agent system prompt at the start of every session - you don't need to ask the agent to load them. The limit is 20 Always applied memories at once.
+</Expandable>
+
+<Expandable title="What is pending review and where does it come from?">
+  Pending review memories are ones the AI saved on its own during a session - without you explicitly asking it to. SproutOS holds them for your approval before they go live. You can approve, reject, or do nothing. If you do nothing for 7 days, the memory auto-promotes to Active.
+</Expandable>
+
+<Expandable title="Can I bulk archive memories?">
+  Not yet. Archiving is currently done one memory at a time using the archive toggle on each card. Bulk actions are on the roadmap.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="2">
+  <Card title="What is AI Memory" href="/wordpress-plugin/ai-memory" icon="cpu">
+    How AI Memory works, memory types, visibility levels, and seed memories.
+  </Card>
+
+  <Card title="AI Memory Settings" href="/wordpress-plugin/ai-memory/settings" icon="sliders">
+    Save behavior presets, memory caps, and slug-callable playbooks.
+  </Card>
+</Columns>
