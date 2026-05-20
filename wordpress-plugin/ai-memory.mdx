@@ -1,0 +1,115 @@
+---
+title: 'AI Memory - How It Works'
+description: >-
+  AI Memory gives SproutOS a persistent memory of your project rules, context, brand, and resources - so the agent works with full context on every session without you repeating yourself.
+---
+
+AI Memory is a persistent memory system built into SproutOS. It stores your project context, house rules, brand profile, and external resource pointers directly in WordPress, then injects them into the agent automatically at the start of every session. The agent already knows your rules, your site, and your preferences before you type a single message.
+
+You control what gets remembered, who can see each memory, and when it applies.
+
+<Columns cols="2">
+  <Card title="Memory Types" href="#what-are-the-4-memory-types" icon="layers">
+    4 types cover every kind of context - project state, team rules, brand profile, and external links.
+  </Card>
+
+  <Card title="Visibility Levels" href="#how-do-visibility-levels-work" icon="lock">
+    Private, Team, or System - control who the agent applies each memory for.
+  </Card>
+
+  <Card title="Seed Memories" href="#what-are-seed-memories" icon="package">
+    4 blank starters ship with SproutOS. They cost zero tokens until you fill them in.
+  </Card>
+
+  <Card title="On/Off Toggle" href="#how-do-i-turn-ai-memory-on-or-off" icon="activity">
+    Disable AI Memory site-wide at any time. Your data is preserved when it's off.
+  </Card>
+</Columns>
+
+---
+
+Here's how each part of AI Memory works.
+
+## What are the 4 memory types?
+
+Every memory has a type. The type tells SproutOS what kind of context it holds and enforces a schema rule to keep the content structured and useful to the agent.
+
+| Type | Purpose | Schema Rule |
+| --- | --- | --- |
+| **Context** | Project state, current goals, deadlines, in-progress work | Must use absolute dates - e.g. 2026-06-04. Never use relative dates like "next week" or "Thursday" |
+| **Rules** | Team conventions, design constraints, working preferences | Must include both a `**Why:**` line and a `**How to apply:**` line |
+| **Profile** | Audience, brand voice, business goals, personal preferences | No extra schema requirement. Defaults to Private visibility |
+| **Reference** | Links to external tools, docs, and systems | Must include a URL or a recognizable identifier - e.g. `Notion:`, `Linear:`, `Figma:`, `GitHub:` |
+
+<Callout kind="tip">
+  Following the schema rules makes memories more useful, not just valid. A Rule without a `Why:` is easy to misapply. A Context memory with a relative date becomes meaningless after a week.
+</Callout>
+
+## How do visibility levels work?
+
+Every memory has a visibility level that controls who the agent applies it for.
+
+| Visibility | Who it applies to | Who can create or edit |
+| --- | --- | --- |
+| **Private** | You only (and site admins) | Any Editor-level user or above |
+| **Team** | All logged-in WordPress users | Any Editor-level user or above |
+| **System** | All logged-in users, regardless of which user is connected to the AI | Admins only |
+
+**System** is the broadest level. Use it for site-wide rules and context that every team member's AI session should receive - regardless of who is logged in. The System option only appears in the form for admin users.
+
+## What are seed memories?
+
+When you first activate SproutOS, four blank memories are created automatically. These are the seed memories:
+
+| Name | Type |
+| --- | --- |
+| Project context | Context |
+| House rules | Rules |
+| Site profile | Profile |
+| External resources | Reference |
+
+Seed memories ship with **Always applied** status and **System** visibility. The moment you fill one in, every AI session on the site picks it up automatically.
+
+Until you add content, seed memories cost zero tokens. SproutOS skips empty memories entirely during injection - they're placeholders waiting for you.
+
+<Callout kind="tip">
+  Start with House rules. Add your one or two most important working conventions - like "always ask before deleting anything" or "use Elementor, not Gutenberg." That single memory will shape every session from day one.
+</Callout>
+
+## How do I turn AI Memory on or off?
+
+The AI Memory toggle appears at the top of the **SproutOS > AI Memory** tab. It is admin-only.
+
+When you turn AI Memory **off**:
+
+- No AI Memory abilities register with your AI client
+- No memories are injected into agent sessions
+- All existing memory data is preserved and available when you turn it back on
+
+Turning AI Memory off is a clean pause. Nothing is deleted.
+
+## Frequently Asked Questions
+
+<Expandable title="What happens if I leave the seed memories blank?">
+  Nothing breaks. Empty seed memories are skipped entirely and cost zero tokens. They sit there until you're ready to fill them in. You can also delete them if you prefer to start from scratch.
+</Expandable>
+
+<Expandable title="Can editors create memories, or only admins?">
+  Editors can create Private and Team memories. System memories - the ones that apply to all users regardless of who is connected - are admin-only. The System visibility option only appears in the create form for admin users.
+</Expandable>
+
+<Expandable title="What does Always applied mean?">
+  Always applied is a memory status. A memory set to Always applied is automatically injected into every agent session - you don't need to ask the agent to load it. SproutOS supports up to 20 Always applied memories at once. The four seed memories ship with this status by default.
+</Expandable>
+
+## Next Steps
+
+<Columns cols="2">
+  <Card title="Managing Memories" href="/wordpress-plugin/ai-memory/managing-memories" icon="list">
+    Create, edit, filter, and archive memories from the AI Memory dashboard.
+  </Card>
+
+  <Card title="AI Memory Settings" href="/wordpress-plugin/ai-memory/settings" icon="sliders">
+    Configure save behavior presets, memory limits, and slug-callable playbooks.
+  </Card>
+</Columns>

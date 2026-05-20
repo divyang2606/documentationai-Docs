@@ -143,6 +143,17 @@
             ]
           },
           {
+            "group": "AI Memory",
+            "icon": "cpu",
+            "pages": [
+              {
+                "title": "What is AI Memory",
+                "path": "wordpress-plugin/ai-memory",
+                "icon": "cpu"
+              }
+            ]
+          },
+          {
             "group": "Security",
             "icon": "shield",
             "pages": [
