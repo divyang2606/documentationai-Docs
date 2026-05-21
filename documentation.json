@@ -143,6 +143,16 @@
             ]
           },
           {
+            "group": "Going Live",
+            "pages": [
+              {
+                "title": "Production Safety",
+                "path": "wordpress-plugin/production-safety",
+                "icon": "shield"
+              }
+            ]
+          },
+          {
             "group": "AI Memory",
             "icon": "cpu",
             "pages": [
@@ -160,16 +170,6 @@
                 "title": "Settings",
                 "path": "wordpress-plugin/ai-memory/settings",
                 "icon": "sliders"
-              }
-            ]
-          },
-          {
-            "group": "Going Live",
-            "pages": [
-              {
-                "title": "Production Safety",
-                "path": "wordpress-plugin/production-safety",
-                "icon": "shield"
               }
             ]
           },
