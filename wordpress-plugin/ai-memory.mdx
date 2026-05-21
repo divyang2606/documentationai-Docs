@@ -8,6 +8,16 @@ Every time you start a new AI session, you normally re-explain your WordPress si
 
 You control what gets remembered, who can see each memory, and when it applies.
 
+## Why AI Memory exists
+
+AI agents forget everything between sessions. The usual fix - a textarea where you type "act as a senior dev who uses Bricks" - has no audit trail, no expiry, no way for a teammate to see what got saved or who saved it.
+
+AI Memory replaces that pattern with a disciplined primitive. Every save writes an audit-log entry with a SHA-256 input hash. The linked entry survives the daily pruner, so months later you can click any memory and see exactly which conversation produced it, who saved it, and what the agent's permission state was at the time. The content of the memory never lands in the audit log in plain text - only the hash.
+
+That receipt is the difference between "AI took notes" and "AI followed rules a human can audit." That's why SproutOS built this for production sites, not just dev sandboxes.
+
+> **One primitive, three jobs.** AI Memory replaces three things that used to be separate concepts: custom instructions, skills, and long-term memory. A memory with `status=always` is what other tools call a "custom instruction." A memory with a `slug` is what other tools call a "skill." Plain memories are memories. Less to learn, one place to audit.
+
 <Columns cols="2">
   <Card title="Memory Types" href="#what-are-the-4-memory-types" icon="layers">
     4 types cover every kind of context - project state, team rules, brand profile, and external links.
@@ -47,15 +57,11 @@ Every memory has a type. The type tells SproutOS what kind of context it holds a
 
 ## How do visibility levels work?
 
-Every memory has a visibility level that controls who the agent applies it for.
+Every memory has a visibility level that controls who the agent applies it for:
 
-| Visibility | Who it applies to | Who can create or edit |
-| --- | --- | --- |
-| **Private** | You only (and site admins) | Any Editor-level user or above |
-| **Team** | All logged-in WordPress users | Any Editor-level user or above |
-| **System** | All logged-in users, regardless of which user is connected to the AI | Admins only |
-
-**System** is the broadest level. Use it for site-wide rules and context that every team member's AI session should receive - regardless of who is logged in. The System option only appears in the form for admin users.
+- **Private:** Only the WordPress user who created the memory and site administrators. Agents connected as a different user won't see it.
+- **Team:** Any logged-in user on the site. The default for most memories. Suits agency teams where every team member's AI sessions should share the same playbook.
+- **System:** Applies to every agent connection on this site, regardless of which logged-in user the agent is connected as. Only administrators can set this, and only administrators can edit or archive a System memory. Still requires authenticated access - System visibility does not expose memories to anonymous visitors.
 
 ## What are seed memories?
 

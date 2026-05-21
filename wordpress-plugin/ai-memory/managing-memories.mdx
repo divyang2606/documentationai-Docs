@@ -59,7 +59,27 @@ The filter bar sits directly above the memory list.
 | **Reset** | Clears all active filters |
 | **+ New memory** | Opens the create form |
 
-Each memory card in the list shows the type icon, name, description, status chip, byline (author and last edited by), relative timestamp, an archive toggle switch, and a three-dot menu with Edit, Pin, Unpin, and Delete options.
+## What does each memory card show?
+
+Every memory in the list is rendered as a card with the same layout and controls:
+
+| Region | Control | What it does |
+| --- | --- | --- |
+| Top-left | **Type icon badge** | Visual chip for the memory type: Context, Rules, Profile, or Reference. |
+| Top-left, beside the badge | **Bulk checkbox** | Selects this memory for batch actions (currently bulk archive). |
+| Top-right | **Archive toggle** | Quick on/off. Toggle on = memory is visible to the AI (Active, Always applied, or Pinned). Toggle off = Archived. |
+| Middle | **Title and description** | Title links to the edit form. Description shows up to two lines. |
+| Below description | **Edit button** | Opens the full edit form for this memory. |
+| Right of Edit | **Three-dot menu** | Pin / Unpin, and (admin only) permanently delete. Pinning makes the memory immune to the decay system. |
+| Footer | **Status pill - Type - Visibility - Author - Updated** | Status shows the colored pill (Active, Always applied, Pinned, etc.). Author byline shows who created and, if different, who last edited - with avatars. Updated time is relative, e.g. "3 days ago." |
+
+### Bulk actions
+
+Select two or more cards via their checkboxes. A **With selected: Archive** button appears below the grid. Bulk archive checks permissions per memory - items you can't edit (private memories from other users, System memories if you're not an admin) are silently skipped.
+
+### Permanent delete
+
+Permanent delete is not available to AI agents. Only WordPress administrators can hard-delete a memory, and only from the memory's edit screen behind a confirmation prompt. The deletion is audited so you have a record of who deleted what, even after the memory is gone.
 
 ## How do I create a memory?
 
@@ -119,6 +139,36 @@ Two more statuses are set automatically by the system: **Stale** (memory expired
 <Callout kind="tip">
   Use Pinned for memories that must survive the cap system - like your house rules or site profile. Use Always applied only for memories the agent genuinely needs in every session. Most memories work fine as Active.
 </Callout>
+
+## How do memories age?
+
+AI Memory runs a decay system so old, unused entries don't accumulate forever and bias the agent toward stale information. Three rules apply, in this order:
+
+1. **Hard expiry.** If you set **Expires at** on a memory and that date passes, the memory auto-marks as Stale. This rule beats all others.
+2. **Contradiction-based.** Memories older than 30 days that have accumulated contradictions (the agent flagged conflicts on this entry) auto-mark as Disputed.
+3. **Use-based.** Memories older than 90 days that haven't been fetched at least twice in the last 30 days auto-mark as Stale.
+
+What each decayed status means:
+
+- **Stale** - still readable, but the agent treats it as suspect and verifies against live state before applying.
+- **Disputed** - same as Stale, plus the conflict is logged so an admin can review and pick which version wins.
+
+Immune from decay: **Pinned** memories never age, no matter what. Use Pinned for things that must stay applied forever - compliance rules, hard "never do X" constraints. Archived, Stale, and Disputed memories are already terminal states and are not re-processed.
+
+### When decay runs
+
+- **Nightly cron** (`sprout_memory_decay_scan`) processes up to 100 memories per run. Large libraries get picked up again the next night.
+- **Lazy on read.** Every `memory-list` response examines up to 10 of the returned memories. This catches drift between cron runs.
+
+### What you'll see
+
+When a memory's status changes to Stale or Disputed, the change is audit-logged with the decay reason. The card status pill turns amber (Stale) or red (Disputed).
+
+### What to do with a stale memory
+
+- **Still relevant?** Open it and save it again. The fetch count resets and the status flips back to Active.
+- **No longer relevant?** Archive it. Frees a cap slot.
+- **Pinned by mistake?** Unpin from the three-dot menu. Pinned memories never decay, which can mask out-of-date content.
 
 ## What is the pending review queue?
 

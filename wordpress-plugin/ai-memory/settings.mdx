@@ -11,6 +11,10 @@ The AI Memory settings control two things: how freely the agent saves new memori
     Strict, Loose, or Custom - control how aggressively the agent saves memories during a session.
   </Card>
 
+  <Card title="Confidence and Triggers" href="#how-does-confidence-work" icon="activity">
+    How trigger types map to confidence scores, and when saves go to pending review vs. active.
+  </Card>
+
   <Card title="Memory Limits" href="#how-do-memory-limits-work" icon="bar-chart">
     Soft cap warns at 500. Hard cap auto-archives at 1,000 to keep things clean.
   </Card>
@@ -37,6 +41,33 @@ The preset controls the auto-save threshold - the confidence level the agent mus
 <Callout kind="tip">
   Start on Strict. If you find yourself manually creating memories for things the agent should have caught on its own, switch to Loose. You can always tighten it back up.
 </Callout>
+
+## How does confidence work?
+
+When an agent calls `memory-save`, it must declare a `trigger_type` - the reason this save fired. The trigger maps to an initial confidence score:
+
+| Trigger | Score | When it fires |
+| --- | --- | --- |
+| `explicit_save` | 0.90 | You explicitly told the agent to remember something - "save this," "from now on always do X." |
+| `repeated_correction` | 0.85 | The agent corrected the same behavior two or more times in a session. |
+| `unusual_confirmed` | 0.75 | The agent offered an unusual choice and you confirmed it - "yes, exactly," "keep doing that." |
+| `fact_stated` | 0.70 | You stated a fact about yourself, your team, or the project that isn't recoverable from code or git history. |
+| `inferred` | 0.40 | The agent saved without one of the four triggers above firing. This is the fallback when the agent decides to save on its own. |
+
+The save then compares confidence against the site's threshold:
+
+- **Above the threshold** - memory lands as `status=active` and is available to agents on the next session.
+- **Below the threshold** - memory lands as `status=pending_review` and shows up in the badge at the top of the AI Memory tab. You approve or reject each one. If nothing happens within 7 days, the auto-promote cron flips it to Active so the queue doesn't stagnate.
+
+### How presets affect the threshold
+
+- **Strict (default):** threshold = 0.80. Only `explicit_save` and `repeated_correction` clear it automatically. Everything else waits for your review.
+- **Loose:** threshold = 0.40. Almost every save passes automatically, including `inferred` ones. The pending review queue is rarely used.
+- **Custom:** you set the threshold value (0.00-1.00).
+
+### Why inferred is the lowest score
+
+Inferred saves are the ones most likely to be junk - the agent guessed that something was worth remembering without a clear user signal. SproutOS defaults them to 0.40 to route them into pending review under the Strict preset. A well-prompted agent rarely fires `inferred`. If your pending queue fills up with inferred saves, that's a signal the connected agent needs tighter prompting.
 
 ## How do memory limits work?
 
