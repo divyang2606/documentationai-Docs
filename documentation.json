@@ -164,6 +164,16 @@
             ]
           },
           {
+            "group": "Going Live",
+            "pages": [
+              {
+                "title": "Production Safety",
+                "path": "wordpress-plugin/production-safety",
+                "icon": "shield"
+              }
+            ]
+          },
+          {
             "group": "Security",
             "icon": "shield",
             "pages": [
