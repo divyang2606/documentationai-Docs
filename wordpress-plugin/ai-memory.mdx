@@ -12,11 +12,15 @@ You control what gets remembered, who can see each memory, and when it applies.
 
 AI agents forget everything between sessions. The usual fix - a textarea where you type "act as a senior dev who uses Bricks" - has no audit trail, no expiry, no way for a teammate to see what got saved or who saved it.
 
-AI Memory replaces that pattern with a disciplined primitive. Every save writes an audit-log entry with a SHA-256 input hash. The linked entry survives the daily pruner, so months later you can click any memory and see exactly which conversation produced it, who saved it, and what the agent's permission state was at the time. The content of the memory never lands in the audit log in plain text - only the hash.
+AI Memory replaces that pattern with a structured audit trail. Every save writes a log entry with a fingerprint of the content - not the content itself. Months later you can click any memory and see exactly which conversation produced it, who saved it, and what abilities the agent had active at the time.
+
+The memory content never lands in the audit log in plain text - only the fingerprint.
 
 That receipt is the difference between "AI took notes" and "AI followed rules a human can audit." That's why SproutOS built this for production sites, not just dev sandboxes.
 
-> **One primitive, three jobs.** AI Memory replaces three things that used to be separate concepts: custom instructions, skills, and long-term memory. A memory with `status=always` is what other tools call a "custom instruction." A memory with a `slug` is what other tools call a "skill." Plain memories are memories. Less to learn, one place to audit.
+<Callout kind="tip">
+  **Three tools in one.** AI Memory replaces three things that used to be separate concepts: custom instructions, skills, and long-term memory. A memory set to Always applied is what other tools call a "custom instruction." A memory with a slug is what other tools call a "skill." Plain memories are memories. Less to learn, one place to audit.
+</Callout>
 
 <Columns cols="2">
   <Card title="Memory Types" href="#what-are-the-4-memory-types" icon="layers">
