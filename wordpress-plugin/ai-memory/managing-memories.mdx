@@ -196,8 +196,10 @@ When in doubt, archive. You can always restore.
 
 ## Frequently Asked Questions
 
-<Expandable title="How do I make a memory apply to every session automatically?">
-  Set the memory's status to **Always applied**. SproutOS injects all Always applied memories into the agent system prompt at the start of every session - you don't need to ask the agent to load them. The limit is 20 Always applied memories at once.
+<Expandable title="How does Always applied actually work?">
+  Only memories with the Always applied status get injected into the system prompt automatically at the start of every session. Everything else - Active, Pinned, and so on - is retrievable on demand only if the agent decides to fetch it.
+
+  SproutOS caps Always applied at 20 memories per site and skips empty ones entirely. That's why the four blank seed memories cost zero tokens until you fill them in.
 </Expandable>
 
 <Expandable title="What is pending review and where does it come from?">

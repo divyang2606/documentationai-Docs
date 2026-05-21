@@ -108,8 +108,29 @@ Turning AI Memory off is a clean pause. Nothing is deleted.
   Editors can create Private and Team memories. System memories - the ones that apply to all users regardless of who is connected - are admin-only. The System visibility option only appears in the create form for admin users.
 </Expandable>
 
-<Expandable title="What does Always applied mean?">
-  Always applied is a memory status. A memory set to Always applied is automatically injected into every agent session - you don't need to ask the agent to load it. SproutOS supports up to 20 Always applied memories at once. The four seed memories ship with this status by default.
+<Expandable title="Will the AI save random stuff and clutter my library?">
+  No. Three gates protect you:
+
+  - The agent must declare one of five allowed trigger types for every save - an explicit user request, a repeated correction, a confirmed unusual choice, a stated fact, or an inferred fallback.
+  - Every save goes through a type-specific schema check. Rules memories require Why and How to apply sections. Context memories reject relative dates. Reference memories need a URL or identifier.
+  - A near-duplicate check blocks saves that are 90% or more similar to an existing memory. The agent is told to update the existing one instead.
+
+  Below-threshold saves land in the pending review queue for your approval. There's a soft cap at 500 and a hard cap at 1,000. When you hit the hard cap, SproutOS auto-archives the lowest-confidence non-pinned memory to make room.
+</Expandable>
+
+<Expandable title="What if I don't want AI Memory on at all?">
+  There's a master toggle in the header of the AI Memory tab. Flip it off and:
+
+  - Memory abilities stop being exposed to connected agents
+  - Nothing gets injected into the agent system prompt
+  - The nightly decay scan stops running
+  - The pending review auto-promote timer stops running
+
+  Your existing memories stay in the database untouched until you flip the toggle back on.
+</Expandable>
+
+<Expandable title="Does AI Memory work with WooCommerce, ACF, and Elementor?">
+  Yes. AI Memory is builder-agnostic - it works on any WordPress site regardless of which builder or e-commerce stack you're running. SproutOS ships separate abilities for WooCommerce and Elementor. AI Memory is the layer underneath that lets agents track preferences and rules across all of them.
 </Expandable>
 
 ## Next Steps

@@ -105,12 +105,24 @@ Use a slug when the memory is only relevant for specific tasks - not every sessi
   On Strict, the agent only saves automatically when you explicitly asked it to remember something, or when you corrected the same behavior at least twice. Everything else goes to Pending review or isn't saved at all. On Loose, the agent also saves inferred context - things it picked up from the conversation without you explicitly saying "remember this." Loose produces more memories with less effort, but also more noise to clean up.
 </Expandable>
 
-<Expandable title="What happens when I hit the hard cap of 1,000 memories?">
-  SproutOS automatically archives the memory with the lowest confidence score that isn't pinned. This frees up one slot so the new save can proceed. If every memory in your library is pinned, the save is blocked and you'll see an error. The fix is to manually archive at least one pinned memory from the AI Memory tab.
-</Expandable>
-
 <Expandable title="When should I use a slug instead of Always applied?">
   Use Always applied for context the agent needs in every session - your house rules, your site profile, your current sprint goals. Use a slug for context that only matters for specific tasks. If the memory is relevant in maybe 20% of sessions, a slug is the right call. Keeping Always applied lean (under 10 memories) also keeps your session startup fast and focused.
+</Expandable>
+
+<Expandable title="Will memory content leak into the audit log?">
+  No. The audit log stores a SHA-256 hash of the content, not the content itself. You can verify that the AI saved a specific memory with a specific fingerprint, but a database leak of the audit log alone doesn't reveal what the memory said. The full content lives only in the memory record, protected by WordPress's existing capability checks.
+</Expandable>
+
+<Expandable title="Is the audit log exposed anywhere by accident?">
+  No. The audit log lives in a custom database table that isn't exposed via the standard WordPress REST API. Querying it requires admin capabilities through SproutOS's own routes. No third-party plugins can access it without explicit integration code.
+</Expandable>
+
+<Expandable title="What about GDPR, data residency, and privacy?">
+  Everything stays in your WordPress database. No external API calls, no telemetry. The audit log sits on your own server alongside your WordPress content. If you operate under GDPR, memory records and the audit log are subject to the same data-export and right-to-erasure mechanisms as any WordPress post.
+</Expandable>
+
+<Expandable title="What happens to my data if I uninstall the plugin?">
+  By default, your memories and the audit log stay in the database. You can reinstall and pick up where you left off. If you want a full cleanup on uninstall, SproutOS includes a standard WordPress uninstall handler that removes all tables and options when you delete the plugin from the WordPress admin.
 </Expandable>
 
 ## Next Steps
